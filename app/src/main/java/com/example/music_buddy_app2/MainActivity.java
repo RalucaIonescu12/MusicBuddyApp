@@ -88,7 +88,25 @@ public class MainActivity extends AppCompatActivity {
                         } else if (throwable instanceof CouldNotFindSpotifyApp) {
                             Toast.makeText(MainActivity.this, "Download Spotify! ",Toast.LENGTH_SHORT).show();
                             //redirecting to Google Play Store
-                            
+                            final String branchLink = Uri.encode("https://spotify.link/content_linking?~campaign=" + "com.example.music_buddy_app2");
+                            final String appPackageName = "com.spotify.music";
+                            final String referrer = "_branch_link=" + branchLink;
+
+                            try {
+                                Uri uri = Uri.parse("market://details")
+                                        .buildUpon()
+                                        .appendQueryParameter("id", appPackageName)
+                                        .appendQueryParameter("referrer", referrer)
+                                        .build();
+                                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                            } catch (android.content.ActivityNotFoundException ignored) {
+                                Uri uri = Uri.parse("https://play.google.com/store/apps/details")
+                                        .buildUpon()
+                                        .appendQueryParameter("id", appPackageName)
+                                        .appendQueryParameter("referrer", referrer)
+                                        .build();
+                                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                            }
 
                         }
                     }

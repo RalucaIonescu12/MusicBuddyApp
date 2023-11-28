@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
@@ -41,7 +42,7 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
-                    // Handle successful response
+                    Toast.makeText(SpotifyAuthorizationActivity.this, "Se foloseste! ",Toast.LENGTH_SHORT).show();
                     break;
 
                 // Auth flow returned an error
