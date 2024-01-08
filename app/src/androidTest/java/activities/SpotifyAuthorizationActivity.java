@@ -1,12 +1,12 @@
-package com.example.music_buddy_app2;
+package activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.R;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -14,7 +14,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 public class SpotifyAuthorizationActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1337;
     private static final String CLIENT_ID = "ed05ab2bfe8843b7ad314fa1fc2eafc6";
-    private static final String REDIRECT_URI = "http://www.music_buddy_app2://callback";
+    private static final String REDIRECT_URI = "http://www.music_buddy_app2/callback";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +42,20 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
-                    Toast.makeText(SpotifyAuthorizationActivity.this, "Se foloseste! ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SpotifyAuthorizationActivity.this, "Bingo! ",Toast.LENGTH_SHORT).show();
+                    Intent intentt = new Intent(SpotifyAuthorizationActivity.this, MenuActivity.class);
+                    startActivity(intentt);
                     break;
 
                 // Auth flow returned an error
                 case ERROR:
                     // Handle error response
+                    Toast.makeText(SpotifyAuthorizationActivity.this, "Error at request code! ",Toast.LENGTH_SHORT).show();
                     break;
 
                 // Most likely auth flow was cancelled
                 default:
+                    Toast.makeText(SpotifyAuthorizationActivity.this, "Other case at request code! ",Toast.LENGTH_SHORT).show();
                     // Handle other cases
             }
         }

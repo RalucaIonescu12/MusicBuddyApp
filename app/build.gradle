@@ -47,4 +47,7 @@ dependencies {
     implementation files('libs/spotify-app-remote-release-0.8.0.aar')
 //    implementation project(':spotify-app-remote')
     implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
 }

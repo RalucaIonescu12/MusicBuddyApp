@@ -14,7 +14,22 @@
         android:theme="@style/Theme.MusicBuddyApp2"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="activities.ProfileActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name="activities.MyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.spotify.music.playbackstatechanged" />
+                <action android:name="com.spotify.music.metadatachanged" />
+                <action android:name="com.spotify.music.queuechanged" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="activities.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,24 +37,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".SpotifyAuthorizationActivity"
-        android:label="@string/app_name"
-        android:launchMode="singleInstance"
-            android:exported="true">
+            android:name="activities.MenuActivity"
+            android:exported="true" />
+        <activity
+            android:name="activities.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name="activities.SpotifyAuthorizationActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="${redirectHostName}"
+                    android:scheme="${redirectSchemeName}" />
+            </intent-filter>
+        </activity>
 
-            <data
-                android:host="${redirectHostName}"
-                android:scheme="${redirectSchemeName}" />
-        </intent-filter>
-    </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

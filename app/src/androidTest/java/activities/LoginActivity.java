@@ -1,15 +1,13 @@
-package com.example.music_buddy_app2;
+package activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.R;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -17,14 +15,8 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
 import com.spotify.android.appremote.api.error.NotLoggedInException;
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationRequest;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "ed05ab2bfe8843b7ad314fa1fc2eafc6";
     private static final String REDIRECT_URI = "http://www.music_buddy_app2/callback";
@@ -34,16 +26,17 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.acitivity_login);
 
 //        initiateSpotifyLogin();
-        Button loginButton = findViewById(R.id.login_spotify);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initiateSpotifyLogin();
-            }
-        });
+//        Button loginButton = findViewById(R.id.login_spotify);
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+        initiateSpotifyLogin();
 
     }
     private void initiateSpotifyLogin() {
@@ -73,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Toast.makeText(MainActivity.this, "Connected! Yay!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Connected! Yay!",Toast.LENGTH_SHORT).show();
 
                         // Now you can start interacting with App Remote
                         connected();
@@ -83,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onFailure(Throwable throwable) {
                         if (throwable instanceof NotLoggedInException || throwable instanceof UserNotAuthorizedException) {
-                            Toast.makeText(MainActivity.this, "Not connected! "+ throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Not connected! "+ throwable.getMessage(),Toast.LENGTH_SHORT).show();
                             // Show login button and trigger the login flow from auth library when clicked
                         } else if (throwable instanceof CouldNotFindSpotifyApp) {
-                            Toast.makeText(MainActivity.this, "Download Spotify! ",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Download Spotify! ",Toast.LENGTH_SHORT).show();
                             //redirecting to Google Play Store
                             final String branchLink = Uri.encode("https://spotify.link/content_linking?~campaign=" + "com.example.music_buddy_app2");
                             final String appPackageName = "com.spotify.music";
@@ -121,17 +114,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void connected() {
         // Play a playlist
-        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-
-        // Subscribe to PlayerState
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Toast.makeText(MainActivity.this, track.name + " by " + track.artist.name,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+//        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+//
+//        // Subscribe to PlayerState
+//        mSpotifyAppRemote.getPlayerApi()
+//                .subscribeToPlayerState()
+//                .setEventCallback(playerState -> {
+//                    final Track track = playerState.track;
+//                    if (track != null) {
+//
+//                        Toast.makeText(LoginActivity.this, track.name + " by " + track.artist.name,Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
     }
 }
