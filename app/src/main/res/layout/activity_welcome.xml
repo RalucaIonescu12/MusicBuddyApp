@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#858382"
-    tools:context="activities.WelcomeActivity">
+    tools:context=".WelcomeActivity">
 
   <Button
       android:id="@+id/login_spotify"

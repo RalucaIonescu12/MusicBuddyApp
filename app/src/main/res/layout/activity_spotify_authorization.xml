@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#858382"
-    tools:context="activities.SpotifyAuthorizationActivity">
+    tools:context=".SpotifyAuthorizationActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

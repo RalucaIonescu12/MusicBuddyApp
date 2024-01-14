@@ -1,5 +1,4 @@
-package activities;
-
+package com.example.music_buddy_app2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -15,8 +14,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.music_buddy_app2.R;
 
 import java.util.ArrayList;
 
@@ -75,6 +72,13 @@ public class MenuActivity extends AppCompatActivity {
         myRVAdapter = new MyRVAdapter(menuOptions, menuOptionsDescription,menuOptionsImage);
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(myRVAdapter);
+    }
+    public void onBackPressed() {
+
+        super.onBackPressed();
+        Intent intent = new Intent(MenuActivity.this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
     }
     class MyRVAdapter extends RecyclerView.Adapter<MyRVAdapter.MyHolder>
 

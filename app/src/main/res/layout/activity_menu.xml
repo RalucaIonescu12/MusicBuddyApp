@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:alpha="1"
     android:background="#858382"
-    tools:context="activities.MenuActivity">
+    tools:context="activities/MenuActivity">
 
     <!-- Wood Background -->
 
@@ -76,15 +76,6 @@
             app:layout_constraintVertical_bias="0.094"
             app:srcCompat="@drawable/arrow" />
     </androidx.cardview.widget.CardView>
-
-    <ImageButton
-        android:id="@+id/back_button_menu"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:background="#858382"
-        android:src="@drawable/back"
-        android:layout_marginTop="674dp"
-        android:layout_marginLeft="20dp"/>
 
 
 </FrameLayout>

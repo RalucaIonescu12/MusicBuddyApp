@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "300700715057",
+    "project_id": "music-buddy-app",
+    "storage_bucket": "music-buddy-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300700715057:android:7f83ce88ad147bce246d10",
+        "android_client_info": {
+          "package_name": "com.example.music_buddy_app2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDWuh-eZZWUwQykEweOz5mVMcQI1QoyQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

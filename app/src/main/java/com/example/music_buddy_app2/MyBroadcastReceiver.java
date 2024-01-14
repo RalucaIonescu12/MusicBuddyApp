@@ -1,8 +1,20 @@
-package activities;
+package com.example.music_buddy_app2;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+
+import com.spotify.android.appremote.api.PlayerApi;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.CrossfadeState;
+import com.spotify.protocol.types.Empty;
+import com.spotify.protocol.types.PlaybackSpeed;
+import com.spotify.protocol.types.PlayerContext;
+import com.spotify.protocol.types.PlayerState;
+
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
     static final class BroadcastTypes {
@@ -10,10 +22,18 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         static final String PLAYBACK_STATE_CHANGED = SPOTIFY_PACKAGE + ".playbackstatechanged";
         static final String QUEUE_CHANGED = SPOTIFY_PACKAGE + ".queuechanged";
         static final String METADATA_CHANGED = SPOTIFY_PACKAGE + ".metadatachanged";
+
     }
+    public MyBroadcastReceiver() {
+
+    }
+    //A playback state change is sent when PLAY/PAUSE/SEEK TRACK POSITION
+    //Helps to know the current playback position in miliseconds
+    //Used when the music buddy app is not in the foreground ( ex: analysis of listening habits)
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         // This is sent with all broadcasts, regardless of type. The value is taken from
         // System.currentTimeMillis(), which you can compare to in order to determine how
         // old the event is.
@@ -28,7 +48,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             String trackName = intent.getStringExtra("track");
             int trackLengthInSec = intent.getIntExtra("length", 0);
             Toast.makeText(context, "song  "+artistName+albumName,Toast.LENGTH_SHORT).show();
-            // Do something with extracted information...
+
         } else if (action.equals(BroadcastTypes.PLAYBACK_STATE_CHANGED)) {
             boolean playing = intent.getBooleanExtra("playing", false);
             int positionInMs = intent.getIntExtra("playbackPosition", 0);
@@ -39,4 +59,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             Toast.makeText(context, "queue changed! ",Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
