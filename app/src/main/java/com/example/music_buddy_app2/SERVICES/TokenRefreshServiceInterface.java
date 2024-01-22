@@ -1,11 +1,9 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.SERVICES;
 
-import android.content.Context;
+import com.example.music_buddy_app2.API_RESPONSES.AccessTokenResponse;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 

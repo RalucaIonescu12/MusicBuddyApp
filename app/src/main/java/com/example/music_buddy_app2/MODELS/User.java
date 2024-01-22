@@ -1,4 +1,4 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.MODELS;
 
 public class User {
 

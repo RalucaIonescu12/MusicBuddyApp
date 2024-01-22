@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#858382"
+    tools:context=".ACTIVITIES.UsersTopItemsActivity">
+
+
+    <TextView
+        android:id="@+id/top_items_title"
+        android:layout_width="267dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/be_vietnam_light"
+        android:text="YOUR TOP ITEMS"
+        android:textAlignment="textStart"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- EditText for the limit -->
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="347dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/gridView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_items_title"
+        app:layout_constraintVertical_bias="0.166">
+
+        <!-- Dropdown for Time Range -->
+
+        <!-- Switch for Artists/Tracks -->
+        <Spinner
+            android:id="@+id/spinnerTimeRange"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchArtistsTracks"
+            android:layout_width="170dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:text="Artists/Tracks"
+            app:switchTextAppearance="@style/SwitchTextAppearance" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/limit"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/gridView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_items_title"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="96dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="4dp"
+        android:text="Done"
+        app:iconTint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/gridView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.873"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="552dp"
+        android:numColumns="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.709"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_items_title"
+        app:layout_constraintVertical_bias="0.99">
+
+    </GridView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.ACTIVITIES;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.music_buddy_app2.R;
 
 import java.util.ArrayList;
 

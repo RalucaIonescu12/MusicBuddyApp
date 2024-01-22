@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.music_buddy_app2">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,11 +16,14 @@
         android:theme="@style/Theme.MusicBuddyApp2"
         tools:targetApi="31">
         <activity
-            android:name="com.example.music_buddy_app2.ProfileActivity"
+            android:name=".ACTIVITIES.UsersTopItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.ProfileActivity"
             android:exported="false" />
 
         <receiver
-            android:name="com.example.music_buddy_app2.MyBroadcastReceiver"
+            android:name=".SERVICES.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -29,7 +34,7 @@
         </receiver>
 
         <activity
-            android:name="com.example.music_buddy_app2.WelcomeActivity"
+            android:name=".ACTIVITIES.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,13 +43,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.music_buddy_app2.MenuActivity"
+            android:name=".ACTIVITIES.MenuActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.music_buddy_app2.LoginActivity"
+            android:name=".ACTIVITIES.LoginActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.music_buddy_app2.SpotifyAuthorizationActivity"
+            android:name=".ACTIVITIES.SpotifyAuthorizationActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance">

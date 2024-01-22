@@ -1,4 +1,4 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.SERVICES;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

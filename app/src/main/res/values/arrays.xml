@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="time_ranges">
+        <item>6 Months</item>
+        <item>1 Year</item>
+        <item>1 Month</item>
+        <item>All Time</item>
+    </string-array>
+</resources>

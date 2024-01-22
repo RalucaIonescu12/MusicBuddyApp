@@ -1,14 +1,15 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.RetrofitClient;
+import com.example.music_buddy_app2.SERVICES.TokenRefreshServiceInterface;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -18,10 +19,6 @@ import com.spotify.android.appremote.api.error.NotLoggedInException;
 import com.spotify.android.appremote.api.error.UserNotAuthorizedException;
 import com.spotify.protocol.types.Track;
 
-import okhttp3.Credentials;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {

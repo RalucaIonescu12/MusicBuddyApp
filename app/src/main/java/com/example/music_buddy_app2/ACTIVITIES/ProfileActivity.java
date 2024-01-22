@@ -1,18 +1,26 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.ACTIVITIES;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.RetrofitClient;
+import com.example.music_buddy_app2.SERVICES.SpotifyApiServiceInterface;
+import com.example.music_buddy_app2.SERVICES.SharedPreferencesManager;
+import com.example.music_buddy_app2.MODELS.User;
+import com.example.music_buddy_app2.API_RESPONSES.UserResponse;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +39,19 @@ public class ProfileActivity extends AppCompatActivity {
 
         initiateSpotifyApiService();
         fetchUserProfileData();
+
+        CardView topArtists = findViewById(R.id.card_top_items);
+
+        // Set OnClickListener on the topArtists ImageView
+        topArtists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the UsersTopItemsActivity when the topArtists image is clicked
+                Intent intent = new Intent(ProfileActivity.this, UsersTopItemsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
     public void initiateSpotifyApiService()
     {
@@ -80,14 +101,14 @@ public class ProfileActivity extends AppCompatActivity {
         TextView totalScore = findViewById(R.id.total_score_count);
         ImageView profilePicture = findViewById(R.id.profile_picture);
         ImageView topArtists = findViewById(R.id.show_top_artists_image);
-        ImageView topSongs = findViewById(R.id.show_top_songs_image);
+        ImageView topTracks = findViewById(R.id.show_top_songs_image);
 
         username.setText(user.getUsername());
         totalWins.setText(user.getTotalWins().toString());
         totalGamesPlayed.setText(user.getTotalGamesPlayed().toString());
         totalScore.setText(user.getTotalScore().toString());
         Picasso.get().load(user.getProfileImageUrl()).into(profilePicture);
-        Picasso.get().load(user.getProfileImageUrl()).into(topArtists);
-        Picasso.get().load(user.getProfileImageUrl()).into(topSongs);
+        topArtists.setImageResource(R.drawable.top_artists);
+        topTracks.setImageResource(R.drawable.top_tracks);
     }
 }

@@ -1,12 +1,4 @@
-package com.example.music_buddy_app2;
-
-import android.content.Context;
-
-import okhttp3.Credentials;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+package com.example.music_buddy_app2.SERVICES;
 
 public class TokenRefreshService {
 

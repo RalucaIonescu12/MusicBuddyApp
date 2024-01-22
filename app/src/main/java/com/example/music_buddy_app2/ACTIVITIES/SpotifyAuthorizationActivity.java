@@ -1,4 +1,4 @@
-package com.example.music_buddy_app2;
+package com.example.music_buddy_app2.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.SharedPreferencesManager;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -25,7 +27,7 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
 
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "user-read-email", "streaming"});
+        builder.setScopes(new String[]{"user-read-private", "user-read-email", "streaming","user-top-read"});
         AuthorizationRequest request = builder.build();
 
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
