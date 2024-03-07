@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#64BDED">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageView_song"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="16dp"
+                            android:adjustViewBounds="true"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wood"
+                            android:textColor="#050505" />
+
+                        <TextView
+                            android:id="@+id/artist_name"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:textColor="#050505"
+                            android:layout_toEndOf="@+id/imageView_song"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView_song_name"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/artist_name"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="13dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="29dp"
+                            android:layout_toEndOf="@+id/imageView_song"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/danceabilityTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imageView_song"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Danceability"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/danceabilityValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="155dp"
+                            android:layout_toEndOf="@+id/danceabilityTitle"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/instrumentalnessTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeDanceability"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Instrumentalness"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/instrumentalnessValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeDanceability"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/instrumentalnessTitle"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/TempoTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeInstrumentalness"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Tempo"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/TempoValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeInstrumentalness"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/RangeInstrumentalness"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/LivenessTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeTempo"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Liveness"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/LivenessValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeTempo"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/LivenessTitle"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/valenceTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeLiveness"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Valence"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/valenceValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeLiveness"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/valenceTitle"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/energyValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeValence"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/energyTitle"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/TimeSignatureValue"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeEnergy"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/TimeSignatureTitle"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/RangeDanceability"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/danceabilityTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="How danceable is this song? Range:0-1"
+                            android:textColor="#050505"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/RangeInstrumentalness"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/instrumentalnessTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Vocals or no vocals? Range:0-1"
+                            android:textColor="#050505"
+                            android:textSize="10sp" />
+
+
+                        <TextView
+                            android:id="@+id/RangeTempo"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/TempoTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Beats per minute."
+                            android:textColor="#050505"
+                            android:textSize="10sp" />
+
+
+                        <TextView
+                            android:id="@+id/RangeLiveness"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/LivenessTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Probability of being a live performance. Above 0.8 - strong likelihood of a live track. Range:0-1"
+                            android:textColor="#050505"
+                            android:textSize="10sp" />
+
+
+                        <TextView
+                            android:id="@+id/RangeValence"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/valenceTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Low-depressing and High-cheerful. Range:0-1"
+                            android:textColor="#050505"
+                            android:textSize="10sp" />
+
+
+                        <TextView
+                            android:id="@+id/energyTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeValence"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Energy"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/RangeEnergy"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/energyTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Measures intensity and loudness. Range:0-1"
+                            android:textColor="#050505"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/TimeSignatureTitle"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RangeEnergy"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Time Signature"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/RangeTimeSignature"
+                            android:layout_width="196dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/TimeSignatureTitle"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Beats per bar. Range:3-7"
+                            android:textColor="#050505"
+                            android:textSize="10sp"
+                            android:layout_marginBottom="20dp"/>
+                </RelativeLayout>
+        </FrameLayout>
+</ScrollView>

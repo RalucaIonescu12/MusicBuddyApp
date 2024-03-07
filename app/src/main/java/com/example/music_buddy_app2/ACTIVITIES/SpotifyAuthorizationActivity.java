@@ -25,6 +25,7 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
     }
     private void initiateSpotifyLogin() {
 
+
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
         builder.setScopes(new String[]{"user-read-private", "user-read-email", "streaming","user-top-read"});

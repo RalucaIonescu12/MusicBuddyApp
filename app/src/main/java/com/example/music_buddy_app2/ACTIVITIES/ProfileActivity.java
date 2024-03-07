@@ -65,8 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
     private void fetchUserProfileData() {
 
         String accessToken = SharedPreferencesManager.getToken(this);
-        String autorization = "Bearer "+ accessToken;
-        Call<UserResponse> call= spotifyApiServiceInterface.getMyProfile(autorization);
+        String authorization = "Bearer "+ accessToken;
+        Call<UserResponse> call= spotifyApiServiceInterface.getMyProfile(authorization);
 
         call.enqueue(new Callback<UserResponse>() {
             @Override

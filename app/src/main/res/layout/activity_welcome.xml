@@ -18,30 +18,28 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView3" />
+      app:layout_constraintTop_toBottomOf="@+id/ill_use" />
 
   <TextView
-      android:fontFamily="@font/be_vietnam_light"
-      android:id="@+id/textView"
+      android:id="@+id/do_you_know"
       android:layout_width="320dp"
       android:layout_height="120dp"
-      android:layout_marginTop="80dp"
-      android:text="Do you know that friend that knows everything about music? That's me!"
+      android:layout_marginTop="88dp"
+      android:fontFamily="@font/be_vietnam_light"
       android:textAlignment="center"
       android:textColor="#FFFFFF"
       android:textSize="70px"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.494"
+      app:layout_constraintHorizontal_bias="0.593"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView2" />
+      app:layout_constraintTop_toBottomOf="@+id/hello" />
 
   <TextView
       android:fontFamily="@font/be_vietnam_light"
-      android:id="@+id/textView2"
+      android:id="@+id/hello"
       android:layout_width="154dp"
       android:layout_height="86dp"
       android:layout_marginTop="48dp"
-      android:text="Hello!"
       android:textAlignment="center"
       android:textColor="#FFFFFF"
       android:textSize="140px"
@@ -50,18 +48,16 @@
       app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
-      android:fontFamily="@font/be_vietnam_light"
-      android:id="@+id/textView3"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:id="@+id/ill_use"
+      android:layout_width="339dp"
+      android:layout_height="105dp"
       android:layout_marginTop="72dp"
-      android:text="I'll use your Spotify account for that!"
+      android:fontFamily="@font/be_vietnam_light"
       android:textAlignment="center"
       android:textColor="#FFFFFF"
       android:textSize="70px"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="1.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView" />
+      app:layout_constraintTop_toBottomOf="@+id/do_you_know" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

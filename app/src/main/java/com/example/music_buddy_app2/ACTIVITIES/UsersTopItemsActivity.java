@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.API_RESPONSES.AccessTokenResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TopArtistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TopArtistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TopItemInterface;
@@ -28,22 +30,28 @@ import com.example.music_buddy_app2.ADAPTERS.TopItemsAdapter;
 import com.example.music_buddy_app2.SERVICES.RetrofitClient;
 import com.example.music_buddy_app2.SERVICES.SharedPreferencesManager;
 import com.example.music_buddy_app2.SERVICES.SpotifyApiServiceInterface;
+import com.example.music_buddy_app2.SERVICES.TokenRefreshServiceInterface;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.http.Field;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public class UsersTopItemsActivity extends AppCompatActivity {
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     Retrofit retrofit;
-
+    TokenRefreshServiceInterface tokenRefreshServiceInterface;
+    private static final String CLIENT_ID = "ed05ab2bfe8843b7ad314fa1fc2eafc6";
+    private static final String CLIENT_SECRET = "47504e30b0ac436a965a60a0ee68d071";
     int limit;  //the limit number of songs
     int offset;  //The index of the first item to return
     Spinner spinner, spinnerLimit;
@@ -60,6 +68,7 @@ public class UsersTopItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_users_top_items);
 
         initiateSpotifyApiService();
+        initiateRetrofitRefreshToken();
         setupSpinner();
 
         Button btnSubmit = findViewById(R.id.btnSubmit);
@@ -113,6 +122,13 @@ public class UsersTopItemsActivity extends AppCompatActivity {
         }
         spotifyApiServiceInterface = retrofit.create(SpotifyApiServiceInterface.class);
     }
+    public void initiateRetrofitRefreshToken()
+    {
+        if (retrofit == null) {
+            retrofit = RetrofitClient.getRetrofitTokenInstance();
+        }
+        tokenRefreshServiceInterface = retrofit.create(TokenRefreshServiceInterface.class);
+    }
 
     private void getTopItems() {
         String accessToken = SharedPreferencesManager.getToken(this);
@@ -154,8 +170,11 @@ public class UsersTopItemsActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(UsersTopItemsActivity.this, "You need to reauthorize!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UsersTopItemsActivity.this, WelcomeActivity.class);
-                        startActivity(intent);
+                        ///refresh token
+
+                        getRetrofitRefreshToken();
+//                        Intent intent = new Intent(UsersTopItemsActivity.this, WelcomeActivity.class);
+//                        startActivity(intent);
                     }
 
                 }
@@ -184,8 +203,8 @@ public class UsersTopItemsActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(UsersTopItemsActivity.this, "You need to reauthorize!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UsersTopItemsActivity.this, WelcomeActivity.class);
-                        startActivity(intent);
+
+                        getRetrofitRefreshToken();
                     }
 
                 }
@@ -212,4 +231,57 @@ public class UsersTopItemsActivity extends AppCompatActivity {
             }
         });
     }
+
+ private void getRetrofitRefreshToken()
+    {
+// @POST("api/token")
+//     Call<AccessTokenResponse> refreshAccessToken(
+//         @Field("grant_type") String grantType,
+//         @Field("refresh_token") String refreshToken,
+//         @Header("Content-Type") String contentType,
+//         @Header("Authorization") String clientCredentials, ///the format: Authorization: Basic <base64 encoded client_id:client_secret
+//         @Header("client_id") String clientId
+//    );
+
+     String refreshToken = SharedPreferencesManager.getToken(this);
+//     String clientCredentials = Credentials.basic(CLIENT_ID, CLIENT_SECRET);
+     String clientCredentials = "Basic " + Base64.encodeToString((CLIENT_ID + ":" + CLIENT_SECRET).getBytes(), Base64.DEFAULT);
+
+     String contentType = "application/x-www-form-urlencoded";
+
+     Call<AccessTokenResponse> callback= tokenRefreshServiceInterface.refreshAccessToken("refresh_token", refreshToken ,contentType,clientCredentials,CLIENT_ID );
+     Log.d("TokenRefresh", "call  " + callback.isExecuted()) ;
+     callback.enqueue(new Callback<AccessTokenResponse>() {
+         @Override
+         public void onResponse(Call<AccessTokenResponse> call, retrofit2.Response<AccessTokenResponse> response) {
+             Log.d("TokenRefresh", "Response Code: " + response.code());
+             Log.d("TokenRefresh", "Response Body: " + response.body());
+             if (response.isSuccessful()) {
+
+                 AccessTokenResponse accessTokenResponse = response.body();
+                 if (accessTokenResponse != null) {
+                     String newAccessToken = accessTokenResponse.getAccessToken();
+                     Log.d("TokenRefresh", "Response Body:  is successfulkl" + response.body());
+                     // Save the new access token using SharedPreferencesManager
+                     SharedPreferencesManager.saveToken(UsersTopItemsActivity.this, newAccessToken);
+                     Toast.makeText(UsersTopItemsActivity.this, "Refreshed!",Toast.LENGTH_SHORT).show();
+                     getTopItems();
+                 }
+             } else {
+                 Log.d("TokenRefresh", "Response Body: else " + response.body());
+                 Toast.makeText(UsersTopItemsActivity.this, "Not successful at refreshing token! ",Toast.LENGTH_SHORT).show();
+//                 Intent intent = new Intent(UsersTopItemsActivity.this, WelcomeActivity.class);
+//                       startActivity(intent);
+             }
+         }
+
+         @Override
+         public void onFailure(Call<AccessTokenResponse> call, Throwable t) {
+             Toast.makeText(UsersTopItemsActivity.this, "tried but Failed to refresh token: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//             Intent intent = new Intent(UsersTopItemsActivity.this, WelcomeActivity.class);
+//             startActivity(intent);
+         }
+     });
+
+ }
 }

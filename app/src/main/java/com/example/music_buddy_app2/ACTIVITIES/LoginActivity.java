@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.RetrofitClient;
+import com.example.music_buddy_app2.SERVICES.SharedPreferencesManager;
 import com.example.music_buddy_app2.SERVICES.TokenRefreshServiceInterface;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 //        AuthorizationRequest request = builder.build();
 //
 //        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
+
         Intent intent = new Intent(this, SpotifyAuthorizationActivity.class);
         startActivity(intent);
     }
@@ -85,47 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
                         Toast.makeText(LoginActivity.this, "Connected! Yay!",Toast.LENGTH_SHORT).show();
-
-//                        initiateRetrofitRefreshToken();
-//
-//                        String refreshToken = SharedPreferencesManager.getToken(LoginActivity.this);
-////                        String clientCredentials = Credentials.basic(CLIENT_ID, CLIENT_SECRET);
-////                        String clientCredentials = "Basic " + Base64.encodeToString((CLIENT_ID + ":" + CLIENT_SECRET).getBytes(), Base64.NO_WRAP);
-//                        String contentType = "application/x-www-form-urlencoded";
-//
-//                        Call<AccessTokenResponse> callback= tokenRefreshServiceInterface.refreshAccessToken("refresh_token", refreshToken ,contentType,CLIENT_ID );
-////                        Log.d("TokenRefresh", "call  " + callback.isExecuted()) ;
-//                        callback.enqueue(new Callback<AccessTokenResponse>() {
-//                            @Override
-//                            public void onResponse(Call<AccessTokenResponse> call, retrofit2.Response<AccessTokenResponse> response) {
-//                                Log.d("TokenRefresh", "Response Code: " + response.code());
-//                                Log.d("TokenRefresh", "Response Body: " + response.body());
-//                                if (response.isSuccessful()) {
-//
-//                                    AccessTokenResponse accessTokenResponse = response.body();
-//                                    if (accessTokenResponse != null) {
-//                                        String newAccessToken = accessTokenResponse.getAccessToken();
-//                                        Log.d("TokenRefresh", "Response Body:  is successfulkl" + response.body());
-//                                        // Save the new access token using SharedPreferencesManager
-//                                        SharedPreferencesManager.saveToken(LoginActivity.this, newAccessToken);
-//                                        Toast.makeText(LoginActivity.this, "Refreshed!",Toast.LENGTH_SHORT).show();
-//                                    }
-//                                } else {
-//                                    Log.d("TokenRefresh", "Response Body: else " + response.body());
-//                                    // Handle error
-//                                    // You might want to notify the user or take appropriate actions
-//                                    Toast.makeText(LoginActivity.this, "Not successful! ",Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<AccessTokenResponse> call, Throwable t) {
-//                                // Handle failure
-//                                // You might want to notify the user or take appropriate actions
-//                                Toast.makeText(LoginActivity.this, "Failed to refresh token: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-                        // Now you can start interacting with App Remote
                         connected();
 
                     }

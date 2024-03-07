@@ -14,8 +14,8 @@ public interface TokenRefreshServiceInterface {
     Call<AccessTokenResponse> refreshAccessToken(
             @Field("grant_type") String grantType,
             @Field("refresh_token") String refreshToken,
-//            @Header("Authorization") String clientCredentials,
-            @Field("Content-Type") String contentType,
+            @Header("Content-Type") String contentType, // "application/x-www-form-urlencoded";
+            @Header("Authorization") String clientCredentials, ///the format: Authorization: Basic <base64 encoded client_id:client_secret
             @Header("client_id") String clientId
     );
 

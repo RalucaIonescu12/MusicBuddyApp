@@ -24,11 +24,10 @@
 
     <!-- EditText for the limit -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout"
-        android:layout_width="347dp"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+        android:layout_width="411dp"
+        android:layout_height="96dp"
         app:layout_constraintBottom_toTopOf="@+id/gridView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,48 +37,67 @@
         <!-- Dropdown for Time Range -->
 
         <!-- Switch for Artists/Tracks -->
+
         <Spinner
             android:id="@+id/spinnerTimeRange"
-            android:layout_width="140dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1" />
+            android:layout_width="181dp"
+            android:layout_height="42dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/be_vietnam_light" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchArtistsTracks"
-            android:layout_width="170dp"
-            android:layout_height="match_parent"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@+id/spinnerTimeRange"
+            android:fontFamily="@font/be_vietnam_light"
             android:gravity="center_vertical"
-            android:paddingStart="16dp"
             android:text="Artists/Tracks"
             app:switchTextAppearance="@style/SwitchTextAppearance" />
 
-    </LinearLayout>
+        <Spinner
+            android:id="@+id/limit"
+            android:layout_width="181dp"
+            android:layout_height="42dp"
+            android:layout_below="@+id/spinnerTimeRange"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/be_vietnam_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-    <Spinner
-        android:id="@+id/limit"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/gridView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_items_title"
-        app:layout_constraintVertical_bias="1.0" />
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="41dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@+id/limit"
+            android:fontFamily="@font/be_vietnam_light"
+            android:text="Done"
+            app:iconTint="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.873"
+            app:layout_constraintStart_toStartOf="parent" />
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="96dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="4dp"
-        android:text="Done"
-        app:iconTint="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/gridView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <GridView
         android:id="@+id/gridView"

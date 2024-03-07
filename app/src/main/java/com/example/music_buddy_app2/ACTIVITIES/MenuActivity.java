@@ -106,6 +106,33 @@ public class MenuActivity extends AppCompatActivity {
             holder.Title.setText(titleData.get(position));
             holder.Description.setText(desciptionData.get(position));
             holder.ImageView.setImageResource(Integer.parseInt(imageData.get(position)));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String selectedOption = titleData.get(holder.getAdapterPosition());
+                    switch (selectedOption) {
+                        case "Recommendations":
+                            startActivity(new Intent(MenuActivity.this, BrowseRecommendationsActivity.class));
+
+                            break;
+                        case "Multiplayer games":
+                            startActivity(new Intent(MenuActivity.this, MultiplayerGamesActivity.class));
+                            break;
+                        case "Singleplayer Games":
+                            startActivity(new Intent(MenuActivity.this, SingleplayerGamesActivity.class));
+                            break;
+                        case "Leaderboard":
+                            startActivity(new Intent(MenuActivity.this, LeaderboardActivity.class));
+                            break;
+                        case "Analysis":
+                            startActivity(new Intent(MenuActivity.this, AnalysisActivity.class));
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+            });
         }
 
         @Override

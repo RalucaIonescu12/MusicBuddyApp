@@ -16,6 +16,30 @@
         android:theme="@style/Theme.MusicBuddyApp2"
         tools:targetApi="31">
         <activity
+            android:name=".ACTIVITIES.AudioFeaturesTrackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.RecFromSpotify"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.RecommendationsBySpotifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.AnalysisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.LeaderboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.SingleplayerGamesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.MultiplayerGamesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.BrowseRecommendationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ACTIVITIES.UsersTopItemsActivity"
             android:exported="false" />
         <activity

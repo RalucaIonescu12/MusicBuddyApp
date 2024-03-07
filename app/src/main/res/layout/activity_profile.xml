@@ -99,6 +99,7 @@
                 android:layout_marginTop="180dp"
                 android:text="See Your Favorites"
                 android:textAlignment="center"
+                android:fontFamily="@font/be_vietnam_light"
                 android:textSize="30sp" />
         </androidx.cardview.widget.CardView>
         <TextView

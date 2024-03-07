@@ -17,6 +17,7 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Song title"
+        android:fontFamily="@font/be_vietnam_light"
         android:textAlignment="center"
         android:textSize="14sp" />
 
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="artist name"
         android:textAlignment="center"
+        android:fontFamily="@font/be_vietnam_light"
         android:textSize="12sp" />
 
 </LinearLayout>

@@ -1,7 +1,10 @@
 package com.example.music_buddy_app2.SERVICES;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.example.music_buddy_app2.FRAGMENTS.AudioFeaturesDialogFragment;
 
 public class SharedPreferencesManager {
     private static final String SPOTIFY_PREFERENCES = "SpotifyPreferences";
@@ -17,4 +20,5 @@ public class SharedPreferencesManager {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString("AccessToken", null);
     }
+
 }
