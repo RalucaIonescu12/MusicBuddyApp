@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#64BDED">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageView_artist"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="16dp"
+                            android:adjustViewBounds="true"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wood"
+                            android:textColor="#050505" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/addForRecArtistCV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imageView_artist"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20dp"
+                            android:elevation="20dp"
+                            android:layout_marginTop="2dp"
+                            app:cardBackgroundColor="#FFFFFF"
+                            app:cardCornerRadius="10dp">
+
+                                <ImageView
+                                    android:id="@+id/addForRecArtistImage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="1dp"
+                                    app:srcCompat="@drawable/add_blue"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="5dp"
+                                    android:text="Add for Recommendations"
+                                    android:textColor="#2CA9ED"
+                                    android:textSize="12dp"></TextView>
+                        </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:id="@+id/artist_name"
+                            android:layout_width="230dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="33dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_toEndOf="@+id/imageView_artist"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:textColor="#050505"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView_genres_title"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/addForRecArtistCV"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="27dp"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Genres"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView_genres"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/addForRecArtistCV"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="27dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_toEndOf="@+id/textView_genres_title"
+                            android:fontFamily="@font/be_vietnam_light"
+                            android:text="Genresssss"
+                            android:textColor="#050505"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="30dp"/>
+
+
+                </RelativeLayout>
+        </FrameLayout>
+</ScrollView>

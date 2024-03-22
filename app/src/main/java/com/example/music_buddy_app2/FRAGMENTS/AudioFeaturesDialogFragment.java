@@ -5,31 +5,25 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.music_buddy_app2.ACTIVITIES.AudioFeaturesTrackActivity;
-import com.example.music_buddy_app2.ACTIVITIES.ProfileActivity;
 import com.example.music_buddy_app2.API_RESPONSES.AudioFeaturesObjectResponse;
-import com.example.music_buddy_app2.API_RESPONSES.SearchTrackResponse;
-import com.example.music_buddy_app2.API_RESPONSES.TopArtistsResponse;
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.RetrofitClient;
 import com.example.music_buddy_app2.SERVICES.SharedPreferencesManager;
+import com.example.music_buddy_app2.SERVICES.SpotifyApiRecommendationsManager;
 import com.example.music_buddy_app2.SERVICES.SpotifyApiServiceInterface;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +35,7 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
     private TrackSearchItem selectedItem;
     Retrofit retrofit;
     private Context mContext;
+    public SpotifyApiRecommendationsManager manager;
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     public AudioFeaturesDialogFragment(TrackSearchItem selectedItem, Context context) {
         this.selectedItem = selectedItem;
@@ -71,10 +66,26 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
         TextView livenessValue = view.findViewById(R.id.LivenessValue);
         TextView energyValue = view.findViewById(R.id.energyValue);
         TextView timeSignature = view.findViewById(R.id.TimeSignatureValue);
+        CardView addTrack = view.findViewById(R.id.addForRec);
 
         Picasso.get().load(selectedItem.getImageResourceId()).into(songImage);
         songName.setText(selectedItem.getSongName());
         artistName.setText(selectedItem.getArtistName());
+
+        addTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(manager==null)
+                    manager = SpotifyApiRecommendationsManager.getInstance();
+                String add = manager.addRecFilter("seed_tracks",selectedItem.getSongName(), selectedItem.getId(),selectedItem.getDanceabilityValue(),
+                        selectedItem.getInstrumentalnessValue(), selectedItem.getTempoValue(), selectedItem.getLivenessValue(), selectedItem.getValenceValue(), selectedItem.getEnergyValue(),
+                        selectedItem.getTimeSignature(),selectedItem.getAcousticness(),selectedItem.getLoudness(),selectedItem.getSpeechiness(),selectedItem.getDuration_ms(),selectedItem.getKey());
+                if(add.equals("5_filters")) Toast.makeText(getContext(), "You already have 5 filters!", Toast.LENGTH_SHORT).show();
+                else if(add.equals("filter_added"))Toast.makeText(getContext(), "Added!", Toast.LENGTH_SHORT).show();
+                else if (add.equals("already_exists"))Toast.makeText(getContext(), "Already addded!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         // API callfor track features
         String id;
@@ -95,11 +106,24 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
                     tempoValue.setText(String.valueOf(trackFeatures.getTempo()));
                     instrumentalnessValue.setText(String.valueOf(trackFeatures.getInstrumentalness()));
                     energyValue.setText(String.valueOf(trackFeatures.getEnergy()));
+
                     timeSignature.setText(String.valueOf(trackFeatures.getTimeSignature()));
+                    selectedItem.setAcousticness(Double.valueOf(trackFeatures.getAcousticness()));
+                    selectedItem.setDuration_ms((int)trackFeatures.getDurationMs());
+                    selectedItem.setKey((int)trackFeatures.getKey());
+                    selectedItem.setLoudness(Double.valueOf(trackFeatures.getLoudness()));
+                    selectedItem.setMode((int)trackFeatures.getMode());
+                    selectedItem.setSpeechiness(Double.valueOf(trackFeatures.getSpeechiness()));
+                    selectedItem.setValenceValue(Double.valueOf(trackFeatures.getValence()));
+                    selectedItem.setInstrumentalnessValue(Double.valueOf(trackFeatures.getInstrumentalness()));
+                    selectedItem.setDanceabilityValue(Double.valueOf(trackFeatures.getDanceability()));
+                    selectedItem.setTempoValue(Double.valueOf(trackFeatures.getTempo()));
+                    selectedItem.setLivenessValue(Double.valueOf(trackFeatures.getLiveness()));
+                    selectedItem.setEnergyValue(Double.valueOf(trackFeatures.getEnergy()));
+                    selectedItem.setTimeSignature((int)trackFeatures.getTimeSignature());
                 }
                 else {
                     Toast.makeText(requireContext(), "Api response not successful!" , Toast.LENGTH_SHORT).show();
-
                 }
             }
 

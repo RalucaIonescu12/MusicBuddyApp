@@ -3,20 +3,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.music_buddy_app2.ACTIVITIES.AudioFeaturesTrackActivity;
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
 import com.example.music_buddy_app2.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
+public class SearchTracksAdapter extends RecyclerView.Adapter<SearchTracksAdapter.ViewHolder> {
 
     private Context context;
     private List<TrackSearchItem> searchResults;
@@ -26,7 +24,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     public interface OnItemClickListener {
         void onItemClick(TrackSearchItem item);
     }
-    public SearchResultsAdapter(Context context, List<TrackSearchItem> searchResults, OnItemClickListener listener) {
+    public SearchTracksAdapter(Context context, List<TrackSearchItem> searchResults, OnItemClickListener listener) {
         this.context = context;
         this.searchResults = searchResults;
         this.listener = listener;
@@ -35,7 +33,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_search_result_option, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_search_result_track, parent, false);
         return new ViewHolder(view);
     }
 

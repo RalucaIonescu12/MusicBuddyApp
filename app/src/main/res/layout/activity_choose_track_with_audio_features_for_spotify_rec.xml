@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#858382"
+    tools:context=".ACTIVITIES.ChooseTracksWithAudioFeaturesForSpotifyRecActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#638CEB"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/be_vietnam_light"
+            android:padding="6dp"
+            android:text="Audio features for songs"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="350dp"
+        android:layout_height="630dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="#000000"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/title_features_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/be_vietnam_light"
+                android:padding="15dp"
+                android:text="Search any song you would like recommendations based on"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/input_search_song_title"
+                android:layout_width="324dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_features_search"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="14dp"
+                android:fontFamily="@font/be_vietnam_light"
+                android:hint="Enter song title"
+                android:padding="8dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/button_search_song"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/input_search_song_title"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:background="#0097A7"
+                android:fontFamily="@font/be_vietnam_light"
+                android:text="Search"
+                android:textColorHighlight="#D13131"
+                android:textColorLink="#A12323"
+                app:iconTint="#1976D2"
+                app:rippleColor="#2E0A0A" />
+
+            <TextView
+                android:id="@+id/choose_from_result_text"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_search_song"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="-41dp"
+                android:fontFamily="@font/be_vietnam_light"
+                android:padding="10sp"
+                android:text="Which one is it?"
+                android:textAlignment="viewStart"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_search_results"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:layout_below="@id/choose_from_result_text"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:padding="8dp" />
+
+            <Button
+                android:id="@+id/button_next_step"
+                android:layout_width="140dp"
+                android:layout_height="58dp"
+                android:layout_below="@+id/recyclerView_search_results"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="193dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="17dp"
+                android:text="Next" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

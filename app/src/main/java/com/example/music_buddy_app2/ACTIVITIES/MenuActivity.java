@@ -112,7 +112,7 @@ public class MenuActivity extends AppCompatActivity {
                     String selectedOption = titleData.get(holder.getAdapterPosition());
                     switch (selectedOption) {
                         case "Recommendations":
-                            startActivity(new Intent(MenuActivity.this, BrowseRecommendationsActivity.class));
+                            startActivity(new Intent(MenuActivity.this, BrowseRecommendationTypesActivity.class));
 
                             break;
                         case "Multiplayer games":

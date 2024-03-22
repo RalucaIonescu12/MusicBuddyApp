@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#858382"
-    tools:context=".ACTIVITIES.AudioFeaturesTrackActivity">
+    tools:context=".ACTIVITIES.ChooseArtistForSpotifyRecActivity">
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cardVieww"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         app:cardBackgroundColor="#638CEB"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,23 +25,25 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/be_vietnam_light"
             android:padding="6dp"
-            android:text="Audio features for songs"
+            android:text="Choose Artists"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardVieww2"
         android:layout_width="350dp"
-        android:layout_height="570dp"
+        android:layout_height="630dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         app:cardBackgroundColor="#000000"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
+        app:layout_constraintTop_toBottomOf="@+id/cardVieww">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -51,15 +53,15 @@
                 android:id="@+id/title_features_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:fontFamily="@font/be_vietnam_light"
-                android:text="Search any song you would like recommendations based on"
+                android:padding="15dp"
+                android:text="Search any artist you would like recommendations based on"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/input_search_song_title"
+                android:id="@+id/input_search_artist"
                 android:layout_width="324dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_features_search"
@@ -67,61 +69,77 @@
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="12dp"
-                android:fontFamily="@font/be_vietnam_light"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="14dp"
-                android:hint="Enter song title"
+                android:fontFamily="@font/be_vietnam_light"
+                android:hint="Enter an artist"
                 android:padding="8dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/button_search_song"
+                android:id="@+id/button_search_artist"
                 android:layout_width="140dp"
                 android:layout_height="38dp"
-                android:layout_below="@+id/input_search_song_title"
+                android:layout_below="@+id/input_search_artist"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="14dp"
                 android:background="#0097A7"
+                android:fontFamily="@font/be_vietnam_light"
                 android:text="Search"
+                android:textAlignment="center"
                 android:textColorHighlight="#D13131"
                 android:textColorLink="#A12323"
                 app:iconTint="#1976D2"
-                android:fontFamily="@font/be_vietnam_light"
                 app:rippleColor="#2E0A0A" />
 
             <TextView
-                android:id="@+id/choose_from_result_text"
+                android:id="@+id/choose_from_results_text"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button_search_song"
+                android:layout_below="@+id/button_search_artist"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="-40dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="-38dp"
+                android:fontFamily="@font/be_vietnam_light"
                 android:padding="10sp"
                 android:text="Which one is it?"
                 android:textAlignment="viewStart"
                 android:textColor="#FFFFFF"
-                android:fontFamily="@font/be_vietnam_light"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_search_results"
-                android:layout_width="327dp"
-                android:layout_height="231dp"
-                android:layout_below="@id/choose_from_result_text"
+                android:id="@+id/recyclerView_search_results_artists"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:layout_below="@id/choose_from_results_text"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="11dp"
-                android:layout_marginBottom="31dp"
+                android:layout_marginEnd="10dp"
                 android:padding="8dp" />
 
+            <Button
+                android:id="@+id/button_next_step_artists"
+                android:layout_width="127dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/recyclerView_search_results_artists"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="206dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="17dp"
+                android:text="Next"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.874"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

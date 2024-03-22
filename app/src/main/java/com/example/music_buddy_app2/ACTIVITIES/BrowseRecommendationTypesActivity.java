@@ -16,17 +16,17 @@ import com.example.music_buddy_app2.R;
 
 import java.util.ArrayList;
 
-public class BrowseRecommendationsActivity extends AppCompatActivity {
+public class BrowseRecommendationTypesActivity extends AppCompatActivity {
 
     RecyclerView rv;
     ArrayList<String> menuOptions;
     ArrayList<String> menuOptionsDescription;
     LinearLayoutManager linearLayoutManager;
-    BrowseRecommendationsActivity.MyRVAdapter myRVAdapter;
+    BrowseRecommendationTypesActivity.MyRVAdapter myRVAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browse_recommendations);
+        setContentView(R.layout.activity_browse_recommendation_types);
 
         //recommendation options of the app
         menuOptions=new ArrayList<>();
@@ -43,13 +43,13 @@ public class BrowseRecommendationsActivity extends AppCompatActivity {
 //        menuOptionsDescription.add("see if you're really a music genious");
 //        menuOptionsDescription.add("let me diagnose you're music patterns");
         rv = findViewById(R.id.recommendation_rv);
-        linearLayoutManager= new LinearLayoutManager(BrowseRecommendationsActivity.this,LinearLayoutManager.VERTICAL,false);
-        myRVAdapter = new BrowseRecommendationsActivity.MyRVAdapter(menuOptions, menuOptionsDescription);
+        linearLayoutManager= new LinearLayoutManager(BrowseRecommendationTypesActivity.this,LinearLayoutManager.VERTICAL,false);
+        myRVAdapter = new BrowseRecommendationTypesActivity.MyRVAdapter(menuOptions, menuOptionsDescription);
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(myRVAdapter);
     }
 
-    class MyRVAdapter extends RecyclerView.Adapter<BrowseRecommendationsActivity.MyRVAdapter.MyHolder>
+    class MyRVAdapter extends RecyclerView.Adapter<BrowseRecommendationTypesActivity.MyRVAdapter.MyHolder>
 
     {
         ArrayList<String> titleData;
@@ -61,13 +61,13 @@ public class BrowseRecommendationsActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public BrowseRecommendationsActivity.MyRVAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(BrowseRecommendationsActivity.this).inflate(R.layout.rv_recommendation_item,parent , false);
-            return new BrowseRecommendationsActivity.MyRVAdapter.MyHolder(view);
+        public BrowseRecommendationTypesActivity.MyRVAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(BrowseRecommendationTypesActivity.this).inflate(R.layout.rv_recommendation_item,parent , false);
+            return new BrowseRecommendationTypesActivity.MyRVAdapter.MyHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull BrowseRecommendationsActivity.MyRVAdapter.MyHolder holder, int position) {
+        public void onBindViewHolder(@NonNull BrowseRecommendationTypesActivity.MyRVAdapter.MyHolder holder, int position) {
             holder.Title.setText(titleData.get(position));
             holder.Description.setText(desciptionData.get(position));
 
@@ -77,7 +77,7 @@ public class BrowseRecommendationsActivity extends AppCompatActivity {
                     String selectedOption = titleData.get(holder.getAdapterPosition());
                     switch (selectedOption) {
                         case "Recommendations from Spotify":
-                            startActivity(new Intent(BrowseRecommendationsActivity.this, RecommendationsBySpotifyActivity.class));
+                            startActivity(new Intent(BrowseRecommendationTypesActivity.this, StartSpotifyRecommendationsActivity.class));
 //                        case "Multiplayer games":
 //                            startActivity(new Intent(RecommendationsActivity.this, MultiplayerGamesActivity.class));
 //                            break;

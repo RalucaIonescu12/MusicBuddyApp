@@ -13,18 +13,18 @@ public class UserResponse {
     private String email;
 
     @SerializedName("explicit_content")
-    private ExplicitContent explicitContent;
+    private ExplicitContentObject explicitContent;
 
     @SerializedName("external_urls")
     private ExternalUrls externalUrls;
 
-    private Followers followers;
+    private FollowersObject followers;
 
     private String href;
 
     private String id;
 
-    private List<Image> images;
+    private List<ImageObject> images;
 
     private String product;
 
@@ -33,94 +33,6 @@ public class UserResponse {
     private String uri;
 
     // getters and setters
-
-    public static class ExplicitContent {
-        @SerializedName("filter_enabled")
-        private boolean filterEnabled;
-
-        @SerializedName("filter_locked")
-        private boolean filterLocked;
-
-        public boolean isFilterEnabled() {
-            return filterEnabled;
-        }
-
-        public boolean isFilterLocked() {
-            return filterLocked;
-        }
-        public void setFilterEnabled(boolean filterEnabled) {
-            this.filterEnabled = filterEnabled;
-        }
-
-        public void setFilterLocked(boolean filterLocked) {
-            this.filterLocked = filterLocked;
-        }
-// getters and setters
-    }
-
-    public static class ExternalUrls {
-        private String spotify;
-
-        public String getSpotify() {
-            return spotify;
-        }
-
-        public void setSpotify(String spotify) {
-            this.spotify = spotify;
-        }
-// getters and setters
-    }
-
-    public static class Followers {
-        private String href;
-        private int total;
-
-        public String getHref() {
-            return href;
-        }
-
-        public void setHref(String href) {
-            this.href = href;
-        }
-
-        public int getTotal() {
-            return total;
-        }
-
-        public void setTotal(int total) {
-            this.total = total;
-        }
-// getters and setters
-    }
-    public static class Image {
-        private String url;
-        private int height;
-        private int width;
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public void setHeight(int height) {
-            this.height = height;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public void setWidth(int width) {
-            this.width = width;
-        }
-    }
 
     public String getCountry() {
         return country;
@@ -134,7 +46,7 @@ public class UserResponse {
         return email;
     }
 
-    public ExplicitContent getExplicitContent() {
+    public ExplicitContentObject getExplicitContent() {
         return explicitContent;
     }
 
@@ -142,7 +54,7 @@ public class UserResponse {
         return externalUrls;
     }
 
-    public Followers getFollowers() {
+    public FollowersObject getFollowers() {
         return followers;
     }
 
@@ -154,7 +66,7 @@ public class UserResponse {
         return id;
     }
 
-    public List<Image> getImages() {
+    public List<ImageObject> getImages() {
         return images;
     }
 
@@ -182,7 +94,7 @@ public class UserResponse {
         this.email = email;
     }
 
-    public void setExplicitContent(ExplicitContent explicitContent) {
+    public void setExplicitContent(ExplicitContentObject explicitContent) {
         this.explicitContent = explicitContent;
     }
 
@@ -190,7 +102,7 @@ public class UserResponse {
         this.externalUrls = externalUrls;
     }
 
-    public void setFollowers(Followers followers) {
+    public void setFollowers(FollowersObject followers) {
         this.followers = followers;
     }
 
@@ -202,7 +114,7 @@ public class UserResponse {
         this.id = id;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImages(List<ImageObject> images) {
         this.images = images;
     }
 

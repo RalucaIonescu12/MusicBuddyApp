@@ -11,13 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30dp"
+        android:textAlignment="center"
         android:height="60dp"
-
         android:fontFamily="@font/be_vietnam_light"
         android:textColor="@android:color/white"
         android:layout_marginBottom="8dp"/>
-
-
 
     <LinearLayout
         android:id="@+id/detailsLayout"
@@ -32,50 +30,34 @@
         android:padding="10dp"
         android:layout_height="wrap_content">
 
-        <HorizontalScrollView
-            android:id="@+id/chip_group_rec_spotify_horrizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
+<!--        <HorizontalScrollView-->
+<!--            android:id="@+id/chip_group_rec_spotify_horrizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:scrollbars="none">-->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group_rec_spotify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/CustomRecChipStyle"
-                app:singleLine="true">
+                app:singleLine="false">
             </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
+<!--        </HorizontalScrollView>-->
 
-        <EditText
-            android:id="@+id/inputGenres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter a music genre"
+        <Spinner
+            android:id="@+id/genresSpinner"
+            android:hint="Pick genres"
             android:textSize="16sp"
+            android:spinnerMode="dialog"
+            android:drawSelectorOnTop="true"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/chip_group_rec_spotify_horrizontal"
-            android:background="@android:color/transparent"
-            android:padding="8dp"/>
-        <EditText
-            android:id="@+id/inputTracks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter a song"
-            android:textSize="16sp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/inputGenres"
-            android:background="@android:color/transparent"
-            android:padding="8dp"/>
-        <EditText
-            android:id="@+id/inputArtists"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter an artist"
-            android:textSize="16sp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/inputTracks"
-            android:background="@android:color/transparent"
-            android:padding="8dp"/>
+            android:layout_width="200dp"
+            android:layout_height="42dp"
+            android:layout_below="@id/chip_group_rec_spotify"
+            android:padding="8dp"
+            style="@style/spinner_rec_style"/>
+
+
     </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

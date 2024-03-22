@@ -21,15 +21,69 @@
 
     <LinearLayout
         android:id="@+id/detailsLayout"
-        android:layout_width="350dp"
+        android:layout_width="400dp"
         android:layout_marginTop="60dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#638CEB"
         android:visibility="gone">
-
         <androidx.cardview.widget.CardView
-            android:layout_width="320dp"
+            android:layout_width="340dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginLeft="13dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/progressNbrSongsDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="How many tracks?" />
+
+                <TextView
+                    android:id="@+id/progressNbrSongsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressNbrSongsDesc"
+                    android:text="Number of tracks: " />
+                <TextView
+                    android:id="@+id/progressNbrSongsSignature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressNbrSongsDesc"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/seekNbrSongsSignature"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="100"
+                    android:layout_below="@id/progressNbrSongsTitle"
+                    android:progress="0" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="340dp"
             android:layout_marginTop="20dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
@@ -41,46 +95,109 @@
             android:layout_width="match_parent"
                 android:padding="10dp"
             android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/progressDanceabilityName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Danceability: "/>
                 <TextView
                     android:id="@+id/progressDanceabilityDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-
+                    android:layout_below="@id/progressDanceabilityName"
                     android:textColor="@android:color/white"
                     android:layout_gravity="center_horizontal"
                     android:text="Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity."
                     android:layout_marginTop="10dp"
                     />
                 <TextView
-                    android:id="@+id/progressDanceabilityTitle"
+                    android:id="@+id/progressMinDanceabilityTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:textColor="#638CEB"
                     android:layout_below="@id/progressDanceabilityDesc"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
-                    android:text="Danceability: "/>
+                    android:text="Min: "/>
                 <TextView
-                    android:id="@+id/progressValueDanceability"
+                    android:id="@+id/progressCalculatedDanceabilityTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressMinDanceabilityTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Calculated target: "/>
+                <TextView
+                    android:id="@+id/progressMaxDanceabilityTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressCalculatedDanceabilityTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Max: "/>
+                <TextView
+                    android:id="@+id/progressValueMinDanceability"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="#638CEB"
                     android:layout_gravity="center_horizontal"
                     android:text="0"
                     android:layout_below="@id/progressDanceabilityDesc"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="200dp"/>
+                <TextView
+                    android:id="@+id/progressValueCalculatedDanceability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:layout_below="@id/progressMinDanceabilityTitle"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"/>
+                <TextView
+                    android:id="@+id/progressValueMaxDanceability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:layout_below="@id/progressCalculatedDanceabilityTitle"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"/>
                 <SeekBar
-                    android:id="@+id/seekBarDanceability"
+                    android:id="@+id/seekBarMinDanceability"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_below="@id/progressValueDanceability"
-                    android:max="100"
+                    android:layout_below="@id/progressValueMaxDanceability"
+                    android:max="100000"
+                    android:progress="0" />
+                <SeekBar
+                    android:id="@+id/seekBarMaxDanceability"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/seekBarMinDanceability"
+                    android:max="100000"
                     android:progress="0" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -88,9 +205,9 @@
 
         <androidx.cardview.widget.CardView
             android:layout_height="wrap_content"
-            android:layout_width="320dp"
+            android:layout_width="340dp"
             android:layout_marginLeft="13dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="10dp">
@@ -98,46 +215,107 @@
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/progressInstrumentalName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Instrumentalness: "/>
         <TextView
             android:id="@+id/progressInstrumentalnessDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:textSize="15sp"
             android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+            android:layout_below="@+id/progressInstrumentalName"
             android:text="Predicts whether a track contains no vocals. 'Ooh' and 'aah' sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly 'vocal'. The higher the less vocals. "
         />
         <TextView
-            android:id="@+id/progressInstrumentalnessTitle"
+            android:id="@+id/progressMinInstrumentalnessTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="#638CEB"
             android:layout_below="@id/progressInstrumentalnessDesc"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:text="Instrumentalness: " />
+            android:text="Min: " />
+            <TextView
+                android:id="@+id/progressCalculatedInstrumentalnessTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="#638CEB"
+                android:layout_below="@id/progressMinInstrumentalnessTitle"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Calculated target: " />
         <TextView
-            android:id="@+id/progressValueInstrumentalness"
+            android:id="@+id/progressMaxInstrumentalnessTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#638CEB"
+            android:layout_below="@id/progressCalculatedInstrumentalnessTitle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Max: " />
+        <TextView
+            android:id="@+id/progressValueMinInstrumentalness"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginLeft="200dp"
+            android:textSize="15sp"
+            android:layout_marginLeft="225dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/progressInstrumentalnessDesc"
             android:textColor="#638CEB"
             android:layout_gravity="center_horizontal"
             android:text="0" />
+            <TextView
+                android:id="@+id/progressValueCalculatedInstrumentalness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginLeft="225dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/progressMinInstrumentalnessTitle"
+                android:textColor="#638CEB"
+                android:layout_gravity="center_horizontal"
+                android:text="0" />
+        <TextView
+            android:id="@+id/progressValueMaxInstrumentalness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginLeft="225dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/progressCalculatedInstrumentalnessTitle"
+            android:textColor="#638CEB"
+            android:layout_gravity="center_horizontal"
+            android:text="0" />
+
+            <SeekBar
+        android:id="@+id/seekBarMinInstrumentalness"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/progressValueMaxInstrumentalness"
+        android:max="100000"
+        android:progress="0" />
 
         <SeekBar
-            android:id="@+id/seekBarInstrumentalness"
+            android:id="@+id/seekBarMaxInstrumentalness"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@id/progressInstrumentalnessTitle"
-            android:max="100"
+            android:layout_below="@id/seekBarMinInstrumentalness"
+            android:max="100000"
             android:progress="0" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -145,8 +323,8 @@
 
         <androidx.cardview.widget.CardView
             android:layout_height="wrap_content"
-            android:layout_width="320dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="340dp"
+            android:layout_marginTop="15dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
@@ -156,6 +334,16 @@
                 android:padding="10dp"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/progressTempoName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginTop="10dp"
+                    android:text="Tempo: " />
+                <TextView
                     android:id="@+id/progressTempoDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -163,155 +351,564 @@
                     android:textColor="@android:color/white"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:padding="10dp"
+                    android:layout_below="@id/progressTempoName"
                     android:text="The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration. " />
 
                 <TextView
-                    android:id="@+id/progressTempoTitle"
+                    android:id="@+id/progressMinTempoTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="#638CEB"
                     android:layout_gravity="center_horizontal"
                     android:layout_below="@id/progressTempoDesc"
                     android:layout_marginTop="10dp"
-                    android:text="Tempo: " />
+                    android:text="Min : " />
                 <TextView
-                    android:id="@+id/progressValueTempo"
+                    android:id="@+id/progressCalculatedTempoTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressMinTempoTitle"
+                    android:layout_marginTop="10dp"
+                    android:text="Calculated target : " />
+                <TextView
+                    android:id="@+id/progressMaxTempoTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressCalculatedTempoTitle"
+                    android:layout_marginTop="10dp"
+                    android:text="Max: " />
+                <TextView
+                    android:id="@+id/progressValueMinTempo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="#638CEB"
-                    android:layout_marginLeft="200dp"
+                    android:layout_marginLeft="170dp"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/progressTempoDesc"
                     android:layout_gravity="center_horizontal"
                     android:text="0" />
-
+                <TextView
+                    android:id="@+id/progressValuecalculatedTempo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_marginLeft="170dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/progressMinTempoTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueMaxTempo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_marginLeft="170dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/progressCalculatedTempoTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
                 <SeekBar
-                    android:id="@+id/seekBarTempo"
+                    android:id="@+id/seekBarMinTempo"
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_height="50dp"
-                    android:max="100"
-                    android:layout_below="@id/progressTempoTitle"
+                    android:max="20000000"
+                    android:layout_below="@id/progressValueMaxTempo"
+                    android:progress="0" />
+                <SeekBar
+                    android:id="@+id/seekBarMaxTempo"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="50dp"
+                    android:max="20000000"
+                    android:layout_below="@id/seekBarMinTempo"
                     android:progress="0" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView
-            android:layout_width="320dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="340dp"
+            android:layout_marginTop="15dp"
             app:cardCornerRadius="10dp"
             android:layout_marginLeft="13dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
             android:layout_height="wrap_content">
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:padding="10dp"
-                android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/progressLivenessDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:layout_width="match_parent"
             android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live." />
+            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/progressLivenessName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Liveness
+" />
 
-        <TextView
-            android:id="@+id/progressLivenessTitle"
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="#638CEB"
-            android:layout_gravity="center_horizontal"
-            android:layout_below="@id/progressLivenessDesc"
-            android:text="Liveness: " />
-        <TextView
-            android:id="@+id/progressValueLiveness"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="200dp"
-            android:textColor="#638CEB"
-            android:layout_below="@id/progressLivenessDesc"
-            android:layout_gravity="center_horizontal"
-            android:text="0" />
+                <TextView
+                    android:id="@+id/progressLivenessDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/progressLivenessName"
+                    android:text="Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live." />
 
-        <SeekBar
-            android:id="@+id/seekBarLiveness"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:max="100"
-            android:layout_below="@id/progressLivenessTitle"
-            android:progress="0" />
+                <TextView
+                    android:id="@+id/progressMinLivenessTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressLivenessDesc"
+                    android:text="Min: " />
+                <TextView
+                    android:id="@+id/progressCalculatedLivenessTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressMinLivenessTitle"
+                    android:text="Calculated target: " />
+                <TextView
+                    android:id="@+id/progressMaxLivenessTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressCalculatedLivenessTitle"
+                    android:text="Max: " />
 
+                <TextView
+                    android:id="@+id/progressValueMinLiveness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressLivenessDesc"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueCalculatedLiveness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressMinLivenessTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueMaxLiveness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressCalculatedLivenessTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/seekBarMinLiveness"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="100000"
+                    android:layout_below="@id/progressValueMaxLiveness"
+                    android:progress="0" />
+                <SeekBar
+                    android:id="@+id/seekBarMaxLiveness"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="100000"
+                    android:layout_below="@id/seekBarMinLiveness"
+                    android:progress="0" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="320dp"
+            android:layout_width="340dp"
             app:cardCornerRadius="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="13dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:padding="10dp"
                 android:layout_height="wrap_content">
-        <TextView
+                <TextView
+                    android:id="@+id/progressValenceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Valence" />
+
+                <TextView
             android:id="@+id/progressValenceDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:padding="10dp"
+            android:layout_below="@+id/progressValenceName"
             android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:text="A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry)." />
 
         <TextView
-            android:id="@+id/progressValenceTitle"
+            android:id="@+id/progressMinValenceTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="#638CEB"
             android:layout_gravity="center_horizontal"
             android:layout_below="@id/progressValenceDesc"
             android:layout_marginTop="10dp"
-            android:text="Valence: " />
+            android:text="Min: " />
+
         <TextView
-            android:id="@+id/progressValueValence"
+            android:id="@+id/progressCalculatedValenceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#638CEB"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/progressMinValenceTitle"
+            android:layout_marginTop="10dp"
+            android:text="Calculated target: " />
+        <TextView
+            android:id="@+id/progressMaxValenceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#638CEB"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/progressCalculatedValenceTitle"
+            android:layout_marginTop="10dp"
+            android:text="Max: " />
+        <TextView
+            android:id="@+id/progressValueMinValence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="200dp"
             android:textColor="#638CEB"
             android:layout_below="@id/progressValenceDesc"
             android:layout_gravity="center_horizontal"
             android:text="0" />
-
+                <TextView
+                    android:id="@+id/progressValueCalculatedValence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressMinValenceTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+        <TextView
+            android:id="@+id/progressValueMaxValence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="200dp"
+            android:textColor="#638CEB"
+            android:layout_below="@id/progressCalculatedValenceTitle"
+            android:layout_gravity="center_horizontal"
+            android:text="0" />
         <SeekBar
-            android:id="@+id/seekBarValence"
+            android:id="@+id/seekBarMinValence"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:max="100"
+            android:max="100000"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/progressValenceTitle"
+            android:layout_below="@id/progressValueMaxValence"
+            android:progress="0" />
+        <SeekBar
+            android:id="@+id/seekBarMaxValence"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:max="100000"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/seekBarMinValence"
             android:progress="0" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="340dp"
+            android:layout_marginTop="15dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginLeft="13dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/progressEnergyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Energy" />
+
+                <TextView
+                    android:id="@+id/progressEnergyDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_below="@+id/progressEnergyName"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy." />
+
+                <TextView
+                    android:id="@+id/progressMinEnergyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressEnergyDesc"
+                    android:text="Min: " />
+                <TextView
+                    android:id="@+id/progressCalculatedEnergyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressMinEnergyTitle"
+                    android:text="Calculated target: " />
+                <TextView
+                    android:id="@+id/progressMaxEnergyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressCalculatedEnergyTitle"
+                    android:text="Max: " />
+                <TextView
+                    android:id="@+id/progressValueMinEnergy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressEnergyDesc"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueCalculatedEnergy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressMinEnergyTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueMaxEnergy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressCalculatedEnergyTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/seekBarMinEnergy"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="100000"
+                    android:layout_below="@id/progressValueMaxEnergy"
+                    android:progress="0" />
+                <SeekBar
+                    android:id="@+id/seekBarMaxEnergy"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="100000"
+                    android:layout_below="@id/seekBarMinEnergy"
+                    android:progress="0" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="340dp"
+            android:layout_marginTop="15dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginLeft="13dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/progressTimeSignatureName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Time Signature" />
+
+                <TextView
+                    android:id="@+id/progressTimeSignatureDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_below="@+id/progressTimeSignatureName"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="An estimated time signature. The time signature (meter) is a notational convention to specify how many beats are in each bar (or measure). The time signature ranges from 3 to 7 indicating time signatures of '3/4', to '7/4'." />
+
+                <TextView
+                    android:id="@+id/progressMinTimeSignatureTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressTimeSignatureDesc"
+                    android:text="Min: " />
+                <TextView
+                    android:id="@+id/progressCalculatedTimeSignatureTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressMinTimeSignatureTitle"
+                    android:text="Calculated target: " />
+
+                <TextView
+                    android:id="@+id/progressMaxTimeSignatureTitle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#638CEB"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/progressCalculatedTimeSignatureTitle"
+                    android:text="Max: " />
+
+                <TextView
+                    android:id="@+id/progressValueMinTimeSignature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressTimeSignatureDesc"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueCalculatedTimeSignature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressMinTimeSignatureTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+                <TextView
+                    android:id="@+id/progressValueMaxTimeSignature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="200dp"
+                    android:textColor="#638CEB"
+                    android:layout_below="@id/progressCalculatedTimeSignatureTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0" />
+
+                <SeekBar
+                    android:id="@+id/seekBarMinTimeSignature"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="4"
+                    android:layout_below="@id/progressValueMaxTimeSignature"
+                    android:progress="0" />
+                <SeekBar
+                    android:id="@+id/seekBarMaxTimeSignature"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:max="4"
+                    android:layout_below="@id/seekBarMinTimeSignature"
+                    android:progress="0" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

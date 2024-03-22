@@ -72,8 +72,8 @@ public class TopTracksResponse {
 
     // Nested class TopItem
     public static class TopItem implements TopItemInterface {
-        private Album album;
-        private List<Artist> artists;
+        private AlbumObject album;
+        private List<ArtistObject> artists;
         @SerializedName("available_markets")
         private List<String> availableMarkets;
         @SerializedName("disc_number")
@@ -98,7 +98,7 @@ public class TopTracksResponse {
         @SerializedName("is_local")
         private boolean isLocal;
 
-        public Album getAlbum() {
+        public AlbumObject getAlbum() {
             return album;
         }
         @Override
@@ -120,15 +120,15 @@ public class TopTracksResponse {
         public String getAdditionalInfo() {
             return "Popularity: " + popularity;
         }
-        public void setAlbum(Album album) {
+        public void setAlbum(AlbumObject album) {
             this.album = album;
         }
 
-        public List<Artist> getArtists() {
+        public List<ArtistObject> getArtists() {
             return artists;
         }
 
-        public void setArtists(List<Artist> artists) {
+        public void setArtists(List<ArtistObject> artists) {
             this.artists = artists;
         }
 
@@ -249,247 +249,6 @@ public class TopTracksResponse {
                 return artists.get(0).getName();
             }
             return "";
-        }
-        public static class Album {
-            @SerializedName("album_type")
-            private String albumType;
-            @SerializedName("total_tracks")
-            private int totalTracks;
-            @SerializedName("available_markets")
-            private List<String> availableMarkets;
-            @SerializedName("external_urls")
-            private ExternalUrls externalUrls;
-            private String href;
-            private String id;
-            private List<Image> images;
-            private String name;
-            @SerializedName("release_date")
-            private String releaseDate;
-            @SerializedName("release_date_precision")
-            private String releaseDatePrecision;
-            private String type;
-            private String uri;
-            private List<Artist> artists;
-
-            public String getAlbumType() {
-                return albumType;
-            }
-
-            public void setAlbumType(String albumType) {
-                this.albumType = albumType;
-            }
-
-            public int getTotalTracks() {
-                return totalTracks;
-            }
-
-            public void setTotalTracks(int totalTracks) {
-                this.totalTracks = totalTracks;
-            }
-
-            public List<String> getAvailableMarkets() {
-                return availableMarkets;
-            }
-
-            public void setAvailableMarkets(List<String> availableMarkets) {
-                this.availableMarkets = availableMarkets;
-            }
-
-            public ExternalUrls getExternalUrls() {
-                return externalUrls;
-            }
-
-            public void setExternalUrls(ExternalUrls externalUrls) {
-                this.externalUrls = externalUrls;
-            }
-
-            public String getHref() {
-                return href;
-            }
-
-            public void setHref(String href) {
-                this.href = href;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public List<Image> getImages() {
-                return images;
-            }
-
-            public void setImages(List<Image> images) {
-                this.images = images;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getReleaseDate() {
-                return releaseDate;
-            }
-
-            public void setReleaseDate(String releaseDate) {
-                this.releaseDate = releaseDate;
-            }
-
-            public String getReleaseDatePrecision() {
-                return releaseDatePrecision;
-            }
-
-            public void setReleaseDatePrecision(String releaseDatePrecision) {
-                this.releaseDatePrecision = releaseDatePrecision;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public String getUri() {
-                return uri;
-            }
-
-            public void setUri(String uri) {
-                this.uri = uri;
-            }
-
-            public List<Artist> getArtists() {
-                return artists;
-            }
-
-            public void setArtists(List<Artist> artists) {
-                this.artists = artists;
-            }
-        }
-
-        public static class Artist {
-            @SerializedName("external_urls")
-            private ExternalUrls externalUrls;
-            private String href;
-            private String id;
-            private String name;
-            private String type;
-            private String uri;
-
-            public ExternalUrls getExternalUrls() {
-                return externalUrls;
-            }
-
-            public void setExternalUrls(ExternalUrls externalUrls) {
-                this.externalUrls = externalUrls;
-            }
-
-            public String getHref() {
-                return href;
-            }
-
-            public void setHref(String href) {
-                this.href = href;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public String getUri() {
-                return uri;
-            }
-
-            public void setUri(String uri) {
-                this.uri = uri;
-            }
-        }
-
-
-        public static class ExternalUrls {
-            @SerializedName("spotify")
-            private String spotifyUrl;
-
-            public String getSpotifyUrl() {
-                return spotifyUrl;
-            }
-
-            public void setSpotifyUrl(String spotifyUrl) {
-                this.spotifyUrl = spotifyUrl;
-            }
-
-        }
-
-        public static class ExternalIds {
-            private String isrc;
-
-            public String getIsrc() {
-                return isrc;
-            }
-
-            public void setIsrc(String isrc) {
-                this.isrc = isrc;
-            }
-
-        }
-
-        public static class Image {
-            private String url;
-            private int height;
-            private int width;
-
-            public String getUrl() {
-                return url;
-            }
-
-            public void setUrl(String url) {
-                this.url = url;
-            }
-
-            public int getHeight() {
-                return height;
-            }
-
-            public void setHeight(int height) {
-                this.height = height;
-            }
-
-            public int getWidth() {
-                return width;
-            }
-
-            public void setWidth(int width) {
-                this.width = width;
-            }
         }
 
     }

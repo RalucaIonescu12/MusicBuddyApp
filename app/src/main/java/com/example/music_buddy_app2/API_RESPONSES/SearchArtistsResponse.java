@@ -1,13 +1,23 @@
 package com.example.music_buddy_app2.API_RESPONSES;
 
 import com.google.gson.annotations.SerializedName;
+import com.spotify.protocol.types.Artist;
 
 import java.util.List;
 
-public class SearchTrackResponse {
-    @SerializedName("tracks")
-    private Tracks tracks;
-    public static class Tracks {
+public class SearchArtistsResponse {
+    @SerializedName("artists")
+    private Artists artists;
+
+    public Artists getArtists() {
+        return artists;
+    }
+
+    public void setArtists(Artists artists) {
+        this.artists = artists;
+    }
+
+    public static class Artists {
         @SerializedName("href")
         private String href;
         @SerializedName("limit")
@@ -21,7 +31,7 @@ public class SearchTrackResponse {
         @SerializedName("total")
         private int total;
         @SerializedName("items")
-        private List<TrackObject> items;
+        private List<ArtistSearchObject> items;
 
         public String getHref() {
             return href;
@@ -51,7 +61,7 @@ public class SearchTrackResponse {
             this.total = total;
         }
 
-        public void setItems(List<TrackObject> items) {
+        public void setItems(List<ArtistSearchObject> items) {
             this.items = items;
         }
 
@@ -75,24 +85,8 @@ public class SearchTrackResponse {
             return total;
         }
 
-        public List<TrackObject> getItems() {
+        public List<ArtistSearchObject> getItems() {
             return items;
         }
     }
-
-    public Tracks getTracks() {
-        return tracks;
-    }
-
-    public void setTracks(Tracks tracks) {
-        this.tracks = tracks;
-    }
-
-
-    public static class LinkedFrom
-    {
-
-    }
-
-
 }

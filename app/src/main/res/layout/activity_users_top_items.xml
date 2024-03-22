@@ -46,6 +46,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="3dp"
+            android:spinnerMode="dialog"
             android:layout_weight="1"
             android:fontFamily="@font/be_vietnam_light" />
 
@@ -70,6 +71,7 @@
             android:id="@+id/limit"
             android:layout_width="181dp"
             android:layout_height="42dp"
+            android:spinnerMode="dialog"
             android:layout_below="@+id/spinnerTimeRange"
             android:layout_marginStart="20dp"
             android:layout_marginTop="6dp"

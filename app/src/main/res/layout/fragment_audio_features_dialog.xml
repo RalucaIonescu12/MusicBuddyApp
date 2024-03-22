@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                             android:id="@+id/danceabilityTitle"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/imageView_song"
+                            android:layout_below="@+id/addForRec"
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -76,9 +76,9 @@
                             android:id="@+id/danceabilityValue"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
+                            android:layout_below="@+id/addForRec"
                             android:layout_marginStart="10dp"
-                            android:layout_marginTop="155dp"
+                            android:layout_marginTop="20dp"
                             android:layout_toEndOf="@+id/danceabilityTitle"
                             android:fontFamily="@font/be_vietnam_light"
                             android:textColor="#050505"
@@ -337,6 +337,39 @@
                             android:textColor="#050505"
                             android:textSize="10sp"
                             android:layout_marginBottom="20dp"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/addForRec"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textView_song_name"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="48dp"
+                            android:layout_marginEnd="161dp"
+                            android:elevation="20dp"
+                            app:cardBackgroundColor="#FFFFFF"
+                            app:cardCornerRadius="10dp">
+
+                                <ImageView
+                                    android:id="@+id/addForRecImage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="1dp"
+                                    app:srcCompat="@drawable/add_blue" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="5dp"
+                                    android:text="Add for Recommendations"
+                                    android:textColor="#2CA9ED"
+                                    android:textSize="12dp"></TextView>
+                        </androidx.cardview.widget.CardView>
+
                 </RelativeLayout>
         </FrameLayout>
 </ScrollView>
