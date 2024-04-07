@@ -16,44 +16,56 @@
         android:theme="@style/Theme.MusicBuddyApp2"
         tools:targetApi="31">
         <activity
-            android:name=".ACTIVITIES.SeeSpotifyRecommendationsActivity"
+            android:name=".ACTIVITIES.PROFILE.FindFriendsActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.ChooseArtistForSpotifyRecActivity"
+            android:name=".ACTIVITIES.ChooseContextDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.ChooseTracksWithAudioFeaturesForSpotifyRecActivity"
+            android:name=".ACTIVITIES.MENUS.ContextRecsMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.FinalChangesForSpotifyRecommendationsActivity"
+            android:name=".ACTIVITIES.MENUS.DiscoverGenresMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.StartSpotifyRecommendationsActivity"
+            android:name=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.SeeSpotifyRecommendationsActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.AnalysisActivity"
+            android:name=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.ChooseArtistForSpotifyRecActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.LeaderboardActivity"
+            android:name=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.ChooseTracksWithAudioFeaturesForSpotifyRecActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.SingleplayerGamesActivity"
+            android:name=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.FinalChangesForSpotifyRecommendationsActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.MultiplayerGamesActivity"
+            android:name=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.StartSpotifyRecommendationsActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.BrowseRecommendationTypesActivity"
+            android:name=".ACTIVITIES.OTHERS.AnalysisActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.UsersTopItemsActivity"
+            android:name=".ACTIVITIES.OTHERS.LeaderboardActivity"
             android:exported="false" />
         <activity
-            android:name=".ACTIVITIES.ProfileActivity"
+            android:name=".ACTIVITIES.OTHERS.SingleplayerGamesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.OTHERS.MultiplayerGamesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.LOGIN.BrowseRecommendationTypesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.PROFILE.UsersTopItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.PROFILE.ProfileActivity"
             android:exported="false" />
 
         <receiver
-            android:name=".SERVICES.MyBroadcastReceiver"
+            android:name=".SERVICES.API.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -64,7 +76,7 @@
         </receiver>
 
         <activity
-            android:name=".ACTIVITIES.WelcomeActivity"
+            android:name=".ACTIVITIES.LOGIN.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -73,13 +85,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ACTIVITIES.MenuActivity"
+            android:name=".ACTIVITIES.MENUS.MenuActivity"
             android:exported="true" />
         <activity
-            android:name=".ACTIVITIES.LoginActivity"
+            android:name=".ACTIVITIES.LOGIN.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".ACTIVITIES.SpotifyAuthorizationActivity"
+            android:name=".ACTIVITIES.LOGIN.SpotifyAuthorizationActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance">

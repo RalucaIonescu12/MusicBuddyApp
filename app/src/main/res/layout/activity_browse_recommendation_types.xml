@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#858382"
-    tools:context=".ACTIVITIES.BrowseRecommendationTypesActivity">
+    tools:context=".ACTIVITIES.LOGIN.BrowseRecommendationTypesActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recommendation_rv"

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ACTIVITIES.ChooseContextDetailsActivity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="#39AEED"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="true">
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/contextDetailsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/be_vietnam_light"
+                    android:text="Context details"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/basedOnTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contextDetailsTitle"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Recommendations based on:"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <RadioGroup
+                    android:id="@+id/radioGrouptContextDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/basedOnTitle"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/doneSelectignBtn"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioGrouptContextDetails"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Done">
+
+                    </TextView>
+                </androidx.cardview.widget.CardView>
+                <!--               TODO: here i add the available playlists that i have and check the ones i want recommendations based on
+                 TODO:  if it is just my own music and the available playlists of the other users otherwise.-->
+                <!--           TODO: check button if i want recommendations or music i already know + chekc if it is a colaborative playlist
+        TODO:pick genres maybe with chip -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvMyPlaylists"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/doneSelectignBtn"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="10dp"
+                    android:visibility="gone"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <TextView
+                        android:id="@+id/myPlaylistsTV"
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Choose from your playlists: " />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/myPlaylistsRv"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="25dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvFriendsPlaylists"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/cvMyPlaylists"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:cardUseCompatPadding="true">
+
+                    <TextView
+                        android:id="@+id/friendsPlaylistsTV"
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Choose from your friends playlists: " />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/myFriendsPlaylistsRv"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.cardview.widget.CardView>
+
+                <Spinner
+                    android:id="@+id/genresSpinneContext"
+                    style="@style/spinner_rec_style"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/cvFriendsPlaylists"
+                    android:layout_marginTop="10dp"
+                    android:drawSelectorOnTop="true"
+                    android:hint="Pick genres"
+                    android:padding="8dp"
+                    android:spinnerMode="dialog"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/moodTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/genresSpinneContext"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Choose the mood:"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupMoodContextDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/moodTv"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical" />
+            </RelativeLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

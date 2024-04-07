@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:alpha="1"
     android:background="#858382"
-    tools:context=".ACTIVITIES.MenuActivity">
+    tools:context=".ACTIVITIES.MENUS.MenuActivity">
 
     <!-- Wood Background -->
 

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "300700715057",
+    "firebase_url": "https://music-buddy-app-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "music-buddy-app",
     "storage_bucket": "music-buddy-app.appspot.com"
   },

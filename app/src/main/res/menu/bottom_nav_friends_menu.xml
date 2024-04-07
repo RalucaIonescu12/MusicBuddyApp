@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/action_following"
+    android:title="Following"/>
+    <item
+        android:id="@+id/action_followers"
+        android:title="Followers"/>
+    <item
+        android:id="@+id/action_all_users"
+        android:title="Find friends"/>
+</menu>

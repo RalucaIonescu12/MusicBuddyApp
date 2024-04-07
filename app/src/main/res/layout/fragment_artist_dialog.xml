@@ -44,18 +44,20 @@
                                     android:id="@+id/addForRecArtistImage"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:padding="1dp"
+                                    android:padding="6dp"
                                     app:srcCompat="@drawable/add_blue"/>
 
                                 <TextView
+                                    android:id="@+id/addButtontext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="24dp"
-                                    android:layout_marginTop="4dp"
+                                    android:layout_marginLeft="34dp"
+                                    android:layout_marginTop="3dp"
+                                    android:padding="6dp"
                                     android:layout_marginRight="5dp"
                                     android:text="Add for Recommendations"
                                     android:textColor="#2CA9ED"
-                                    android:textSize="12dp"></TextView>
+                                    android:textSize="15dp"/>
                         </androidx.cardview.widget.CardView>
                         <TextView
                             android:id="@+id/artist_name"

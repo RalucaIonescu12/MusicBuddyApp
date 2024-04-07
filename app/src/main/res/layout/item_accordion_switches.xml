@@ -22,14 +22,14 @@
     <LinearLayout
         android:id="@+id/detailsLayout"
         android:layout_width="400dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#638CEB"
-        android:visibility="gone">
+        android:visibility="visible">
         <androidx.cardview.widget.CardView
             android:layout_width="340dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
             android:layout_marginLeft="13dp"
             app:cardElevation="5dp"
@@ -84,7 +84,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="340dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#858382"
-    tools:context=".ACTIVITIES.FinalChangesForSpotifyRecommendationsActivity">
+    tools:context=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.FinalChangesForSpotifyRecommendationsActivity">
 
     <TextView
         android:id="@+id/textView"

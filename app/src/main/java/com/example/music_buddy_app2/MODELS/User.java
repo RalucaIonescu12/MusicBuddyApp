@@ -1,21 +1,37 @@
 package com.example.music_buddy_app2.MODELS;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
-    private String username;
-    private String email;
-    private String profileImageUrl;
+    private String username="";
+    private String email="";
+    private String profileImageUrl="";
     private Integer totalScore;
     private Integer totalWins;
     private Integer totalGamesPlayed;
-    private String SpotifyId;
+    private String SpotifyId="";
+    private String uri="";
+    private List<String> followingIds;
+    private List<String> followersIds;
+    private boolean isSelected=false;
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public User() {
         this.totalScore = 0;
         this.totalWins = 0;
         this.totalGamesPlayed = 0;
+        this.followingIds=new ArrayList<>();
+        this.followersIds=new ArrayList<>();
     }
-
-    public User(String userId, String username, String email, String displayName, String profileImageUrl, String SpotifyId) {
+    public User(String userId, String username, String email, String displayName, String profileImageUrl, String SpotifyId, String uri, List<String> followingIds,List<String> followerIds) {
         this.username = username;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
@@ -23,10 +39,13 @@ public class User {
         this.totalWins = 0;
         this.totalScore = 0;
         this.totalGamesPlayed = 0;
-        // Initialize more fields as needed
+        this.followingIds=new ArrayList<>();
+        this.followingIds.addAll(followingIds);
+        this.followersIds=new ArrayList<>();
+        this.followersIds.addAll(followerIds);
     }
 
-    public User(String username, String email, String profileImageUrl, String spotifyId) {
+    public User(String username, String email, String profileImageUrl, String spotifyId, String uri) {
         this.username = username;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
@@ -34,8 +53,35 @@ public class User {
         this.totalWins = 0;
         this.totalScore = 0;
         this.totalGamesPlayed = 0;
+        this.uri=uri;
+        this.followingIds=new ArrayList<>();
+        this.followersIds=new ArrayList<>();
     }
 // Getter and setter methods for each field
+
+    public List<String> getFollowerIds() {
+        return followersIds;
+    }
+
+    public void setFollowerIds(List<String> followerIds) {
+        this.followersIds = followerIds;
+    }
+
+    public List<String> getFollowingIds() {
+        return followingIds;
+    }
+
+    public void setFollowingIds(List<String> followingIds) {
+        this.followingIds = followingIds;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
     public String getUsername() {
         return username;
@@ -93,15 +139,18 @@ public class User {
     public String getSpotifyId() {
         return SpotifyId;
     }
+
     @Override
     public String toString() {
-        return "User {" +
-                "username = '" + username + '\'' +
-                ", email = '" + email + '\'' +
-                ", profileImageUrl = '" + profileImageUrl + '\'' +
-                ", totalWins = '" + totalWins + '\'' +
-                ", totalGamesPlayed = '" + totalGamesPlayed + '\'' +
-                ", totalScore = '" + totalScore + '\'' +
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", totalScore=" + totalScore +
+                ", totalWins=" + totalWins +
+                ", totalGamesPlayed=" + totalGamesPlayed +
+                ", SpotifyId='" + SpotifyId + '\'' +
+                ", uri='" + uri + '\'' +
                 '}';
     }
 }
