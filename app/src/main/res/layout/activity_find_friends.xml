@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#5B5858"
     tools:context=".ACTIVITIES.PROFILE.FindFriendsActivity">
 
     <FrameLayout
@@ -46,9 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_margin="16dp"
-        android:background="@color/white"
         app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
+        app:cardBackgroundColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,33 +62,46 @@
                 android:id="@+id/allUsersBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:height="60dp"
-                android:text="Find friends">
-
-            </Button>
+                android:text="Find friends"
+                android:textSize="14dp"></Button>
 
 
             <Button
                 android:id="@+id/followingBtn"
                 android:layout_width="wrap_content"
-                android:text="Following"
-                android:height="60dp"
-                android:layout_alignParentTop="true"
                 android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@+id/allUsersBtn">
-            </Button>
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toEndOf="@+id/allUsersBtn"
+                android:height="60dp"
+                android:text="Following"
+                android:textSize="14dp"></Button>
 
             <Button
                 android:id="@+id/followersBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="11dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="4dp"
                 android:layout_toEndOf="@+id/followingBtn"
                 android:height="60dp"
-                android:text="Followers">
+                android:text="Followers"
+                android:textSize="14dp">
 
             </Button>
         </RelativeLayout>

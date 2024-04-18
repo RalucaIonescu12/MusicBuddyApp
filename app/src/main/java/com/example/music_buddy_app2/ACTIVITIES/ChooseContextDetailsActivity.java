@@ -83,7 +83,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             @Override
             public void onClick(View view) {
                 if (selectedOption != null) {
-                    Fragment fragment;
                     switch (selectedOption) {
                         case "mine and my friends' saved songs":
                             handleMineAndMyFriendsOption();
@@ -102,7 +101,7 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             @Override
             public void onCheckedChanged(RadioGroup group, int id) {
                 RadioButton button = findViewById(id);
-                 selectedOption = button.getText().toString();
+                selectedOption = button.getText().toString();
             }
         });
 
@@ -117,14 +116,15 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             @Override
             public void onCheckedChanged(RadioGroup group, int id) {
                 RadioButton button = findViewById(id);
-                selectedMood = button.getText().toString();
+                setSelectedMood(button.getText().toString());
             }
         });
 
         genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedGenre = parentView.getItemAtPosition(position).toString();
+                setSelectedGenre(parentView.getItemAtPosition(position).toString());
+
            }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -134,7 +134,14 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
 
 
     }
-
+    public void setSelectedGenre(String selectedGenre)
+    {
+        this.selectedGenre = selectedGenre;
+    }
+    public void setSelectedMood(String selectedMood)
+    {
+        this.selectedMood=selectedMood;
+    }
     private void handleMineAndMyFriendsOption()
     {
         userManager.getFriends(new UserManager.OnUsersReceivedListener() {

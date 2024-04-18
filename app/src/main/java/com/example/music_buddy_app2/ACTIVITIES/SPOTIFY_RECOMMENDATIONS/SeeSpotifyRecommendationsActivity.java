@@ -24,9 +24,11 @@ import com.example.music_buddy_app2.API_RESPONSES.USERS.UserResponse;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistRequestBody;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistTracksRequest;
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
+import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
+import com.example.music_buddy_app2.SERVICES.API.UserApiManager;
 import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.example.music_buddy_app2.MANAGERS.SpotifyApiRecommendationsManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
@@ -46,6 +48,8 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
     Retrofit retrofit;
     String playlistId="";
     List<TrackSearchItem> recommendationTracks;
+    private UserApiManager userApiManager;
+
     ImageView playlistImage;
     RecyclerView recyclerView;
     private PlaylistsApiManager playlistsApiManager;
@@ -64,6 +68,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_spotify_recommendations);
         playlistsApiManager=PlaylistsApiManager.getInstance(this);
+        userApiManager=UserApiManager.getInstance(this);
         recommendationTracks=new ArrayList<>();
         playlistImage=findViewById(R.id.playlistImage);
         descriptionTV=findViewById(R.id.playlistDesc);
@@ -323,29 +328,21 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
    private void addPlaylistToLibrary()
    {
        //get the user id
-       String accessToken = SharedPreferencesManager.getToken(this);
-       String authorization = "Bearer "+ accessToken;
-       Call<UserResponse> callForId= spotifyApiServiceInterface.getMyProfile(authorization);
-       
-       callForId.enqueue(new Callback<UserResponse>() {
+       userApiManager.getProfile(new UserApiManager.UserApiListener() {
            @Override
-           public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-
-               if (response.isSuccessful()) {
-                   UserResponse userResponse = response.body();
-                   spotifyUserId = userResponse.getId();
-                   createPlaylist(spotifyUserId);
-               }
-               else {
-                   Toast.makeText(SeeSpotifyRecommendationsActivity.this, "You need to reauthorize!" , Toast.LENGTH_SHORT).show();
-               }
+           public void onProfileReceived(User user) {
+               spotifyUserId = user.getSpotifyId();
+               createPlaylist(spotifyUserId);
            }
 
            @Override
-           public void onFailure(Call<UserResponse> call, Throwable t) {
-               // Handle failure
+           public void onAuthorizationError() {
+               Toast.makeText(SeeSpotifyRecommendationsActivity.this, "You need to reauthorize!" , Toast.LENGTH_SHORT).show();
+           }
+
+           @Override
+           public void onFailure(String errorMessage) {
                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed profile info request!" , Toast.LENGTH_SHORT).show();
-               t.printStackTrace();
            }
        });
 
@@ -353,80 +350,50 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
     public void createPlaylist(String spotifyUserId)
     {
         // create the playlist
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String authorization = "Bearer "+ accessToken;
 
         String playlistName = playlistNameET.getText().toString();
         boolean _public = false;
         boolean collaborative = false;
         String description = descriptionTV.getText().toString();
-        PlaylistRequestBody playlistRequestBody = new PlaylistRequestBody(playlistName,_public, collaborative,description);
-
-        Call<Void> callForCreatePlaylist= spotifyApiServiceInterface.createPlaylistForUser(authorization, spotifyUserId,playlistRequestBody);
-        callForCreatePlaylist.enqueue(new Callback<Void>() {
+        playlistsApiManager.createPlaylistForUser(spotifyUserId, playlistName, _public, collaborative, description, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-
-                if (!response.isSuccessful())
-                {
-                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to create playlist." , Toast.LENGTH_SHORT).show();
-
-                }
-                else {
-                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Playlist created." , Toast.LENGTH_SHORT).show();
-                    getPlaylistId(playlistName,description,spotifyUserId);
-                }
+            public void onAllItemsAdded() {
+                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Playlist created." , Toast.LENGTH_SHORT).show();
+                getPlaylistId(playlistName,description,spotifyUserId);
             }
+
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed create playlist request!" , Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
-                t.printStackTrace();
+            public void onFailure(String errorMessage) {
+                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to create playlist." , Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
     public void getPlaylistId(String playlistName, String description,String spotifyUserId)
     {
-        //get playlist id
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String authorization = "Bearer "+ accessToken;
-        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(authorization,spotifyUserId, 50, 0);
-        callForGetPlaylists.enqueue(new Callback<PlaylistsResponse>() {
-            @Override
-            public void onResponse(Call<PlaylistsResponse> call, Response<PlaylistsResponse> response) {
-                if (response.isSuccessful()) {
-                    PlaylistsResponse playlistsResponse = response.body();
-                    List<SimplifiedPlaylistObject> playlists = playlistsResponse.getItems();
-                    for (SimplifiedPlaylistObject playlist : playlists)
-                    {
-                        if(playlist.getName().equals(playlistName) && playlist.getDescription().equals(description)) {
-                            playlistId = playlist.getId();
-                            addTracksToPlaylist(spotifyUserId);
-                            break;
-                        }
-                    }
-                } else
-                {
-                    int statusCode = response.code();
-                    Log.e("AddPlaylist", "Failed to fetch user playlists. Status code: " + statusCode);
+        int offset=0;
+        int limit=50;
 
-                }
-            }
+        playlistsApiManager.getPlaylistIdForUserByPlaylistNameAndDescription(spotifyUserId, offset, limit, playlistName, description, new PlaylistsApiManager.GetPlaylistIdForUserByNameAndDescriptionListener() {
             @Override
-            public void onFailure(Call<PlaylistsResponse> call, Throwable t) {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed get playlist id!" , Toast.LENGTH_SHORT).show();
-                Log.e("AddPlaylist", "API call failed", t);
-                t.printStackTrace();
+            public void onIdFound(String playlistId) {
+                setPlaylistId(playlistId);
+                addTracksToPlaylist(spotifyUserId);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(SeeSpotifyRecommendationsActivity.this,errorMessage,Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+    public void setPlaylistId(String playlistId)
+    {
+        this.playlistId=playlistId;
+    }
     public void addTracksToPlaylist(String spotifyUserId)
     {
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String authorization = "Bearer "+ accessToken;
         String prefix="spotify:track:";
 
         for (int i = 0; i < recommendationTracks.size(); i++)
@@ -435,28 +402,18 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         PlaylistTracksRequest request = new PlaylistTracksRequest();
         request.setUris(urisForAddToPlaylist);
         request.setPosition(0);
-
-        Call<AddTracksToPlaylistResponse> callForAddToPlaylist = spotifyApiServiceInterface.addTracksToPlaylist(authorization, playlistId,  request);
-        callForAddToPlaylist.enqueue(new Callback<AddTracksToPlaylistResponse>() {
+        playlistsApiManager.addTracksToPlaylist(recommendationTracks, playlistId, request, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
-            public void onResponse(Call<AddTracksToPlaylistResponse> call, Response<AddTracksToPlaylistResponse> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
-                    Log.e("AddPlaylist", "add tracks to playlist :  " + response.code() + " " + response.message());
-                } else {
-                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add tracks to playlist.", Toast.LENGTH_SHORT).show();
-                    Log.e("AddPlaylist", "Didn't work" + String.valueOf(response.code()) + response.message());
-                }
+            public void onAllItemsAdded() {
+                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<AddTracksToPlaylistResponse> call, Throwable t) {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed put songs in playlist request!", Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
-                t.printStackTrace();
+            public void onFailure(String errorMessage) {
+                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add tracks to playlist.", Toast.LENGTH_SHORT).show();
             }
         });
-//        urisForAddToPlaylist="";
+         //        urisForAddToPlaylist="";
 //        for (int i = recommendationTracks.size()/2; i <recommendationTracks.size() ; i++)
 //            urisForAddToPlaylist += prefix + recommendationTracks.get(i).getId() + ",";
 

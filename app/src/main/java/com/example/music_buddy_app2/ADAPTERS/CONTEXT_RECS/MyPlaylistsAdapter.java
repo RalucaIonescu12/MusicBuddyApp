@@ -69,7 +69,6 @@ public class MyPlaylistsAdapter extends RecyclerView.Adapter<MyPlaylistsAdapter.
         return playlistItemList.size();
     }
     private void openPlaylistInSpotify(int position) {
-
         String spotifyUri = playlistItemList.get(position).getExternalUrls().getSpotify();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(spotifyUri));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

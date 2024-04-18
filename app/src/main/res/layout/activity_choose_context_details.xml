@@ -71,16 +71,21 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/doneSelectignBtn"
-                    android:layout_width="wrap_content"
-
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/radioGrouptContextDetails"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="20dp">
-
+                    android:layout_marginStart="240dp"
+                    app:cardBackgroundColor="#000000"
+                    app:cardCornerRadius="20dp"
+                    >
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:padding="3dp"
+                        android:textSize="15sp"
                         android:text="Done">
 
                     </TextView>
@@ -125,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:layout_below="@+id/cvMyPlaylists"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="10dp"
                     app:cardUseCompatPadding="true">
@@ -155,6 +160,8 @@
                     android:layout_width="200dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/cvFriendsPlaylists"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:drawSelectorOnTop="true"
                     android:hint="Pick genres"
@@ -169,7 +176,7 @@
                     android:layout_below="@+id/genresSpinneContext"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
@@ -179,16 +186,37 @@
 
                 <RadioGroup
                     android:id="@+id/radioGroupMoodContextDetails"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/moodTv"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
                     android:orientation="vertical" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioGroupMoodContextDetails"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="35dp"
+                    app:cardBackgroundColor="#000000"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Get recommendations"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:padding="5dp"
+                        android:textSize="18sp"/>
+                </androidx.cardview.widget.CardView>
             </RelativeLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>

@@ -74,9 +74,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 String partialText = fullTexts[textViewIndex].substring(0, currentLength);
                 currentTextView.setText(Html.fromHtml(partialText));
                 currentLength++;
-                startTypingAnimation(textViewIndex); // Continue animation for the same TextView
+                startTypingAnimation(textViewIndex);
             } else {
-                // Move to the next TextView
                 currentLength = 0;
                 startTypingAnimation(textViewIndex + 1);
             }

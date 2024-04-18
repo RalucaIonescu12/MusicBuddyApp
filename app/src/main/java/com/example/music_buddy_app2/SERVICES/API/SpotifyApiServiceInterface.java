@@ -1,5 +1,6 @@
 package com.example.music_buddy_app2.SERVICES.API;
 
+import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistItemsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.AccessTokenResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.AddTracksToPlaylistResponse;
 import com.example.music_buddy_app2.API_RESPONSES.AUDIO_FEATURES.AudioFeaturesObjectResponse;
@@ -168,5 +169,12 @@ public interface SpotifyApiServiceInterface {
             @Field("refresh_token") String refreshToken,
 //            @Header("Content-Type") String contentType, // "application/x-www-form-urlencoded";
             @Header("client_id") String clientId
+    );
+    @GET("v1/playlists/{playlist_id}/tracks")
+    Call<PlaylistItemsResponse> getPlaylistItems(
+            @Header("Authorization") String token,
+            @Path("playlist_id") String playlistId,
+            @Query("limit") int limit,
+            @Query("offset") int offset
     );
 }
