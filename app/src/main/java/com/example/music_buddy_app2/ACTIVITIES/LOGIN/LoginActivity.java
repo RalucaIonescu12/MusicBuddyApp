@@ -135,16 +135,16 @@ public class LoginActivity extends AppCompatActivity {
 //        mSpotifyAppRemote.getPlayerApi().queue("spotify:track:6rqhFgbbKwnb9MLmUQDhG6");
 
         // Subscribe to PlayerState
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-
-                        Toast.makeText(LoginActivity.this, track.name + " by " + track.artist.name,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+//        mSpotifyAppRemote.getPlayerApi()
+//                .subscribeToPlayerState()
+//                .setEventCallback(playerState -> {
+//                    final Track track = playerState.track;
+//                    if (track != null) {
+//
+//                        Toast.makeText(LoginActivity.this, track.name + " by " + track.artist.name,Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
 
     }
 }

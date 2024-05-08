@@ -23,7 +23,10 @@
     <TextView
         android:id="@+id/contextsMenuTitle"
         android:layout_width="386dp"
-        android:layout_height="81dp"
+        android:layout_height="wrap_content"
+        android:background="#638CEB"
+        android:padding="10dp"
+        android:textColor="@color/white"
         android:fontFamily="@font/be_vietnam_light"
         android:text="Choose your context"
         android:textAlignment="center"

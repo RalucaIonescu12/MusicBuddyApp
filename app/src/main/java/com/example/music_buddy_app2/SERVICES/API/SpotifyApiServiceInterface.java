@@ -1,6 +1,8 @@
 package com.example.music_buddy_app2.SERVICES.API;
 
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistItemsResponse;
+import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SeveralTracksResponse;
+import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TrackObject;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.AccessTokenResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.AddTracksToPlaylistResponse;
 import com.example.music_buddy_app2.API_RESPONSES.AUDIO_FEATURES.AudioFeaturesObjectResponse;
@@ -14,6 +16,8 @@ import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TopTracksResp
 import com.example.music_buddy_app2.API_RESPONSES.USERS.UserResponse;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistRequestBody;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistTracksRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -177,4 +181,10 @@ public interface SpotifyApiServiceInterface {
             @Query("limit") int limit,
             @Query("offset") int offset
     );
+    @GET("v1/tracks")
+    Call<SeveralTracksResponse> getSeveralTracks(
+            @Header("Authorization") String token,
+            @Query("ids") String ids
+    );
+
 }

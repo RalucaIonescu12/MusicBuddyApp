@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
-        app:cardBackgroundColor="#5B5858"
+        app:cardBackgroundColor="#64BDED"
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="20dp">
 
@@ -51,6 +51,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
+                android:textColor="@color/white"
                 android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/playlistImage"
                 android:text="Description" />
@@ -68,7 +69,7 @@
                 android:text="Your recommended tracks"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="#689F38"
+                android:textColor="#000000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -81,7 +82,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:elevation="10dp"
-                app:cardBackgroundColor="#689F38"
+                app:cardBackgroundColor="#000000"
                 app:cardCornerRadius="20dp">
 
                 <RelativeLayout
@@ -102,6 +103,7 @@
                         app:srcCompat="@drawable/baseline_add_24" />
 
                     <TextView
+                        android:id="@+id/addToQueueTV"
                         android:layout_width="108dp"
                         android:layout_height="32dp"
                         android:layout_alignParentTop="true"
@@ -114,7 +116,7 @@
                         android:layout_toEndOf="@+id/plusIcon"
                         android:padding="3dp"
                         android:text="Add all to queue"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="14dp" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -130,7 +132,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/cvButtonAddQueue"
                 android:elevation="10dp"
-                app:cardBackgroundColor="#689F38"
+                app:cardBackgroundColor="#000000"
                 app:cardCornerRadius="20dp">
 
                 <RelativeLayout
@@ -151,6 +153,7 @@
                         app:srcCompat="@drawable/baseline_add_24" />
 
                     <TextView
+                        android:id="@+id/addplyalist_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="27dp"
                         android:layout_alignParentTop="true"
@@ -163,7 +166,7 @@
                         android:layout_toEndOf="@+id/plusIcon2"
                         android:padding="3dp"
                         android:text="Add playlist"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="14dp" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 
+import com.example.music_buddy_app2.MANAGERS.ChooseContextDetailsManager;
 import com.example.music_buddy_app2.R;
 import com.squareup.picasso.Picasso;
 
@@ -27,13 +28,23 @@ public class MyPlaylistsAdapter extends RecyclerView.Adapter<MyPlaylistsAdapter.
     private Context context;
     private List<SimplifiedPlaylistObject> playlistItemList;
     private SparseBooleanArray selectedItems;
+    private OnPlaylistSelectedListener listener;
+    private ChooseContextDetailsManager manager;
 
-    public MyPlaylistsAdapter(Context context, List<SimplifiedPlaylistObject> playlistItemList) {
+
+    public MyPlaylistsAdapter(Context context, List<SimplifiedPlaylistObject> playlistItemList,OnPlaylistSelectedListener listener) {
         this.context = context;
         this.playlistItemList = playlistItemList;
+        this.listener = listener;
         this.selectedItems = new SparseBooleanArray();
-    }
+        this.manager = ChooseContextDetailsManager.getInstance(context);
 
+    }
+    public interface OnPlaylistSelectedListener{
+        void onPlaylistSelected();
+        void onPlaylistUncheck();
+        void onLimitExceeded();
+    }
     @NonNull
     @Override
     public PlaylistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,16 +56,19 @@ public class MyPlaylistsAdapter extends RecyclerView.Adapter<MyPlaylistsAdapter.
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
         SimplifiedPlaylistObject playlistItem = playlistItemList.get(position);
         holder.playlistName.setText(playlistItem.getName());
-
+        holder.nbrOfSongs.setText(playlistItem.getTracks().getTotal() + " songs");
         Picasso.get().load(playlistItem.getImages().get(0).getUrl()).into(holder.playlistPic);
 
         holder.checkbox.setOnCheckedChangeListener(null);
         holder.checkbox.setChecked(selectedItems.get(position, false));
-        holder.itemView.setOnClickListener(v ->
+        holder.playlistPic.setOnClickListener(v ->
         {
             openPlaylistInSpotify(position);
         });
-
+        holder.playlistName.setOnClickListener(v ->
+        {
+            openPlaylistInSpotify(position);
+        });
         holder.checkbox.setOnClickListener(v -> {
             if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
                 toggleSelection(holder.getAdapterPosition());
@@ -76,10 +90,24 @@ public class MyPlaylistsAdapter extends RecyclerView.Adapter<MyPlaylistsAdapter.
         context.startActivity(intent);
     }
     public void toggleSelection(int position) {
+        SimplifiedPlaylistObject playlistObject = playlistItemList.get(position);
+        Integer nbr = playlistObject.getTracks().getTotal();
         if (selectedItems.get(position, false)) {
+            manager.deleteFromNbrOfSongs(nbr, playlistObject);
             selectedItems.delete(position);
-        } else {
-            selectedItems.put(position, true);
+            listener.onPlaylistUncheck();
+        }
+        else
+        {
+            if(ChooseContextDetailsManager.nbrOfSongsAdded+nbr<=300)
+            {
+                manager.addToNbrOfSongs(nbr,playlistObject);
+                selectedItems.put(position, true);
+                listener.onPlaylistSelected();
+            }
+            else {
+                listener.onLimitExceeded();
+            }
         }
         notifyDataSetChanged();
     }
@@ -101,12 +129,13 @@ public class MyPlaylistsAdapter extends RecyclerView.Adapter<MyPlaylistsAdapter.
         ImageView playlistPic;
         TextView playlistName;
         CheckBox checkbox;
-
+        TextView nbrOfSongs;
         public PlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
             playlistPic = itemView.findViewById(R.id.playlistPic);
             playlistName = itemView.findViewById(R.id.playlistName);
             checkbox = itemView.findViewById(R.id.checkbox);
+            nbrOfSongs= itemView.findViewById(R.id.nbrOfSongs);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 
+import com.example.music_buddy_app2.MANAGERS.ChooseContextDetailsManager;
 import com.example.music_buddy_app2.R;
 import com.squareup.picasso.Picasso;
 
@@ -23,12 +25,15 @@ import java.util.List;
 public class FriendsPlaylistsAdapter extends RecyclerView.Adapter<FriendsPlaylistsAdapter.FriendsPlaylistViewHolder> {
     private Context context;
     private List<SimplifiedPlaylistObject> playlistItems;
+    private ChooseContextDetailsManager manager;
     private List<SimplifiedPlaylistObject> selectedPlaylistItems;
-
-    public FriendsPlaylistsAdapter(Context context, List<SimplifiedPlaylistObject> friendsPlaylists) {
+    private OnFriendsPlaylistSelectedListener listener;
+    public FriendsPlaylistsAdapter(Context context, List<SimplifiedPlaylistObject> friendsPlaylists, OnFriendsPlaylistSelectedListener listener) {
         this.context = context;
         this.playlistItems = friendsPlaylists;
         this.selectedPlaylistItems = new ArrayList<>();
+        this.listener=listener;
+        this.manager=ChooseContextDetailsManager.getInstance(context);
     }
 
     public void setPlaylistItems(List<SimplifiedPlaylistObject> playlistItems) {
@@ -51,19 +56,25 @@ public class FriendsPlaylistsAdapter extends RecyclerView.Adapter<FriendsPlaylis
     public void onBindViewHolder(@NonNull FriendsPlaylistViewHolder holder, int position) {
         SimplifiedPlaylistObject playlistItem = playlistItems.get(position);
         holder.bind(playlistItem);
+
     }
 
     @Override
     public int getItemCount() {
         return playlistItems.size();
     }
-
+    public interface OnFriendsPlaylistSelectedListener{
+        void onFriendsPlaylistSelected();
+        void onFriendsPlaylistUncheck();
+        void onFriendsLimitExceeded();
+    }
     public class FriendsPlaylistViewHolder extends RecyclerView.ViewHolder {
 
         private CheckBox checkBox;
         private ImageView playlistImage;
         private TextView username;
         private TextView playlistName;
+        private TextView nbrOfSongs;
 
         public FriendsPlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,16 +82,33 @@ public class FriendsPlaylistsAdapter extends RecyclerView.Adapter<FriendsPlaylis
             playlistImage = itemView.findViewById(R.id.friednsPlaylistPic);
             username = itemView.findViewById(R.id.username);
             playlistName=itemView.findViewById(R.id.friendsPlaylistName);
-
-            itemView.setOnClickListener(v ->
+            nbrOfSongs=itemView.findViewById(R.id.nbrOfSongss);
+            playlistImage.setOnClickListener(v ->
+            {
+                openPlaylistInSpotify(getAdapterPosition());
+            });
+            playlistName.setOnClickListener(v ->
             {
                 openPlaylistInSpotify(getAdapterPosition());
             });
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SimplifiedPlaylistObject playlistItem = playlistItems.get(getAdapterPosition());
+                Integer nbr = playlistItem.getTracks().getTotal();
                 if (isChecked) {
-                    selectedPlaylistItems.add(playlistItem);
+                    if(ChooseContextDetailsManager.nbrOfSongsAdded+nbr<=300)
+                    {
+                        manager.addToNbrOfSongs(nbr, playlistItem);
+                        selectedPlaylistItems.add(playlistItem);
+                        listener.onFriendsPlaylistSelected();
+                    }
+                    else{
+                        checkBox.setChecked(false);
+                        listener.onFriendsLimitExceeded();
+                    }
+
                 } else {
+                    manager.deleteFromNbrOfSongs(nbr, playlistItem);
+                    listener.onFriendsPlaylistUncheck();
                     selectedPlaylistItems.remove(playlistItem);
                 }
             });
@@ -96,6 +124,7 @@ public class FriendsPlaylistsAdapter extends RecyclerView.Adapter<FriendsPlaylis
             Picasso.get().load(playlistItem.getImages().get(0).getUrl()).into(playlistImage);
             playlistName.setText(playlistItem.getName());
             username.setText(playlistItem.getOwner().getDisplayName());
+            nbrOfSongs.setText(playlistItem.getTracks().getTotal() + " songs");
         }
     }
 }

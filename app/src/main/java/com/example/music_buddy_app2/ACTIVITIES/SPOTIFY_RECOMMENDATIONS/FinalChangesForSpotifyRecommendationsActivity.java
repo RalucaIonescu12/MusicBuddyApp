@@ -1,6 +1,8 @@
 package com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +46,7 @@ public class FinalChangesForSpotifyRecommendationsActivity extends AppCompatActi
     private List<AccordionItemSpotifyRec> accordionItems;
     private Spinner genreSpinner;
     private List<String> genres;
-    private Button getRecButton;
+    private CardView getRecButton;
     private SpotifyApiRecommendationsManager manager;
 
     public void initiateSpotifyApiService()

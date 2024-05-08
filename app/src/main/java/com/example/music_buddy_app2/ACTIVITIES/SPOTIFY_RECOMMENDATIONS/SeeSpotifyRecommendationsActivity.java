@@ -51,6 +51,10 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
     private UserApiManager userApiManager;
 
     ImageView playlistImage;
+    ImageView plusIconImage;
+    TextView tv_addplaylist;
+    ImageView plusIconImageQueue;
+    TextView tv_addplaylistQueue;
     RecyclerView recyclerView;
     private PlaylistsApiManager playlistsApiManager;
     EditText playlistNameET;
@@ -75,7 +79,10 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         playlistNameET=findViewById(R.id.playlistTitle);
         cvButtonAddQueue= findViewById(R.id.cvButtonAddQueue);
         cvAddPlaylist=findViewById(R.id.cvButtonAddPlaylist);
-
+        plusIconImage=findViewById(R.id.plusIcon2);
+        tv_addplaylist=findViewById(R.id.addplyalist_tv);
+        plusIconImageQueue=findViewById(R.id.plusIcon);
+        tv_addplaylistQueue=findViewById(R.id.addToQueueTV);
         cvButtonAddQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -288,7 +295,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SpotifyRecommendationsResponse> call, Throwable t) {
-                // Handle failure
+
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed recommendation request!" , Toast.LENGTH_SHORT).show();
                 Log.e("API_FAILURE", "API call failed", t);
                 t.printStackTrace();
@@ -300,7 +307,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             adapter = new SearchTracksAdapter(this, recommendationTracks,  new SearchTracksAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(TrackSearchItem item) {
-                    Toast.makeText(SeeSpotifyRecommendationsActivity.this,"clicked song",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SeeSpotifyRecommendationsActivity.this,"clicked song",Toast.LENGTH_SHORT).show();
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -311,10 +318,14 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
     private void addPlaylistItemsInQueue()
     {
 
-        playlistsApiManager.addItemToPlaybackQueue(recommendationTracks, new PlaylistsApiManager.AddItemToQueueListener() {
+        playlistsApiManager.addItemsToPlaybackQueue(recommendationTracks, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
             public void onAllItemsAdded() {
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Done!" , Toast.LENGTH_SHORT).show();
+                cvButtonAddQueue.setClickable(false);
+                cvButtonAddQueue.setEnabled(false);
+                tv_addplaylistQueue.setText("Added");
+                plusIconImageQueue.setImageResource(R.drawable.baseline_check_24);
             }
 
             @Override
@@ -406,6 +417,10 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             @Override
             public void onAllItemsAdded() {
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
+                cvAddPlaylist.setClickable(false);
+                cvAddPlaylist.setEnabled(false);
+                tv_addplaylist.setText("Added");
+                plusIconImage.setImageResource(R.drawable.baseline_check_24);
             }
 
             @Override

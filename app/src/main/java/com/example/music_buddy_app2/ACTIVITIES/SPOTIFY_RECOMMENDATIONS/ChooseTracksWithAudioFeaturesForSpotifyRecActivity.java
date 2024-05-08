@@ -1,6 +1,8 @@
 package com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +38,9 @@ import retrofit2.Retrofit;
 
 public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompatActivity implements SearchTracksAdapter.OnItemClickListener  {
     private EditText inputSearchSongTitle;
-    private Button buttonSearchSong;
+    private CardView buttonSearchSong;
     private PlaylistsApiManager playlistsApiManager;
-    private Button buttonNextStep;
+    private CardView buttonNextStep;
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     Retrofit retrofit;
     private RecyclerView recyclerView;
@@ -47,7 +49,7 @@ public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompa
     private List<TrackSearchItem> searchResults;
     private List<String> songSeedsForRec;
 
-//    TODO: ADD POP UP FOR THE FIRST TIME THE USER USES RECOMMENDATIONS
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

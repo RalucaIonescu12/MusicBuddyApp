@@ -59,14 +59,14 @@ public class MenuActivity extends AppCompatActivity {
         //menu options of the app
         menuOptions=new ArrayList<>();
         menuOptions.add("Recommendations");
-        menuOptions.add("Multiplayer games");
+        menuOptions.add("Connect with friends");
         menuOptions.add("Singleplayer Games");
         menuOptions.add("Leaderboard");
         menuOptions.add("Analysis");
 
         menuOptionsDescription=new ArrayList<>();
         menuOptionsDescription.add("new songs using multiple filtering methods ");
-        menuOptionsDescription.add("music trivia games with friends or people online");
+        menuOptionsDescription.add("find friends, compare your music to theirs");
         menuOptionsDescription.add("test yourself on your music knowledge");
         menuOptionsDescription.add("see if you're really a music genious");
         menuOptionsDescription.add("let me diagnose you're music patterns");

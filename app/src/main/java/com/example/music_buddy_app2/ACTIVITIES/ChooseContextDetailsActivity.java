@@ -21,6 +21,7 @@ import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.MyPlaylistsAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 import com.example.music_buddy_app2.FRAGMENTS.MyFriendsMultiChoiceFragment;
 import com.example.music_buddy_app2.FirebaseManagement.UserManager;
+import com.example.music_buddy_app2.MANAGERS.ChooseContextDetailsManager;
 import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
@@ -28,18 +29,19 @@ import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseContextDetailsActivity extends AppCompatActivity implements MyFriendsMultiChoiceFragment.OnFriendsSelectedListener {
+public class ChooseContextDetailsActivity extends AppCompatActivity implements MyFriendsMultiChoiceFragment.OnFriendsSelectedListener,MyPlaylistsAdapter.OnPlaylistSelectedListener, FriendsPlaylistsAdapter.OnFriendsPlaylistSelectedListener  {
     Spinner genreSpinner;
     private List<String> genres;
     private String  selectedGenre;
     private TextView tvMyPlaylists;
 
+//TODO: fetch the genres when you login the app now at every page.Minimize api calls
     private TextView tvFriendsPlaylists;
     private String selectedOption;
     private String selectedMood;
     private ArrayAdapter<String> genreAdapter;
     private PlaylistsApiManager playlistsApiManager;
-    private List<User> friends=new ArrayList<>();
+    private List<User> friends = new ArrayList<>();
     private UserManager userManager;
     RecyclerView myPlaylistsRV;
     RecyclerView myFriendsPlaylistsRV;
@@ -48,7 +50,10 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
     CardView myPlaylistsCV;
     RadioGroup moodsRG;
     RadioGroup optionsRG;
+    CardView getRecsButton;
+    TextView nbrOfSelectedSongs;
     private MyPlaylistsAdapter myPlaylistsAdapter;
+    private ChooseContextDetailsManager manager;
     private FriendsPlaylistsAdapter friendsPlaylistsAdapter;
     private List<SimplifiedPlaylistObject> friendsPlaylists = new ArrayList<>();
     private List<SimplifiedPlaylistObject> currentUsersPlaylists=new ArrayList<>();
@@ -64,8 +69,9 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
         userManager=UserManager.getInstance(this);
         setViews();
 
-        options.add("my saved songs");
-        options.add("mine and my friends' saved songs");
+        options.add("my playlists");
+        options.add("mine and my friends' playlists");
+
         moods.add("Energetic");
         moods.add("Excited");
         moods.add("Sad");
@@ -78,16 +84,20 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             radioButton.setId(View.generateViewId());
             optionsRG.addView(radioButton);
         }
+// TODO: constrint to be able to add the playlist only once if nothing changed from the previous playlist
+//TODO: la fel si pt add to queue
+//TODO: refresh token cumva
+// TODO: deelte the "clicked song" la recommendations
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (selectedOption != null) {
                     switch (selectedOption) {
-                        case "mine and my friends' saved songs":
+                        case "mine and my friends' playlists":
                             handleMineAndMyFriendsOption();
                             break;
-                        case "my saved songs":
+                        case "my playlists":
                             myFriendsPlaylistsCV.setVisibility(View.GONE);
                             myPlaylistsCV.setVisibility(View.VISIBLE);
                         default:
@@ -132,8 +142,43 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             }
         });
 
+        getRecsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                manager.getRecommendations();
+            }
+        });
+    }
+    @Override
+    public void onFriendsLimitExceeded() {
+       Toast.makeText(ChooseContextDetailsActivity.this,"Can't select more than 300 songs.", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onLimitExceeded() {
+        Toast.makeText(ChooseContextDetailsActivity.this,"Can't select more than 300 songs.", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onPlaylistSelected() {
+        nbrOfSelectedSongs.setText(ChooseContextDetailsManager.nbrOfSongsAdded.toString() + " songs selected");
+    }
+
+    @Override
+    public void onPlaylistUncheck() {
+        nbrOfSelectedSongs.setText(ChooseContextDetailsManager.nbrOfSongsAdded.toString() + " songs selected");
 
     }
+    @Override
+    public void onFriendsPlaylistSelected() {
+
+        nbrOfSelectedSongs.setText(ChooseContextDetailsManager.nbrOfSongsAdded.toString()+ " songs selected");
+    }
+
+    @Override
+    public void onFriendsPlaylistUncheck() {
+        nbrOfSelectedSongs.setText(ChooseContextDetailsManager.nbrOfSongsAdded.toString()+ " songs selected");
+    }
+
+
     public void setSelectedGenre(String selectedGenre)
     {
         this.selectedGenre = selectedGenre;
@@ -174,17 +219,22 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
 
         myPlaylistsRV = findViewById(R.id.myPlaylistsRv);
         myPlaylistsRV.setLayoutManager(new LinearLayoutManager(this));
-        myPlaylistsAdapter = new MyPlaylistsAdapter(ChooseContextDetailsActivity.this,currentUsersPlaylists);
+        myPlaylistsAdapter = new MyPlaylistsAdapter(ChooseContextDetailsActivity.this, currentUsersPlaylists,this);
         myPlaylistsRV.setAdapter(myPlaylistsAdapter);
 
         myFriendsPlaylistsRV = findViewById(R.id.myFriendsPlaylistsRv);
         myFriendsPlaylistsRV.setLayoutManager(new LinearLayoutManager(this));
-        friendsPlaylistsAdapter = new FriendsPlaylistsAdapter(this,friendsPlaylists);
+        friendsPlaylistsAdapter = new FriendsPlaylistsAdapter(this,friendsPlaylists,this);
         myFriendsPlaylistsRV.setAdapter(friendsPlaylistsAdapter);
 
         done=findViewById(R.id.doneSelectignBtn);
         moodsRG= findViewById(R.id.radioGroupMoodContextDetails);
         optionsRG = findViewById(R.id.radioGrouptContextDetails);
+
+        getRecsButton=findViewById(R.id.getRecs);
+        nbrOfSelectedSongs=findViewById(R.id.nbrofSongsSelected);
+        nbrOfSelectedSongs.setText("0 songs selected");
+        this.manager=ChooseContextDetailsManager.getInstance(this);
         setSpinnerGenres();
         getUsersPlaylists();
     }

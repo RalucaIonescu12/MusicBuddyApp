@@ -18,13 +18,16 @@ import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistItems
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistTrackObject;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SearchTrackResponse;
+import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SeveralTracksResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TrackObject;
 import com.example.music_buddy_app2.MODELS.ArtistSearchItem;
+import com.example.music_buddy_app2.MODELS.Track;
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
 import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,6 +43,7 @@ public class PlaylistsApiManager {
     Retrofit retrofit;
     private List<SimplifiedPlaylistObject> usersPlaylists;
     private String userId;
+
     private PlaylistsApiManager(Context context)
     {
         this.context=context;
@@ -290,7 +294,7 @@ public class PlaylistsApiManager {
         void onAllItemsAdded();
         void onFailure(String errorMessage);
     }
-    public void addItemToPlaybackQueue(List<TrackSearchItem> recommendationTracks, AddItemToQueueListener listener) {
+    public void addItemsToPlaybackQueue(List<TrackSearchItem> recommendationTracks, AddItemToQueueListener listener) {
 
         String accessToken = SharedPreferencesManager.getToken(context);
         String authorization = "Bearer " + accessToken;
@@ -402,7 +406,7 @@ public class PlaylistsApiManager {
         });
 
     }
-    public void addTracksToPlaylist( List<TrackSearchItem> recommendationTracks,String playlistId, PlaylistTracksRequest request, AddItemToQueueListener listener) {
+    public void addTracksToPlaylist( List<TrackSearchItem> recommendationTracks, String playlistId, PlaylistTracksRequest request, AddItemToQueueListener listener) {
         String accessToken = SharedPreferencesManager.getToken(context);
         String authorization = "Bearer " + accessToken;
 
@@ -428,14 +432,14 @@ public class PlaylistsApiManager {
         });
     }
     public interface GetPlaylistItemsListener {
-        void onItemsReceived(List<TrackObject> receivedTracks);
+        void onItemsReceived(HashMap<TrackObject,String> receivedTracks);
         void onFailure(String errorMessage);
     }
     public void getPlaylistItems(int offset, int limit, String playlistId, GetPlaylistItemsListener listener) {
         String accessToken = SharedPreferencesManager.getToken(context);
 
         String authorization = "Bearer " + accessToken;
-        List<TrackObject> receivedTracks=new ArrayList<>();
+        HashMap<TrackObject,String> receivedTracks = new HashMap<>();
         Call<PlaylistItemsResponse> callForGetPlaylists = spotifyApiServiceInterface.getPlaylistItems(authorization, playlistId, limit, offset);
         callForGetPlaylists.enqueue(new Callback<PlaylistItemsResponse>() {
             @Override
@@ -445,7 +449,7 @@ public class PlaylistsApiManager {
                     for (PlaylistTrackObject playlistTrack: tracks)
                     {
                         if(!playlistTrack.getIs_local())
-                            receivedTracks.add(playlistTrack.getTrack());
+                            receivedTracks.put(playlistTrack.getTrack(), playlistTrack.getAdded_at());
                     }
                     listener.onItemsReceived(receivedTracks);
                 } else {
@@ -460,5 +464,51 @@ public class PlaylistsApiManager {
                 t.printStackTrace();
             }
         });
+    }
+
+    public interface OnAllTracksFetchedListener {
+        void onSeveralTracksReceived(List<Track> tracks);
+
+        void onFailure(String errorMessage);
+    }
+    public void getSeveralTracks(List<String> ids, OnAllTracksFetchedListener listener )
+    {
+        String accessToken = SharedPreferencesManager.getToken(context);
+        String authorization = "Bearer "+ accessToken;
+        String idsString = String.join(",", ids);
+        List<Track> fetchedTracks = new ArrayList<>();
+        Call<SeveralTracksResponse> callForGetPlaylists = spotifyApiServiceInterface.getSeveralTracks(authorization, idsString);
+        callForGetPlaylists.enqueue(new Callback<SeveralTracksResponse>() {
+            @Override
+            public void onResponse(Call<SeveralTracksResponse> call, Response<SeveralTracksResponse> response) {
+                if (response.isSuccessful()) {
+                    SeveralTracksResponse severalTracksResponse = response.body();
+                    List<TrackObject> tracks = severalTracksResponse.getTracks();
+                    for (TrackObject trackObject : tracks)
+                    {
+                        List<String> artists = new ArrayList<>();
+                        for(TopArtistsResponse.TopItem artist: trackObject.getArtists())
+                        {
+                            artists.add(artist.getName());
+                        }
+
+                        fetchedTracks.add(new Track(trackObject.getName(),trackObject.getId(), artists, trackObject.getAlbum().getImages().get(0).getUrl(),trackObject.getAlbum().getName(),trackObject.getUri()));
+
+                    }
+                    listener.onSeveralTracksReceived(fetchedTracks);
+                }
+                else
+                {
+                    listener.onFailure("Error fetching tracks");
+                }
+            }
+            @Override
+            public void onFailure(Call<SeveralTracksResponse> call, Throwable t) {
+                Log.e("SeveralTracks", "API call failed", t);
+                listener.onFailure("Error fetching tracks");
+                t.printStackTrace();
+            }
+        });
+
     }
 }

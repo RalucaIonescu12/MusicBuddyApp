@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.music_buddy_app2.ACTIVITIES.ChooseContextDetailsActivity;
 import com.example.music_buddy_app2.ACTIVITIES.MENUS.ContextRecsMenuActivity;
 import com.example.music_buddy_app2.ACTIVITIES.MENUS.DiscoverGenresMenuActivity;
 import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.StartSpotifyRecommendationsActivity;
@@ -86,7 +87,7 @@ public class BrowseRecommendationTypesActivity extends AppCompatActivity {
                             startActivity(new Intent(BrowseRecommendationTypesActivity.this, DiscoverGenresMenuActivity.class));
                             break;
                         case "Context recommendations":
-                            startActivity(new Intent(BrowseRecommendationTypesActivity.this, ContextRecsMenuActivity.class));
+                            startActivity(new Intent(BrowseRecommendationTypesActivity.this, ChooseContextDetailsActivity.class));
                             break;
                         default:
                             break;

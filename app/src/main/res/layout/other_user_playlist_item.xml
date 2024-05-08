@@ -37,7 +37,8 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
         android:layout_toEndOf="@+id/friednsPlaylistPic"
         android:text="Playlist Name"
         android:textSize="16sp" />
@@ -51,8 +52,20 @@
         android:layout_marginStart="13dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
+        android:textColor="@color/black"
         android:layout_toEndOf="@+id/friednsPlaylistPic"
         android:text="User Name"
         android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/nbrOfSongss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friendsPlaylistName"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/username"
+        android:text="TextView"
+        android:textSize="12dp" />
 </RelativeLayout>
 </LinearLayout>

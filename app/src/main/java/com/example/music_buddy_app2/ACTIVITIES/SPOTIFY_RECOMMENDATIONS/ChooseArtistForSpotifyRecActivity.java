@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,8 +38,8 @@ import retrofit2.Retrofit;
 
 public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity implements SearchArtistsAdapter.OnItemClickListener {
     private EditText inputSearchArtist;
-    private Button buttonSearchArtist;
-    private Button buttonNextStep;
+    private CardView buttonSearchArtist;
+    private CardView buttonNextStep;
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     Retrofit retrofit;
     private RecyclerView recyclerView;
