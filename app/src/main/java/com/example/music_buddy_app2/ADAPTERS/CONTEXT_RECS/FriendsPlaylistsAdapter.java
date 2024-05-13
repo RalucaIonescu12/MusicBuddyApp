@@ -68,6 +68,10 @@ public class FriendsPlaylistsAdapter extends RecyclerView.Adapter<FriendsPlaylis
         void onFriendsPlaylistUncheck();
         void onFriendsLimitExceeded();
     }
+    public void reset() {
+        selectedPlaylistItems.clear();
+        notifyDataSetChanged();
+    }
     public class FriendsPlaylistViewHolder extends RecyclerView.ViewHolder {
 
         private CheckBox checkBox;
@@ -121,6 +125,7 @@ public class FriendsPlaylistsAdapter extends RecyclerView.Adapter<FriendsPlaylis
             context.startActivity(intent);
         }
         public void bind(SimplifiedPlaylistObject playlistItem) {
+            checkBox.setChecked(selectedPlaylistItems.contains(playlistItem));
             Picasso.get().load(playlistItem.getImages().get(0).getUrl()).into(playlistImage);
             playlistName.setText(playlistItem.getName());
             username.setText(playlistItem.getOwner().getDisplayName());

@@ -51,7 +51,10 @@ public class MyPlaylistsAdapter extends RecyclerView.Adapter<MyPlaylistsAdapter.
         View view = LayoutInflater.from(context).inflate(R.layout.my_playlist_item, parent, false);
         return new PlaylistViewHolder(view);
     }
-
+    public void reset() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
     @Override
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
         SimplifiedPlaylistObject playlistItem = playlistItemList.get(position);

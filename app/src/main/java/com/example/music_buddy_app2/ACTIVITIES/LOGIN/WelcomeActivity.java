@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.music_buddy_app2.ACTIVITIES.MENUS.MenuActivity;
 import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.API.TokenManager;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -28,6 +30,15 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        String accessToken = TokenManager.getInstance().getAccessToken();
+        if (accessToken != null && !accessToken.isEmpty()) {
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+
         helloTextView = findViewById(R.id.hello);
         doyouknowTextView = findViewById(R.id.do_you_know);
         illuseTextView = findViewById(R.id.ill_use);
@@ -40,6 +51,7 @@ public class WelcomeActivity extends AppCompatActivity {
         loginButton.setVisibility(View.INVISIBLE);
 
         startTypingAnimation(0);
+        }
     }
 
     private void startTypingAnimation(final int textViewIndex) {

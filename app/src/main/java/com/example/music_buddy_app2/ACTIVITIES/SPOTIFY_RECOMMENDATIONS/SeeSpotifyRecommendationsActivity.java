@@ -5,6 +5,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,12 +88,18 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         cvButtonAddQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tv_addplaylistQueue.setText("Loading...");
+                cvButtonAddQueue.setEnabled(false);
+                cvButtonAddQueue.setClickable(false);
                 addPlaylistItemsInQueue();
             }
         });
         cvAddPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tv_addplaylist.setText("Loading...");
+                cvAddPlaylist.setEnabled(false);
+                cvAddPlaylist.setClickable(false);
                 addPlaylistToLibrary();
             }
         });
@@ -110,11 +118,21 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         }
         spotifyApiServiceInterface = retrofit.create(SpotifyApiServiceInterface.class);
     }
+    private void updatePlaylistButtonToOpenInSpotify(String playlistId) {
+        String url = "https://open.spotify.com/playlist/" + playlistId;
+        tv_addplaylist.setText("Open in Spotify");
+        cvAddPlaylist.setEnabled(true);
+        cvAddPlaylist.setClickable(true);
+        cvAddPlaylist.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        });
+    }
     private void getRecommendations()
     {
        // api call for recommendations
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String autorization = "Bearer "+ accessToken;
+
         Map<String,Double> audioFeaturesFields=manager.getAudioFeatureFields();
         String seed_artists="";
         String description="Playlist generated based on ";
@@ -160,55 +178,8 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             description+=".";
             descriptionTV.setText(description);
         }
-//        Log.d("NULLVERIFICATION", "Authorization: " + autorization);
-//        Log.d("NULLVERIFICATION", "Nbr Tracks: " + manager.getNbrTracks());
-//        Log.d("NULLVERIFICATION", "Seed Artists: " + seed_artists);
-//        Log.d("NULLVERIFICATION", "Seed Genres: " + seed_genres);
-//        Log.d("NULLVERIFICATION", "Seed Tracks: " + seed_tracks);
-//        Log.d("NULLVERIFICATION", "Min Acousticness: " + audioFeaturesFields.get("min_acousticness"));
-//        Log.d("NULLVERIFICATION", "Max Acousticness: " + audioFeaturesFields.get("max_acousticness"));
-//        Log.d("NULLVERIFICATION", "Target Acousticness: " + audioFeaturesFields.get("target_acousticness"));
-//        Log.d("NULLVERIFICATION", "Min Danceability: " + audioFeaturesFields.get("min_danceability"));
-//        Log.d("NULLVERIFICATION", "Max Danceability: " + audioFeaturesFields.get("max_danceability"));
-//        Log.d("NULLVERIFICATION", "Target Danceability: " + audioFeaturesFields.get("target_danceability"));
-//        Log.d("NULLVERIFICATION", "Min Duration MS: " + audioFeaturesFields.get("min_duration_ms").intValue());
-//        Log.d("NULLVERIFICATION", "Max Duration MS: " + audioFeaturesFields.get("max_duration_ms").intValue());
-//        Log.d("NULLVERIFICATION", "Target Duration MS: " + audioFeaturesFields.get("target_duration_ms").intValue());
-//        Log.d("NULLVERIFICATION", "Min Energy: " + audioFeaturesFields.get("min_energy"));
-//        Log.d("NULLVERIFICATION", "Max Energy: " + audioFeaturesFields.get("max_energy"));
-//        Log.d("NULLVERIFICATION", "Target Energy: " + audioFeaturesFields.get("target_energy"));
-//        Log.d("NULLVERIFICATION", "Min Instrumentalness: " + audioFeaturesFields.get("min_instrumentalness"));
-//        Log.d("NULLVERIFICATION", "Max Instrumentalness: " + audioFeaturesFields.get("max_instrumentalness"));
-//        Log.d("NULLVERIFICATION", "Target Instrumentalness: " + audioFeaturesFields.get("target_instrumentalness"));
-//        Log.d("NULLVERIFICATION", "Min Key: " + audioFeaturesFields.get("min_key").intValue());
-//        Log.d("NULLVERIFICATION", "Max Key: " + audioFeaturesFields.get("max_key").intValue());
-//        Log.d("NULLVERIFICATION", "Target Key: " + audioFeaturesFields.get("target_key").intValue());
-//        Log.d("NULLVERIFICATION", "Min Liveness: " + audioFeaturesFields.get("min_liveness"));
-//        Log.d("NULLVERIFICATION", "Max Liveness: " + audioFeaturesFields.get("max_liveness"));
-//        Log.d("NULLVERIFICATION", "Target Liveness: " + audioFeaturesFields.get("target_liveness"));
-//        Log.d("NULLVERIFICATION", "Min Loudness: " + audioFeaturesFields.get("min_loudness"));
-//        Log.d("NULLVERIFICATION", "Max Loudness: " + audioFeaturesFields.get("max_loudness"));
-//        Log.d("NULLVERIFICATION", "Target Loudness: " + audioFeaturesFields.get("target_loudness"));
-//        Log.d("NULLVERIFICATION", "Min Mode: " + audioFeaturesFields.get("min_mode").intValue());
-//        Log.d("NULLVERIFICATION", "Max Mode: " + audioFeaturesFields.get("max_mode").intValue());
-//        Log.d("NULLVERIFICATION", "Target Mode: " + audioFeaturesFields.get("target_mode").intValue());
-//        Log.d("NULLVERIFICATION", "Min Popularity: " + audioFeaturesFields.get("min_popularity").intValue());
-//        Log.d("NULLVERIFICATION", "Max Popularity: " + audioFeaturesFields.get("max_popularity").intValue());
-//        Log.d("NULLVERIFICATION", "Target Popularity: " + audioFeaturesFields.get("target_popularity").intValue());
-//        Log.d("NULLVERIFICATION", "Min Speechiness: " + audioFeaturesFields.get("min_speechiness"));
-//        Log.d("NULLVERIFICATION", "Max Speechiness: " + audioFeaturesFields.get("max_speechiness"));
-//        Log.d("NULLVERIFICATION", "Target Speechiness: " + audioFeaturesFields.get("target_speechiness"));
-//        Log.d("NULLVERIFICATION", "Min Tempo: " + audioFeaturesFields.get("min_tempo"));
-//        Log.d("NULLVERIFICATION", "Max Tempo: " + audioFeaturesFields.get("max_tempo"));
-//        Log.d("NULLVERIFICATION", "Target Tempo: " + audioFeaturesFields.get("target_tempo"));
-//        Log.d("NULLVERIFICATION", "Min Time Signature: " + audioFeaturesFields.get("min_time_signature").intValue());
-//        Log.d("NULLVERIFICATION", "Max Time Signature: " + audioFeaturesFields.get("max_time_signature").intValue());
-//        Log.d("NULLVERIFICATION", "Target Time Signature: " + audioFeaturesFields.get("target_time_signature").intValue());
-//        Log.d("NULLVERIFICATION", "Min Valence: " + audioFeaturesFields.get("min_valence"));
-//        Log.d("NULLVERIFICATION", "Max Valence: " + audioFeaturesFields.get("max_valence"));
 
         Call<SpotifyRecommendationsResponse> call= spotifyApiServiceInterface.getRecommendations(
-                autorization,
                 manager.getNbrTracks(),
                 seed_artists,
                 seed_genres,
@@ -307,7 +278,10 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             adapter = new SearchTracksAdapter(this, recommendationTracks,  new SearchTracksAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(TrackSearchItem item) {
-//                    Toast.makeText(SeeSpotifyRecommendationsActivity.this,"clicked song",Toast.LENGTH_SHORT).show();
+                    String url = "https://open.spotify.com/track/" + item.getId();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -330,7 +304,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add to queue!" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add to queue!"+ errorMessage , Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -389,6 +363,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             @Override
             public void onIdFound(String playlistId) {
                 setPlaylistId(playlistId);
+
                 addTracksToPlaylist(spotifyUserId);
             }
 
@@ -413,14 +388,15 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         PlaylistTracksRequest request = new PlaylistTracksRequest();
         request.setUris(urisForAddToPlaylist);
         request.setPosition(0);
-        playlistsApiManager.addTracksToPlaylist(recommendationTracks, playlistId, request, new PlaylistsApiManager.AddItemToQueueListener() {
+        playlistsApiManager.addTracksToPlaylist( playlistId, request, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
             public void onAllItemsAdded() {
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
-                cvAddPlaylist.setClickable(false);
-                cvAddPlaylist.setEnabled(false);
-                tv_addplaylist.setText("Added");
+//                cvAddPlaylist.setClickable(false);
+//                cvAddPlaylist.setEnabled(false);
+//                tv_addplaylist.setText("Added");
                 plusIconImage.setImageResource(R.drawable.baseline_check_24);
+                updatePlaylistButtonToOpenInSpotify(playlistId);
             }
 
             @Override
@@ -428,6 +404,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add tracks to playlist.", Toast.LENGTH_SHORT).show();
             }
         });
+
          //        urisForAddToPlaylist="";
 //        for (int i = recommendationTracks.size()/2; i <recommendationTracks.size() ; i++)
 //            urisForAddToPlaylist += prefix + recommendationTracks.get(i).getId() + ",";

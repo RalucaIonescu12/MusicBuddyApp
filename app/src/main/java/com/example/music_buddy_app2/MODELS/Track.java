@@ -61,4 +61,12 @@ public class Track {
     public void setUri(String uri) {
         this.uri = uri;
     }
+
+    public List<String> getArtists() {
+        return artists;
+    }
+
+    public void setArtists(List<String> artists) {
+        this.artists = artists;
+    }
 }

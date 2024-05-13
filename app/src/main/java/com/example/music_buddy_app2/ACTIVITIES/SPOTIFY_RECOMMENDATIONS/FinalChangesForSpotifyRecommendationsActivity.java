@@ -161,10 +161,8 @@ public class FinalChangesForSpotifyRecommendationsActivity extends AppCompatActi
     public void setSpinnerGenres() {
         genreSpinner = findViewById(R.id.genresSpinner);
 
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String autorization = "Bearer "+ accessToken;
 
-        Call<GenresResponse> call= spotifyApiServiceInterface.getAvailableGenres(autorization);
+        Call<GenresResponse> call= spotifyApiServiceInterface.getAvailableGenres();
         call.enqueue(new Callback<GenresResponse>() {
             @Override
             public void onResponse(Call<GenresResponse> call, Response<GenresResponse> response) {

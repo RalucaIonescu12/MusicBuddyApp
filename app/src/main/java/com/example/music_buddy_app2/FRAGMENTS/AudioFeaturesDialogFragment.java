@@ -112,10 +112,9 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
 
         // API callfor track features
         String id;
-        String accessToken = SharedPreferencesManager.getToken(mContext);
-        String autorization = "Bearer "+ accessToken;
+
         id = selectedItem.getId();
-        Call<AudioFeaturesObjectResponse> call= spotifyApiServiceInterface.getTracksFeatures(autorization,id);
+        Call<AudioFeaturesObjectResponse> call= spotifyApiServiceInterface.getTracksFeatures(id);
 
         call.enqueue(new Callback<AudioFeaturesObjectResponse>() {
             @Override

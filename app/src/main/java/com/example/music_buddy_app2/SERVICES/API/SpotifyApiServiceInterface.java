@@ -24,7 +24,6 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -32,29 +31,26 @@ import retrofit2.http.Query;
 //retrofit service interface to define api endpoints
 public interface SpotifyApiServiceInterface {
     @GET("v1/me")
-    Call<UserResponse> getMyProfile(@Header("Authorization") String token);
+    Call<UserResponse> getMyProfile();
     @GET("v1/me/top/artists")
-    Call<TopArtistsResponse> getUserTopArtists(@Header("Authorization") String token,
+    Call<TopArtistsResponse> getUserTopArtists(
                                                @Query("limit") int limit,
                                                @Query("offset") int offset,
                                                @Query("time_range") String timeRange);
 
     @GET("v1/me/top/tracks")
     Call<TopTracksResponse> getUserTopTracks(
-            @Header("Authorization") String token,
+           
             @Query("limit") int limit,
             @Query("offset") int offset,
             @Query("time_range") String timeRange
     );
 
-    @GET("v1/audio-features")
-    Call<TopTracksResponse> getSeveralTracksAudioFeatures(
-            @Query("ids") String ids
-    );
+
 
     @GET("v1/search")
     Call<SearchTrackResponse> searchTracks(
-            @Header("Authorization") String token,
+           
             @Query("q") String query,
             @Query("type") String type,   //"track"
             @Query("limit") int limit, //Range: 0 - 50
@@ -65,7 +61,7 @@ public interface SpotifyApiServiceInterface {
 
     @GET("v1/search")
     Call<SearchArtistsResponse> searchArtists(
-            @Header("Authorization") String token,
+           
             @Query("q") String query,
             @Query("type") String type,   //"artist"
             @Query("limit") int limit, //Range: 0 - 50
@@ -76,23 +72,20 @@ public interface SpotifyApiServiceInterface {
 
     @GET("v1/audio-features/{id}")
     Call<AudioFeaturesObjectResponse> getTracksFeatures(
-            @Header("Authorization") String token,
+           
             @Path("id") String id
     );
     @GET("v1/me/playlists")
     Call<PlaylistsResponse> getMyPlaylists(
-            @Header("Authorization") String token,
+           
             @Query("limit") int limit, //0-50
             @Query("offset") int offset //max offset=100.000
     );
 
     @GET("v1/recommendations/available-genre-seeds")
-    Call<GenresResponse> getAvailableGenres(
-            @Header("Authorization") String token
-    );
+    Call<GenresResponse> getAvailableGenres();
     @GET("v1/recommendations")
     Call<SpotifyRecommendationsResponse> getRecommendations(
-            @Header("Authorization") String token,
             @Query("limit") int limit,
             @Query("seed_artists") String seedArtists,
             @Query("seed_genres") String seedGenres,
@@ -143,47 +136,39 @@ public interface SpotifyApiServiceInterface {
 
     @POST("v1/me/player/queue")
     Call<Void> addItemToPlaybackQueue(
-            @Header("Authorization") String token,
+           
             @Query("uri") String uri  //format: spotify:track:4iV5W9uYEdYUVa79Axb7Rh
     );
     @POST("v1/users/{user_id}/playlists")
     Call<Void> createPlaylistForUser(
-            @Header("Authorization") String token,
+           
             @Path("user_id") String userId,
             @Body PlaylistRequestBody playlistRequestBody
     );
     @POST("v1/playlists/{playlist_id}/tracks")
     Call<AddTracksToPlaylistResponse> addTracksToPlaylist(
-            @Header("Authorization") String token,
+           
             @Path("playlist_id") String playlistId,
             @Body PlaylistTracksRequest tracksRequest
     );
     @GET("v1/users/{user_id}/playlists")
     Call<PlaylistsResponse> getUserPlaylists(
-            @Header("Authorization") String token,
+           
             @Path("user_id") String userId,
             @Query("limit") int limit,
             @Query("offset") int offset
     );
-    @FormUrlEncoded
-    @POST("api/token")
-    Call<AccessTokenResponse> refreshAccessToken(
-//            @Header("Authorization") String token, ///the format: Authorization: Basic <base64 encoded client_id:client_secret
-            @Field("grant_type") String grantType,
-            @Field("refresh_token") String refreshToken,
-//            @Header("Content-Type") String contentType, // "application/x-www-form-urlencoded";
-            @Header("client_id") String clientId
-    );
+
     @GET("v1/playlists/{playlist_id}/tracks")
     Call<PlaylistItemsResponse> getPlaylistItems(
-            @Header("Authorization") String token,
+           
             @Path("playlist_id") String playlistId,
             @Query("limit") int limit,
             @Query("offset") int offset
     );
     @GET("v1/tracks")
     Call<SeveralTracksResponse> getSeveralTracks(
-            @Header("Authorization") String token,
+           
             @Query("ids") String ids
     );
 

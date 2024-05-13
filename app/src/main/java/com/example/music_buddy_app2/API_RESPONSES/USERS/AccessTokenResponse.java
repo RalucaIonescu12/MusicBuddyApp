@@ -11,9 +11,8 @@ public class AccessTokenResponse {
     private String scope;
     @SerializedName("expires_in")
     private int expiresIn;
-
     @SerializedName("refresh_token")
-    private String refreshToken;
+    private String refreshToken="";
 
     public String getAccessToken() {
         return accessToken;

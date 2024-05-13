@@ -1,6 +1,7 @@
 package com.example.music_buddy_app2.SERVICES.API;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -74,9 +75,8 @@ public class PlaylistsApiManager {
     }
     public List<SimplifiedPlaylistObject> getPlaylistsForUser(String userId_,int offset,final PlaylistsCallback callback)
     {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer "+ accessToken;
-        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(authorization,userId_, 50, offset);
+       
+        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(userId_, 50, offset);
         callForGetPlaylists.enqueue(new Callback<PlaylistsResponse>() {
             @Override
             public void onResponse(Call<PlaylistsResponse> call, Response<PlaylistsResponse> response) {
@@ -104,9 +104,8 @@ public class PlaylistsApiManager {
     }
     public List<SimplifiedPlaylistObject> getPlaylistsForCurrentUser(int offset,final PlaylistsCallback callback)
     {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer "+ accessToken;
-        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(authorization,userId, 50, offset);
+       
+        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(userId, 50, offset);
         callForGetPlaylists.enqueue(new Callback<PlaylistsResponse>() {
             @Override
             public void onResponse(Call<PlaylistsResponse> call, Response<PlaylistsResponse> response) {
@@ -137,9 +136,8 @@ public class PlaylistsApiManager {
     {
         //get playlist id
         List<SimplifiedPlaylistObject> myPlaylists=new ArrayList<>();
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer "+ accessToken;
-        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getMyPlaylists(authorization, 50, 0);
+       
+        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getMyPlaylists( 50, 0);
         callForGetPlaylists.enqueue(new Callback<PlaylistsResponse>() {
             @Override
             public void onResponse(Call<PlaylistsResponse> call, Response<PlaylistsResponse> response) {
@@ -168,9 +166,8 @@ public class PlaylistsApiManager {
         void onFailure(String errorMessage);
     }
     public void getAllGenres(PlaylistsApiManager.GenresCallback callback) {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
-        Call<GenresResponse> call = spotifyApiServiceInterface.getAvailableGenres(authorization);
+
+        Call<GenresResponse> call = spotifyApiServiceInterface.getAvailableGenres();
         call.enqueue(new Callback<GenresResponse>() {
             @Override
             public void onResponse(Call<GenresResponse> call, Response<GenresResponse> response) {
@@ -195,9 +192,8 @@ public class PlaylistsApiManager {
     }
     public void searchArtist(String q, String type, int limit,int offset, PlaylistsApiManager.SearchArtistListener listener) {
 
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
-        Call<SearchArtistsResponse> call = spotifyApiServiceInterface.searchArtists(authorization, q, type, limit, offset);
+
+        Call<SearchArtistsResponse> call = spotifyApiServiceInterface.searchArtists( q, type, limit, offset);
         List<ArtistSearchItem> searchResults=new ArrayList<>();
         call.enqueue(new Callback<SearchArtistsResponse>() {
             @Override
@@ -242,10 +238,9 @@ public class PlaylistsApiManager {
         void onFailure(String errorMessage);
     }
     public void searchArtist(String q, String type, int limit,int offset, PlaylistsApiManager.SearchTracksListener listener) {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
+
         List<TrackSearchItem> searchResults=new ArrayList<>();
-        Call<SearchTrackResponse> call= spotifyApiServiceInterface.searchTracks(authorization,q,type,limit,offset);
+        Call<SearchTrackResponse> call= spotifyApiServiceInterface.searchTracks(q,type,limit,offset);
         call.enqueue(new Callback<SearchTrackResponse>() {
             @Override
             public void onResponse(Call<SearchTrackResponse> call, Response<SearchTrackResponse> response) {
@@ -296,17 +291,56 @@ public class PlaylistsApiManager {
     }
     public void addItemsToPlaybackQueue(List<TrackSearchItem> recommendationTracks, AddItemToQueueListener listener) {
 
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
-        String uri="spotify:track:";
+        String uri;
 
         AtomicInteger successCounter = new AtomicInteger(0);
         int totalTracks = recommendationTracks.size();
 
         for(TrackSearchItem track: recommendationTracks)
         {
+            uri= "spotify:track:" + track.getId();
+            Call<Void> callForUserId= spotifyApiServiceInterface.addItemToPlaybackQueue(uri);
+            callForUserId.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    if (!response.isSuccessful())
+                    {
+                        Log.e("FIREBASE_LOGS",  "Nu a mers: " + response.code());
+                        listener.onFailure(String.valueOf(successCounter.get()));
+
+                    }
+                    else {
+                        successCounter.incrementAndGet();
+                        Log.e("FIREBASE_LOGS", "S-a adaugat : " + successCounter.get());
+                        if (successCounter.get() == totalTracks) {//all the tracks are added
+                            listener.onAllItemsAdded();
+                            Log.e("FIREBASE_LOGS", "all handled" + successCounter.get());
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("FIREBASE_LOGS",   "failure " + t+ "la nr : " + String.valueOf(successCounter.get()));
+                    listener.onFailure(String.valueOf(successCounter.get()));
+                    t.printStackTrace();
+                }
+            });
+
+        }
+    }
+    public void addTracksToPlaybackQueue(List<Track> recommendationTracks, AddItemToQueueListener listener) {
+
+
+        String uri="spotify:track:";
+
+        AtomicInteger successCounter = new AtomicInteger(0);
+        int totalTracks = recommendationTracks.size();
+
+        for(Track track: recommendationTracks)
+        {
             uri+=track.getId();
-            Call<Void> callForUserId= spotifyApiServiceInterface.addItemToPlaybackQueue(authorization, uri);
+            Call<Void> callForUserId= spotifyApiServiceInterface.addItemToPlaybackQueue( uri);
             callForUserId.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -339,12 +373,11 @@ public class PlaylistsApiManager {
 
     public void createPlaylistForUser(String userId,String playlistName, boolean _public, boolean collaborative,String description,  AddItemToQueueListener listener)
     {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer "+ accessToken;
+       
 
         PlaylistRequestBody playlistRequestBody = new PlaylistRequestBody(playlistName,_public, collaborative,description);
 
-        Call<Void> callForCreatePlaylist= spotifyApiServiceInterface.createPlaylistForUser(authorization, userId,playlistRequestBody);
+        Call<Void> callForCreatePlaylist= spotifyApiServiceInterface.createPlaylistForUser( userId,playlistRequestBody);
         callForCreatePlaylist.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -374,9 +407,8 @@ public class PlaylistsApiManager {
     public void getPlaylistIdForUserByPlaylistNameAndDescription(String spotifyUserId,int offset, int limit, String playlistName, String playlistDescription, GetPlaylistIdForUserByNameAndDescriptionListener listener )
     {
         //get playlist id
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer "+ accessToken;
-        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(authorization,spotifyUserId, limit, offset);
+       
+        Call<PlaylistsResponse> callForGetPlaylists = spotifyApiServiceInterface.getUserPlaylists(spotifyUserId, limit, offset);
         callForGetPlaylists.enqueue(new Callback<PlaylistsResponse>() {
             @Override
             public void onResponse(Call<PlaylistsResponse> call, Response<PlaylistsResponse> response) {
@@ -406,11 +438,10 @@ public class PlaylistsApiManager {
         });
 
     }
-    public void addTracksToPlaylist( List<TrackSearchItem> recommendationTracks, String playlistId, PlaylistTracksRequest request, AddItemToQueueListener listener) {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
+    public void addTracksToPlaylist(String playlistId, PlaylistTracksRequest request, AddItemToQueueListener listener) {
 
-        Call<AddTracksToPlaylistResponse> callForAddToPlaylist = spotifyApiServiceInterface.addTracksToPlaylist(authorization, playlistId, request);
+
+        Call<AddTracksToPlaylistResponse> callForAddToPlaylist = spotifyApiServiceInterface.addTracksToPlaylist( playlistId, request);
         callForAddToPlaylist.enqueue(new Callback<AddTracksToPlaylistResponse>() {
             @Override
             public void onResponse(Call<AddTracksToPlaylistResponse> call, Response<AddTracksToPlaylistResponse> response) {
@@ -431,16 +462,16 @@ public class PlaylistsApiManager {
             }
         });
     }
+
     public interface GetPlaylistItemsListener {
         void onItemsReceived(HashMap<TrackObject,String> receivedTracks);
         void onFailure(String errorMessage);
     }
     public void getPlaylistItems(int offset, int limit, String playlistId, GetPlaylistItemsListener listener) {
-        String accessToken = SharedPreferencesManager.getToken(context);
 
-        String authorization = "Bearer " + accessToken;
+
         HashMap<TrackObject,String> receivedTracks = new HashMap<>();
-        Call<PlaylistItemsResponse> callForGetPlaylists = spotifyApiServiceInterface.getPlaylistItems(authorization, playlistId, limit, offset);
+        Call<PlaylistItemsResponse> callForGetPlaylists = spotifyApiServiceInterface.getPlaylistItems( playlistId, limit, offset);
         callForGetPlaylists.enqueue(new Callback<PlaylistItemsResponse>() {
             @Override
             public void onResponse(Call<PlaylistItemsResponse> call, Response<PlaylistItemsResponse> response) {
@@ -473,11 +504,10 @@ public class PlaylistsApiManager {
     }
     public void getSeveralTracks(List<String> ids, OnAllTracksFetchedListener listener )
     {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer "+ accessToken;
+       
         String idsString = String.join(",", ids);
         List<Track> fetchedTracks = new ArrayList<>();
-        Call<SeveralTracksResponse> callForGetPlaylists = spotifyApiServiceInterface.getSeveralTracks(authorization, idsString);
+        Call<SeveralTracksResponse> callForGetPlaylists = spotifyApiServiceInterface.getSeveralTracks( idsString);
         callForGetPlaylists.enqueue(new Callback<SeveralTracksResponse>() {
             @Override
             public void onResponse(Call<SeveralTracksResponse> call, Response<SeveralTracksResponse> response) {

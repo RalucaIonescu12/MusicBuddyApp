@@ -1,5 +1,7 @@
 package com.example.music_buddy_app2.SERVICES.API;
 
+import android.media.session.MediaSession;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -21,22 +23,47 @@ public class RetrofitClient {
     private static Retrofit myApiRetrofit;
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new Interceptor() { // adds token to each request
+                        @Override
+                        public Response intercept(Interceptor.Chain chain) throws IOException {
+                            Request originalRequest = chain.request();
+
+                            String accessToken = TokenManager.getInstance().getAccessToken();
+                            Request newRequest = originalRequest.newBuilder()
+                                    .header("Authorization", "Bearer " + accessToken)
+                                    .build();
+                            return chain.proceed(newRequest);
+                        }
+                    })
+                    .build();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create()) //uses Gson for serialization/deserialization
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create()) // Uses Gson for serialization/deserialization
                     .build();
         }
         return retrofit;
     }
-    public static Retrofit getRetrofitTokenInstance() {
-        if (retrofitToken  == null) {
-            retrofitToken  = new Retrofit.Builder()
-                    .baseUrl(TOKEN_URL)
-                    .addConverterFactory(GsonConverterFactory.create()) //uses Gson for serialization/deserialization
-                    .build();
-        }
-        return retrofitToken ;
-    }
+//    public static Retrofit getRetrofitInstance() {
+//        if (retrofit == null) {
+//            retrofit = new Retrofit.Builder()
+//                    .baseUrl(BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create()) //uses Gson for serialization/deserialization
+//                    .build();
+//        }
+//        return retrofit;
+//    }
+//    public static Retrofit getRetrofitTokenInstance() {
+//        if (retrofitToken  == null) {
+//            retrofitToken  = new Retrofit.Builder()
+//                    .baseUrl(TOKEN_URL)
+//                    .addConverterFactory(GsonConverterFactory.create()) //uses Gson for serialization/deserialization
+//                    .build();
+//        }
+//        return retrofitToken ;
+//    }
     public static Retrofit getMyApiRetrofit()
     {
 

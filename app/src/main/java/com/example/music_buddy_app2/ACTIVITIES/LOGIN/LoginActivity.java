@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.BuildConfig;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
 import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.TokenRefreshServiceInterface;
@@ -23,10 +24,9 @@ import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String CLIENT_ID = "ed05ab2bfe8843b7ad314fa1fc2eafc6";
+    private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
     private static final String REDIRECT_URI = "http://www.music_buddy_app2/callback";
     private SpotifyAppRemote mSpotifyAppRemote;
-    private static final String CLIENT_SECRET = "47504e30b0ac436a965a60a0ee68d071";
     Retrofit retrofit;
     TokenRefreshServiceInterface tokenRefreshServiceInterface;
     private static final int REQUEST_CODE = 1337;//this request code is used for verifying if result
@@ -34,38 +34,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_login);
-
-//        Button loginButton = findViewById(R.id.login_spotify);
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
         initiateSpotifyLogin();
-
-
     }
 
     private void initiateSpotifyLogin() {
-//        AuthorizationRequest.Builder builder =
-//                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
-//
-//        builder.setScopes(new String[]{"streaming"});
-//        AuthorizationRequest request = builder.build();
-//
-//        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
 
         Intent intent = new Intent(this, SpotifyAuthorizationActivity.class);
         startActivity(intent);
     }
-    public void initiateRetrofitRefreshToken()
-    {
-        if (retrofit == null) {
-            retrofit = RetrofitClient.getRetrofitTokenInstance();
-        }
-        tokenRefreshServiceInterface = retrofit.create(TokenRefreshServiceInterface.class);
-    }
+
 
     @Override
     protected void onStart() {
@@ -92,9 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onFailure(Throwable throwable) {
                         if (throwable instanceof NotLoggedInException || throwable instanceof UserNotAuthorizedException) {
                             Toast.makeText(LoginActivity.this, "Not connected! "+ throwable.getMessage(),Toast.LENGTH_SHORT).show();
-                            // Show login button and trigger the login flow from auth library when clicked
-                        } else if (throwable instanceof CouldNotFindSpotifyApp) {
-
+                           } else if (throwable instanceof CouldNotFindSpotifyApp) {
                             ///if the user doesnt have the Spotify app installed, they will be redirected to download it
                             Toast.makeText(LoginActivity.this, "Download Spotify! ",Toast.LENGTH_SHORT).show();
                             //redirecting to Google Play Store

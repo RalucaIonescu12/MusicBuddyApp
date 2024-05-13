@@ -1,11 +1,11 @@
-package com.example.music_buddy_app2.ACTIVITIES;
+package com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.PROFILE.FindFriendsActivity;
 import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.FriendsPlaylistsAdapter;
 import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.MyPlaylistsAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
@@ -73,7 +74,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
         options.add("mine and my friends' playlists");
 
         moods.add("Energetic");
-        moods.add("Excited");
         moods.add("Sad");
         moods.add("Calm");
         moods.add("Mad");
@@ -143,11 +143,26 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
         });
 
         getRecsButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                manager.getRecommendations();
+                Intent intent = new Intent(ChooseContextDetailsActivity.this,LoadingActivity.class);
+                startActivity(intent);
+                LoadingActivity.genre=selectedGenre;
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        manager.reset();
+        nbrOfSelectedSongs.setText(ChooseContextDetailsManager.nbrOfSongsAdded.toString() + " songs selected");
+        if (friendsPlaylistsAdapter != null) {
+            friendsPlaylistsAdapter.reset();
+        }
+        if (myPlaylistsAdapter != null) {
+            myPlaylistsAdapter.reset();
+        }
     }
     @Override
     public void onFriendsLimitExceeded() {

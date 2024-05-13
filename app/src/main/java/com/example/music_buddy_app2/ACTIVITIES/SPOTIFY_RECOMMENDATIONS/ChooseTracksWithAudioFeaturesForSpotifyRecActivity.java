@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.SearchTracksAdapter;
@@ -48,7 +49,7 @@ public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompa
     private SearchTracksAdapter adapter;
     private List<TrackSearchItem> searchResults;
     private List<String> songSeedsForRec;
-
+    private TextView noResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompa
         buttonSearchSong = findViewById(R.id.button_search_song);
         buttonNextStep =findViewById(R.id.button_next_step);
         recyclerView = findViewById(R.id.recyclerView_search_results);
+        noResults=findViewById(R.id.no_results_text);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         searchResults = new ArrayList<>();
         songSeedsForRec = new ArrayList<>();
@@ -102,8 +104,6 @@ public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompa
     private void performSearch(String songTitle)
     {
         String q;
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String autorization = "Bearer "+ accessToken;
         q= "track:"+ songTitle;
 
         String type = "track";
@@ -113,12 +113,19 @@ public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompa
         playlistsApiManager.searchArtist(q,  type,  limit, offset, new PlaylistsApiManager.SearchTracksListener() {
             @Override
             public void onSuccess(List<TrackSearchItem> searchResults) {
-                setSearchResults(searchResults);
+
+                if (searchResults.isEmpty()) {
+                    noResults.setVisibility(View.VISIBLE);
+                } else {
+                    setSearchResults(searchResults);
+                    noResults.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onFailure(String errorMessage) {
                 Log.e("FIREBASE_LOGS",errorMessage);
                 Toast.makeText(ChooseTracksWithAudioFeaturesForSpotifyRecActivity.this, "Failed search" + errorMessage, Toast.LENGTH_SHORT).show();
+
             }
 
         });

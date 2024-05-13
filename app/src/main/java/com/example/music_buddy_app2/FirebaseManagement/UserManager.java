@@ -40,6 +40,7 @@ public class UserManager extends AppCompatActivity {
     private List<User> followersUsers;
     String userId;
     String token;
+    String refreshToken;
 
     private UserManager(Context context)
     {
@@ -55,6 +56,11 @@ public class UserManager extends AppCompatActivity {
     {
         this.token=token;
         Log.e("FIREBASE_LOGS", "1. S a setat access token in manager: " + this.token);
+    }
+    public void setRefreshToken(String token)
+    {
+        this.refreshToken=token;
+        Log.e("FIREBASE_LOGS", "1. S a setat refresh token in manager: " + this.token);
     }
     public static UserManager getInstance(Context context) {
         if (instance == null) {
@@ -106,13 +112,14 @@ public class UserManager extends AppCompatActivity {
     public void loginUser()
     {
         String authorization = "Bearer "+ token;
-        Call<UserResponse> call= spotifyApiServiceInterface.getMyProfile(authorization);
+        Call<UserResponse> call= spotifyApiServiceInterface.getMyProfile();
 
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
                 if (response.isSuccessful()) {
+                    Log.e("CODE_RECEIVED","login user");
 
                     UserResponse userResponse = response.body();
                     user = new User(userResponse.getDisplayName(), userResponse.getEmail(),  userResponse.getImages().get(0).getUrl(),userResponse.getId(),userResponse.getUri());

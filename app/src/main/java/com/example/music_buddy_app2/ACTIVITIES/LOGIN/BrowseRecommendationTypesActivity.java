@@ -12,8 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.music_buddy_app2.ACTIVITIES.ChooseContextDetailsActivity;
-import com.example.music_buddy_app2.ACTIVITIES.MENUS.ContextRecsMenuActivity;
+import com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS.ChooseContextDetailsActivity;
 import com.example.music_buddy_app2.ACTIVITIES.MENUS.DiscoverGenresMenuActivity;
 import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.StartSpotifyRecommendationsActivity;
 import com.example.music_buddy_app2.R;

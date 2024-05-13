@@ -1,9 +1,11 @@
 package com.example.music_buddy_app2.MANAGERS;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS.SeeOurRecommendationsActivity;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.RecommendationsRequestBody;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.MyApiRecommendationsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
@@ -32,12 +34,19 @@ public class ChooseContextDetailsManager {
     private CustomRecommendationsApiInterface customRecommendationsApiInterface;
     Retrofit retrofit;
     private List<SimplifiedPlaylistObject> selectedPlaylists;
+    private static List<Track> recommendations=new ArrayList<>();
     private ChooseContextDetailsManager(Context context) {
         nbrOfSongsAdded=0;
         this.selectedPlaylists = new ArrayList<>();
         playlistsApiManager=PlaylistsApiManager.getInstance(context);
         this.context=context;
         initiateApiService();
+        allSongs=new HashMap<>();
+    }
+    public void reset()
+    {
+        nbrOfSongsAdded=0;
+        this.selectedPlaylists = new ArrayList<>();
         allSongs=new HashMap<>();
     }
     public void initiateApiService()
@@ -79,6 +88,10 @@ public class ChooseContextDetailsManager {
         void onAllSongsReceived(HashMap<TrackObject,String> allSongs);
         void onError(String error);
     }
+    public interface RecommendationOperationsCompleteCallback {
+        void onComplete();
+        void onError(String message);
+    }
 
     public void getAllItems(OnAllSongsReceivedListener listener)
     {
@@ -106,37 +119,60 @@ public class ChooseContextDetailsManager {
                     @Override
                     public void onFailure(String errorMessage) {
                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-                        listener.onError("Failed to fetch songs");
-
+                        listener.onError("Failed to fetch songs for playlist "+ playlistObject.getName());
                     }
                 });
+
                 offset+=50;
                 nbrSongsInPlaylist-=50;
                 Log.e("SONGS", String.valueOf(nbrSongsInPlaylist));
+
             } while (nbrSongsInPlaylist>0);
 
         }
-//        listener.onAllSongsReceived(allSongs);
     }
 
-    public void getRecommendations()
+    public void getRecommendations(String selectedGenre, final RecommendationOperationsCompleteCallback callback)
     {
-        getAllItems(new OnAllSongsReceivedListener() {
+        if(selectedGenre==null || selectedGenre.equals(""))
+            callback.onError("Genre was not selected");
+        else getAllItems(new OnAllSongsReceivedListener() {
             @Override
             public void onAllSongsReceived(HashMap<TrackObject,String> allSongs) {
 
                 Log.e("SONGS", "All received "+ allSongs.size());
-                createRequestBody(allSongs);
+                if(allSongs.size()==0)
+                {
+                    callback.onError("No songs found for the playlists.");
+                }
+                else
+                {
+                    RecommendationsRequestBody request = createRequestBody(allSongs);
+                    getRecommendationsFromApi(selectedGenre, request, new RecommendationOperationsCompleteCallback() {
+                        @Override
+                        public void onComplete() {
+
+                            callback.onComplete();
+
+                        }
+
+                        @Override
+                        public void onError(String message)
+                        {
+                            callback.onError("Error: " + message);
+                        }
+                    });
+                }
             }
             @Override
             public void onError(String error)
             {
-                Toast.makeText(context,"Error fetching playlists items", Toast.LENGTH_SHORT).show();
+                callback.onError("Error fetching playlists items");
             }
 
         });
     }
-    public void createRequestBody(HashMap<TrackObject,String> allSongs)
+    public RecommendationsRequestBody createRequestBody(HashMap<TrackObject,String> allSongs)
     {
         RecommendationsRequestBody request = new RecommendationsRequestBody();
         List<RecommendationsRequestBody.PlaylistItem> items = new ArrayList<>();
@@ -151,10 +187,9 @@ public class ChooseContextDetailsManager {
             items.add(item);
         }
         request.setItems(items);
-
-        getRecommendationsFromApi("r-n-b", request);
+        return request;
     }
-    public void getRecommendationsFromApi(String genre, RecommendationsRequestBody body)
+    public void getRecommendationsFromApi(String genre, RecommendationsRequestBody body, RecommendationOperationsCompleteCallback callback)
     {
         customRecommendationsApiInterface.getRecommendations(genre, body)
                 .enqueue(new Callback<MyApiRecommendationsResponse>() {
@@ -162,47 +197,64 @@ public class ChooseContextDetailsManager {
                     public void onResponse(Call<MyApiRecommendationsResponse> call, Response<MyApiRecommendationsResponse> response) {
                         if (response.isSuccessful()) {
                             MyApiRecommendationsResponse recommendationsResponse = response.body();
-                            getSongsFromIds(recommendationsResponse.getRecommendations());
+                            getSongsFromIds(recommendationsResponse.getRecommendations(), callback);
 
                         } else {
-                            Log.e("Recommendations", "Error: " + response.message()+ " "+response.code()+ " "+response.errorBody() + " "+response.body()+ " "+response.headers());
+                            Log.e("SONGS", "Error: " + response.message()+ " "+response.code()+ " "+response.errorBody() + " "+response.body()+ " "+response.headers());
+                            callback.onError("Failed to fetch recommendations from google cloud api: " + response.message());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MyApiRecommendationsResponse> call, Throwable t) {
-
-                        Log.e("Recommendations", "Failed to get recommendations. "+t.getMessage());
+                        Log.e("SONGS", "Failed to get recommendations from google cloud api. "+t.getMessage());
+                        callback.onError("Failure at google cloud api: " + t.getMessage());
                     }
                 });
     }
-    public void getSongsFromIds(List<String> ids)
+
+    public void getSongsFromIds(List<String> ids, RecommendationOperationsCompleteCallback callback)
     {
+        if (ids.isEmpty()) {
+            callback.onComplete();
+            return;
+        }
         List<String> firstHalf=ids.subList(0,ids.size()/2);
         List<String> secondHalf=ids.subList(ids.size()/2,ids.size());
+
+        recommendations.clear();
         playlistsApiManager.getSeveralTracks(firstHalf, new PlaylistsApiManager.OnAllTracksFetchedListener() {
 
             @Override
             public void onSeveralTracksReceived(List<Track> tracks) {
-                Log.d("SeveralTracks", "Tracks received: " + tracks.size());
+                Log.d("SONGS", "Tracks received: " + tracks.size());
+                recommendations.addAll(tracks);
                 playlistsApiManager.getSeveralTracks(secondHalf, new PlaylistsApiManager.OnAllTracksFetchedListener() {
 
                     @Override
                     public void onSeveralTracksReceived(List<Track> tracks) {
-                        Log.d("SeveralTracks", "Tracks second received: " + tracks.size());
+                        Log.d("SONGS", "Tracks second received: " + tracks.size());
+                        recommendations.addAll(tracks);
+                        callback.onComplete();
                     }
                     @Override
                     public void onFailure(String errorMessage) {
-                        Log.e("SeveralTracks", "Error fetching tracks: " + errorMessage);
+                        Log.e("SONGS", "Error fetching recommended tracks from spotify api: " + errorMessage);
+                        callback.onError("Error fetching tracks");
                     }
                 });
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.e("SeveralTracks", "Error fetching tracks: " + errorMessage);
+                Log.e("SONGS", "Error fetching recommended tracks from spotify api: " + errorMessage);
+                callback.onError("Error fetching recommended tracks from spotify api");
             }
         });
 
+    }
+    public static List<Track> getRecs()
+    {
+        return recommendations;
     }
 }

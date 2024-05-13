@@ -15,21 +15,23 @@ public class SharedPreferencesManager {
         editor.putString("AccessToken", token);
         editor.apply();
     }
-    public static void saveCodeVerifier(Context context, String code) {
+    public static void saveRefreshToken(Context context, String token) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("CodeVerifier", code);
+        editor.putString("RefreshToken", token);
         editor.apply();
     }
+
 
     public static String getToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString("AccessToken", null);
     }
-    public static String getCodeVerifier(Context context) {
+    public static String getRefreshToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("CodeVerifier", null);
+        return sharedPreferences.getString("RefreshToken", null);
     }
+
     public static void saveUserId(Context context, String userId) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -39,5 +41,17 @@ public class SharedPreferencesManager {
     public static String getUserId(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString("UserId", null);
+    }
+
+    public static void saveExpiryTime(Context context, long expiryTime) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("ExpiryTime", expiryTime);
+        editor.apply();
+    }
+
+    public static long getExpiryTime(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("ExpiryTime", 0);
     }
 }

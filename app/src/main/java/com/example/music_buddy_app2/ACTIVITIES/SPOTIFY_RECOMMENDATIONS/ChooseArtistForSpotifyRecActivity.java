@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +47,7 @@ public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity impleme
     private SearchArtistsAdapter adapter;
     PlaylistsApiManager playlistsApiManager;
     private List<ArtistSearchItem> searchResults;
-
+    private TextView noResults;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,7 @@ public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity impleme
         recyclerView = findViewById(R.id.recyclerView_search_results_artists);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         buttonNextStep =findViewById(R.id.button_next_step_artists);
+        noResults=findViewById(R.id.no_results_text);
         searchResults = new ArrayList<>();
         initiateSpotifyApiService();
 
@@ -108,8 +110,13 @@ public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity impleme
         playlistsApiManager.searchArtist(q,  type,  limit, offset, new PlaylistsApiManager.SearchArtistListener() {
             @Override
             public void onSuccess(List<ArtistSearchItem> searchResults) {
-                setSearchResults(searchResults);
-
+//                setSearchResults(searchResults);
+                if (searchResults.isEmpty()) {
+                    noResults.setVisibility(View.VISIBLE);
+                } else {
+                    setSearchResults(searchResults);
+                    noResults.setVisibility(View.GONE);
+                }
             }
 
             @Override

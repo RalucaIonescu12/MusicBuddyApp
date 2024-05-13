@@ -59,9 +59,9 @@ public class UserApiManager {
     }
     public void getProfile(UserApiListener listener)
     {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
-        Call<UserResponse> call = spotifyApiServiceInterface.getMyProfile(authorization);
+//        String accessToken = SharedPreferencesManager.getToken(context);
+//        String authorization = "Bearer " + accessToken;
+        Call<UserResponse> call = spotifyApiServiceInterface.getMyProfile();
         setListener(listener);
         call.enqueue(new Callback<UserResponse>() {
             @Override
@@ -99,9 +99,8 @@ public class UserApiManager {
     }
 
     public void getUsersTopTracks(int limit, int offset,String timeRange, TopTracksApiListener listener ) {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
-        Call<TopTracksResponse> call = spotifyApiServiceInterface.getUserTopTracks(authorization, limit, offset, timeRange);
+
+        Call<TopTracksResponse> call = spotifyApiServiceInterface.getUserTopTracks( limit, offset, timeRange);
         call.enqueue(new Callback<TopTracksResponse>() {
             @Override
             public void onResponse(Call<TopTracksResponse> call, Response<TopTracksResponse> response) {
@@ -134,9 +133,8 @@ public class UserApiManager {
     }
     public void getUsersTopArtists(int limit, int offset,String timeRange, TopItemsApiListener listener )
     {
-        String accessToken = SharedPreferencesManager.getToken(context);
-        String authorization = "Bearer " + accessToken;
-        Call<TopArtistsResponse> call = spotifyApiServiceInterface.getUserTopArtists(authorization, limit, offset, timeRange);
+
+        Call<TopArtistsResponse> call = spotifyApiServiceInterface.getUserTopArtists( limit, offset, timeRange);
         call.enqueue(new Callback<TopArtistsResponse>() {
             @Override
             public void onResponse(Call<TopArtistsResponse> call, Response<TopArtistsResponse> response) {

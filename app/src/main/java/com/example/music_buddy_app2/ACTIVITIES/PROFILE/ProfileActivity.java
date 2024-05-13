@@ -88,12 +88,13 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.e("FIREBASE_LOGS",errorMessage);
+                Log.e("CODE_RECEIVED",errorMessage);
                 Toast.makeText(ProfileActivity.this, "Failed to retrieve profile" + errorMessage, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onAuthorizationError()
             {
+                Log.e("CODE_RECEIVED","Need to reauthorize");
                 Toast.makeText(ProfileActivity.this, "You need to reauthorize!", Toast.LENGTH_SHORT).show();
             }
         });

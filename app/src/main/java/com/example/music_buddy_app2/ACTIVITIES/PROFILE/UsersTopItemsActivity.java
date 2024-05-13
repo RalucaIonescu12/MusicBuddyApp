@@ -55,7 +55,6 @@ public class UsersTopItemsActivity extends AppCompatActivity {
 
         userApiManager=UserApiManager.getInstance(this);
         initiateSpotifyApiService();
-        initiateRetrofitRefreshToken();
         setupSpinner();
 
         Button btnSubmit = findViewById(R.id.btnSubmit);
@@ -109,13 +108,7 @@ public class UsersTopItemsActivity extends AppCompatActivity {
         }
         spotifyApiServiceInterface = retrofit.create(SpotifyApiServiceInterface.class);
     }
-    public void initiateRetrofitRefreshToken()
-    {
-        if (retrofit == null) {
-            retrofit = RetrofitClient.getRetrofitTokenInstance();
-        }
-        tokenRefreshServiceInterface = retrofit.create(TokenRefreshServiceInterface.class);
-    }
+
 
     private void getTopItems() {
         String accessToken = SharedPreferencesManager.getToken(this);

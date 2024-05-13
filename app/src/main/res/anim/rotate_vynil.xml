@@ -3,10 +3,10 @@
     <rotate
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toDegrees="360"
         android:fromDegrees="0"
+        android:toDegrees="359"
         android:duration="2500"
-        android:repeatCount="infinite">
-
+        android:repeatCount="infinite"
+        android:interpolator="@android:anim/linear_interpolator">
     </rotate>
 </set>
