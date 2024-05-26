@@ -8,9 +8,7 @@ public class User {
     private String username="";
     private String email="";
     private String profileImageUrl="";
-    private Integer totalScore;
-    private Integer totalWins;
-    private Integer totalGamesPlayed;
+    private Integer playlistsCreatedWithTheApp=0;
     private String SpotifyId="";
     private String uri="";
     private List<String> followingIds;
@@ -25,9 +23,7 @@ public class User {
     }
 
     public User() {
-        this.totalScore = 0;
-        this.totalWins = 0;
-        this.totalGamesPlayed = 0;
+        this.playlistsCreatedWithTheApp = 0;
         this.followingIds=new ArrayList<>();
         this.followersIds=new ArrayList<>();
     }
@@ -36,36 +32,42 @@ public class User {
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.SpotifyId = SpotifyId;
-        this.totalWins = 0;
-        this.totalScore = 0;
-        this.totalGamesPlayed = 0;
+        this.playlistsCreatedWithTheApp= 0;
         this.followingIds=new ArrayList<>();
         this.followingIds.addAll(followingIds);
         this.followersIds=new ArrayList<>();
         this.followersIds.addAll(followerIds);
     }
-
     public User(String username, String email, String profileImageUrl, String spotifyId, String uri) {
         this.username = username;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         SpotifyId = spotifyId;
-        this.totalWins = 0;
-        this.totalScore = 0;
-        this.totalGamesPlayed = 0;
+        this.playlistsCreatedWithTheApp = 0;
         this.uri=uri;
         this.followingIds=new ArrayList<>();
         this.followersIds=new ArrayList<>();
     }
+
 // Getter and setter methods for each field
 
-    public List<String> getFollowerIds() {
+    public Integer getPlaylistsCreatedWithTheApp() {
+        return playlistsCreatedWithTheApp;
+    }
+
+    public void setPlaylistsCreatedWithTheApp(Integer playlistsCreatedWithTheApp) {
+        this.playlistsCreatedWithTheApp = playlistsCreatedWithTheApp;
+    }
+
+    public List<String> getFollowersIds() {
         return followersIds;
     }
 
-    public void setFollowerIds(List<String> followerIds) {
-        this.followersIds = followerIds;
+    public void setFollowersIds(List<String> followersIds) {
+        this.followersIds = followersIds;
     }
+
+
 
     public List<String> getFollowingIds() {
         return followingIds;
@@ -108,33 +110,12 @@ public class User {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public void setTotalScore(Integer totalScore) {
-        this.totalScore = totalScore;
-    }
-
-    public void setTotalWins(Integer totalWins) {
-        this.totalWins = totalWins;
-    }
-
-    public void setTotalGamesPlayed(Integer totalGamesPlayed) {
-        this.totalGamesPlayed = totalGamesPlayed;
-    }
 
     public void setSpotifyId(String spotifyId) {
         SpotifyId = spotifyId;
     }
 
-    public Integer getTotalScore() {
-        return totalScore;
-    }
 
-    public Integer getTotalWins() {
-        return totalWins;
-    }
-
-    public Integer getTotalGamesPlayed() {
-        return totalGamesPlayed;
-    }
 
     public String getSpotifyId() {
         return SpotifyId;
@@ -146,9 +127,7 @@ public class User {
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
-                ", totalScore=" + totalScore +
-                ", totalWins=" + totalWins +
-                ", totalGamesPlayed=" + totalGamesPlayed +
+                ", playlistsCreatedWithTheApp=" + playlistsCreatedWithTheApp +
                 ", SpotifyId='" + SpotifyId + '\'' +
                 ", uri='" + uri + '\'' +
                 '}';

@@ -62,7 +62,7 @@ public class UserApiManager {
 //        String accessToken = SharedPreferencesManager.getToken(context);
 //        String authorization = "Bearer " + accessToken;
         Call<UserResponse> call = spotifyApiServiceInterface.getMyProfile();
-        setListener(listener);
+//        setListener(listener);
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -125,7 +125,7 @@ public class UserApiManager {
             @Override
             public void onFailure(Call<TopTracksResponse> call, Throwable t) {
                 Toast.makeText(context, "Failed top items request!", Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
                 listener.onFailure(t.getMessage());
             }
@@ -161,7 +161,7 @@ public class UserApiManager {
             public void onFailure(Call<TopArtistsResponse> call, Throwable t) {
                 listener.onFailure(t.getMessage());
                 Toast.makeText(context, "Failed top items request!", Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });

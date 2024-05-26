@@ -46,7 +46,7 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
     public void initiateApiService()
     {
         if (retrofit == null) {
-            retrofit = RetrofitClient.getMyApiRetrofit();
+            retrofit = RetrofitClient.getMyTokenApiRetrofit();
         }
         customRecommendationsApiInterface = retrofit.create(CustomRecommendationsApiInterface.class);
     }
@@ -70,11 +70,11 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent); //fetches the code if result is correct
 
             if (response.getType() == AuthorizationResponse.Type.CODE) {
-                Log.e("CODE_RECEIVED","RESPONSE CODE: "+ response.getCode());
+                Log.e("MY_LOGS","RESPONSE CODE: "+ response.getCode());
                 CodeRequestBody requestBody = new CodeRequestBody(response.getCode());
 
                 Call<AccessTokenResponse> call = customRecommendationsApiInterface.exchangeCode(requestBody);
-                Log.e("CODE_RECEIVED","EXCHANGE CODE EXECUTAT: ");
+                Log.e("MY_LOGS", "Call exchange code in google cloud.");
                 call.enqueue(new Callback<AccessTokenResponse>() {
                     @Override
                     public void onResponse(Call<AccessTokenResponse> call, Response<AccessTokenResponse> response) {
@@ -85,18 +85,26 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
                             SharedPreferencesManager.saveToken(SpotifyAuthorizationActivity.this, tokenResponse.getAccessToken());
                             SharedPreferencesManager.saveRefreshToken(SpotifyAuthorizationActivity.this, tokenResponse.getRefreshToken());
                             SharedPreferencesManager.saveExpiryTime(SpotifyAuthorizationActivity.this, expiryTime);
+                            SharedPreferencesManager.updateNbrPlaylists(SpotifyAuthorizationActivity.this,1);
+                            Log.e("MY_LOGS","Exchanged code successfully.");
+                            manager.loginUser(
+//                            new UserManager.LoginListener() {
+//                                @Override
+//                                public void onLoginSuccess() {
+//                                    goToMenu();
+//                                }
+//
+//                                @Override
+//                                public void onLoginFailure(String errorMessage) {
+//                                   goBackToLogin();
+//                                }
+//                            }
 
-                            manager.setAccessToken(tokenResponse.getAccessToken());
-                            manager.setRefreshToken(tokenResponse.getRefreshToken());
-                            manager.loginUser();
-                            Log.e("CODE_RECEIVED","Refresh Token: "+ SharedPreferencesManager.getRefreshToken(SpotifyAuthorizationActivity.this));
-                            Log.e("CODE_RECEIVED","Access token: "+ SharedPreferencesManager.getToken(SpotifyAuthorizationActivity.this));
-                            Log.e("CODE_RECEIVED","Expires at: "+ SharedPreferencesManager.getExpiryTime(SpotifyAuthorizationActivity.this));
-                            Intent intent = new Intent(SpotifyAuthorizationActivity.this, MenuActivity.class);
-                            startActivity(intent);
+                            );
+                            goToMenu();
                         } else {
                             Toast.makeText(SpotifyAuthorizationActivity.this, "Error exchanging code!", Toast.LENGTH_SHORT).show();
-                            Log.e("CODE_RECEIVED","In sporify authorization: "+ "Error exchanging code");
+                            Log.e("MY_LOGS","In spotify authorization: Error exchanging code in server");
 
                         }
                     }
@@ -104,7 +112,7 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<AccessTokenResponse> call, Throwable t) {
                         Toast.makeText(SpotifyAuthorizationActivity.this, "Network error!", Toast.LENGTH_SHORT).show();
-                        Log.e("CODE_RECEIVED","in spotify authorization: "+ "Network error!");
+                        Log.e("MY_LOGS","In spotify authorization: failure");
 
                     }
                 });
@@ -112,7 +120,20 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
             }
         }
     }
-
+    public void goToMenu()
+    {
+        Log.e("MY_LOGS","Refresh Token: "+ SharedPreferencesManager.getRefreshToken(SpotifyAuthorizationActivity.this));
+        Log.e("MY_LOGS","Access token: "+ SharedPreferencesManager.getToken(SpotifyAuthorizationActivity.this));
+        Log.e("MY_LOGS","Expires at: "+ SharedPreferencesManager.getExpiryTime(SpotifyAuthorizationActivity.this));
+        Intent intent = new Intent(SpotifyAuthorizationActivity.this, MenuActivity.class);
+        startActivity(intent);
+    }
+    public void goBackToLogin()
+    {
+        Log.e("MY_LOGS","Eroare login in user manager -> go back to login activity");
+        Intent intent = new Intent(SpotifyAuthorizationActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 //        super.onActivityResult(requestCode, resultCode, intent);

@@ -12,45 +12,46 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS.ChooseContextDetailsActivity;
 import com.example.music_buddy_app2.ACTIVITIES.MENUS.DiscoverGenresMenuActivity;
 import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.StartSpotifyRecommendationsActivity;
 import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.API.TokenManager;
 
 import java.util.ArrayList;
 
-public class BrowseRecommendationTypesActivity extends AppCompatActivity {
+public class BrowseRecommendationTypesActivity extends BaseActivity {
 
     RecyclerView rv;
     ArrayList<String> menuOptions;
     ArrayList<String> menuOptionsDescription;
     LinearLayoutManager linearLayoutManager;
     BrowseRecommendationTypesActivity.MyRVAdapter myRVAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_recommendation_types);
 
+
         //recommendation options of the app
         menuOptions=new ArrayList<>();
         menuOptions.add("Recommendations from Spotify");
-        menuOptions.add("Discover each genre");
-        menuOptions.add("Context recommendations");
-//        menuOptions.add("Leaderboard");
-//        menuOptions.add("Analysis");
+//        menuOptions.add("Discover each genre");
+        menuOptions.add("Group recommendations");
 
         menuOptionsDescription=new ArrayList<>();
         menuOptionsDescription.add("filter spotify recommendations by the song's popularity, energy, danceability etc. ");
-        menuOptionsDescription.add("discover each existing genre based on listening history ");
-        menuOptionsDescription.add("tell us if you're in a group setting, the mood and genres and get recommendations");
-//        menuOptionsDescription.add("see if you're really a music genious");
-//        menuOptionsDescription.add("let me diagnose you're music patterns");
+//        menuOptionsDescription.add("discover each existing genre based on listening history ");
+        menuOptionsDescription.add("choose a genre, select some playlists either yours or your friends' and get recommendations");
         rv = findViewById(R.id.recommendation_rv);
         linearLayoutManager= new LinearLayoutManager(BrowseRecommendationTypesActivity.this,LinearLayoutManager.VERTICAL,false);
         myRVAdapter = new BrowseRecommendationTypesActivity.MyRVAdapter(menuOptions, menuOptionsDescription);
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(myRVAdapter);
     }
+
 
     class MyRVAdapter extends RecyclerView.Adapter<BrowseRecommendationTypesActivity.MyRVAdapter.MyHolder>
 
@@ -82,10 +83,10 @@ public class BrowseRecommendationTypesActivity extends AppCompatActivity {
                         case "Recommendations from Spotify":
                             startActivity(new Intent(BrowseRecommendationTypesActivity.this, StartSpotifyRecommendationsActivity.class));
                             break;
-                        case "Discover each genre":
-                            startActivity(new Intent(BrowseRecommendationTypesActivity.this, DiscoverGenresMenuActivity.class));
-                            break;
-                        case "Context recommendations":
+//                        case "Discover each genre":
+//                            startActivity(new Intent(BrowseRecommendationTypesActivity.this, DiscoverGenresMenuActivity.class));
+//                            break;
+                        case "Group recommendations":
                             startActivity(new Intent(BrowseRecommendationTypesActivity.this, ChooseContextDetailsActivity.class));
                             break;
                         default:

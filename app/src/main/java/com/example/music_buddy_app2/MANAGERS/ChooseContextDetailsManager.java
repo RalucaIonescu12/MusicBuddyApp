@@ -33,7 +33,9 @@ public class ChooseContextDetailsManager {
     private HashMap<TrackObject,String> allSongs;
     private CustomRecommendationsApiInterface customRecommendationsApiInterface;
     Retrofit retrofit;
+    private static String genre;
     private List<SimplifiedPlaylistObject> selectedPlaylists;
+    private String selectedFriends;
     private static List<Track> recommendations=new ArrayList<>();
     private ChooseContextDetailsManager(Context context) {
         nbrOfSongsAdded=0;
@@ -49,10 +51,18 @@ public class ChooseContextDetailsManager {
         this.selectedPlaylists = new ArrayList<>();
         allSongs=new HashMap<>();
     }
+    public static void setGenre(String genree)
+    {
+        genre=genree;
+    }
+    public static String getGenre()
+    {
+        return genre;
+    }
     public void initiateApiService()
     {
         if (retrofit == null) {
-            retrofit = RetrofitClient.getMyApiRetrofit();
+            retrofit = RetrofitClient.getMyRecsApiRetrofit();
         }
         customRecommendationsApiInterface = retrofit.create(CustomRecommendationsApiInterface.class);
     }
@@ -111,7 +121,7 @@ public class ChooseContextDetailsManager {
                     @Override
                     public void onItemsReceived(HashMap<TrackObject,String> receivedTracks) {
                         allSongs.putAll(receivedTracks);
-                        Log.e("SONGS", String.valueOf(allSongs.size()));
+                        Log.e("MY_LOGS", String.valueOf(allSongs.size()));
                         if (processedPlaylists.incrementAndGet() == selectedPlaylists.size()) {
                             listener.onAllSongsReceived(allSongs);
                         }
@@ -125,7 +135,7 @@ public class ChooseContextDetailsManager {
 
                 offset+=50;
                 nbrSongsInPlaylist-=50;
-                Log.e("SONGS", String.valueOf(nbrSongsInPlaylist));
+                Log.e("MY_LOGS", String.valueOf(nbrSongsInPlaylist));
 
             } while (nbrSongsInPlaylist>0);
 
@@ -140,7 +150,7 @@ public class ChooseContextDetailsManager {
             @Override
             public void onAllSongsReceived(HashMap<TrackObject,String> allSongs) {
 
-                Log.e("SONGS", "All received "+ allSongs.size());
+                Log.e("MY_LOGS", "All received "+ allSongs.size());
                 if(allSongs.size()==0)
                 {
                     callback.onError("No songs found for the playlists.");
@@ -190,24 +200,28 @@ public class ChooseContextDetailsManager {
         return request;
     }
     public void getRecommendationsFromApi(String genre, RecommendationsRequestBody body, RecommendationOperationsCompleteCallback callback)
-    {
+    {  Log.e("MY_LOGS","GENREE "+ genre );
         customRecommendationsApiInterface.getRecommendations(genre, body)
                 .enqueue(new Callback<MyApiRecommendationsResponse>() {
+
                     @Override
                     public void onResponse(Call<MyApiRecommendationsResponse> call, Response<MyApiRecommendationsResponse> response) {
                         if (response.isSuccessful()) {
+
                             MyApiRecommendationsResponse recommendationsResponse = response.body();
+                            Log.e("MY_LOGS", "SIZEE" + String.valueOf(recommendationsResponse.getRecommendations().size()));
                             getSongsFromIds(recommendationsResponse.getRecommendations(), callback);
 
+
                         } else {
-                            Log.e("SONGS", "Error: " + response.message()+ " "+response.code()+ " "+response.errorBody() + " "+response.body()+ " "+response.headers());
+                            Log.e("MY_LOGS", "Error: " + response.message()+ " "+response.code()+ " "+response.errorBody() + " "+response.body()+ " "+response.headers());
                             callback.onError("Failed to fetch recommendations from google cloud api: " + response.message());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MyApiRecommendationsResponse> call, Throwable t) {
-                        Log.e("SONGS", "Failed to get recommendations from google cloud api. "+t.getMessage());
+                        Log.e("MY_LOGS", "Failed to get recommendations from google cloud api. "+t.getMessage());
                         callback.onError("Failure at google cloud api: " + t.getMessage());
                     }
                 });
@@ -227,19 +241,19 @@ public class ChooseContextDetailsManager {
 
             @Override
             public void onSeveralTracksReceived(List<Track> tracks) {
-                Log.d("SONGS", "Tracks received: " + tracks.size());
+                Log.d("MY_LOGS", "Tracks received: " + tracks.size());
                 recommendations.addAll(tracks);
                 playlistsApiManager.getSeveralTracks(secondHalf, new PlaylistsApiManager.OnAllTracksFetchedListener() {
 
                     @Override
                     public void onSeveralTracksReceived(List<Track> tracks) {
-                        Log.d("SONGS", "Tracks second received: " + tracks.size());
+                        Log.d("MY_LOGS", "Tracks second received: " + tracks.size());
                         recommendations.addAll(tracks);
                         callback.onComplete();
                     }
                     @Override
                     public void onFailure(String errorMessage) {
-                        Log.e("SONGS", "Error fetching recommended tracks from spotify api: " + errorMessage);
+                        Log.e("MY_LOGS", "Error fetching recommended tracks from spotify api: " + errorMessage);
                         callback.onError("Error fetching tracks");
                     }
                 });
@@ -247,12 +261,17 @@ public class ChooseContextDetailsManager {
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.e("SONGS", "Error fetching recommended tracks from spotify api: " + errorMessage);
+                Log.e("MY_LOGS", "Error fetching recommended tracks from spotify api: " + errorMessage);
                 callback.onError("Error fetching recommended tracks from spotify api");
             }
         });
 
     }
+
+    public void setSelectedFriends(String selectedFriends) {
+        this.selectedFriends = selectedFriends;
+    }
+
     public static List<Track> getRecs()
     {
         return recommendations;

@@ -30,7 +30,7 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <EditText
-                android:id="@+id/playlistTitle"
+                android:id="@+id/playlistTitleOurs"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/recTitle"
@@ -47,7 +47,7 @@
                 android:id="@+id/playlistDesc"
                 android:layout_width="198dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/playlistTitle"
+                android:layout_below="@+id/playlistTitleOurs"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="10dp"
                 android:minHeight="50dp"
@@ -55,7 +55,7 @@
                 android:textColor="@color/white"
                 android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/playlistImage"
-                android:text="Description" />
+                android:text="Recommendations from MusicBuddyApp" />
 
             <TextView
                 android:id="@+id/recTitle"

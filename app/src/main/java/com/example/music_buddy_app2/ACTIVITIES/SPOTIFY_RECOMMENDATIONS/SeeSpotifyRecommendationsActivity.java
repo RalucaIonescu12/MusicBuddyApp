@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.SearchTracksAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.AddTracksToPlaylistResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistsResponse;
@@ -45,7 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
+public class SeeSpotifyRecommendationsActivity extends BaseActivity {
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     Retrofit retrofit;
     String playlistId="";
@@ -85,6 +86,9 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
         tv_addplaylist=findViewById(R.id.addplyalist_tv);
         plusIconImageQueue=findViewById(R.id.plusIcon);
         tv_addplaylistQueue=findViewById(R.id.addToQueueTV);
+
+
+
         cvButtonAddQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +136,11 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
     private void getRecommendations()
     {
        // api call for recommendations
+//        Log.e("MY_APP", String.valueOf(SharedPreferencesManager.getNbrGeneratedPlaylists(this)));
+        int nbr = SharedPreferencesManager.getNbrGeneratedPlaylists(this);
+        playlistNameET.setText("Playlist Title #"+nbr);
+        nbr += 1;
+        SharedPreferencesManager.updateNbrPlaylists(this, nbr);
 
         Map<String,Double> audioFeaturesFields=manager.getAudioFeatureFields();
         String seed_artists="";
@@ -144,7 +153,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
                 for(String artistId:  manager.getRecFilters().get("seed_artists").get(title).keySet())
                     seed_artists+=artistId+",";
             }
-        else { Log.e("NULL_VERIFICATION", "artists null");}
+        else { Log.e("MY_LOGS", "See recs : artists null");}
 
         String seed_genres="";
 
@@ -157,7 +166,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
                 seed_genres+=title+",";
             }
         }
-        else { Log.e("NULL_VERIFICATION", "genres null");}
+        else { Log.e("MY_LOGS", "See recs : genres null");}
 
         String seed_tracks= "";
 
@@ -169,7 +178,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
                     seed_tracks += trackId + ",";
             }
         }
-        else { Log.e("NULLVERIFICATION", "tracks = null"); }
+        else { Log.e("MY_LOGS", " See recs : tracks = null"); }
         if(!seed_tracks.equals(""))seed_tracks=seed_tracks.substring(0,seed_tracks.length()-1);
         if(!seed_artists.equals(""))seed_artists=seed_artists.substring(0,seed_artists.length()-1);
         if(!seed_genres.equals("")) seed_genres=seed_genres.substring(0,seed_genres.length()-1);
@@ -260,7 +269,7 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Api response not successful!" , Toast.LENGTH_SHORT).show();
-                    Log.e("AddPlaylist",String.valueOf(response.code()));
+                    Log.e("MY_LOGS",String.valueOf(response.code()));
                 }
             }
 
@@ -268,13 +277,14 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             public void onFailure(Call<SpotifyRecommendationsResponse> call, Throwable t) {
 
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed recommendation request!" , Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed for recs request from spotify api", t);
                 t.printStackTrace();
             }
         });
     }
     private void updateRecyclerView() {
         if (adapter == null) {
+
             adapter = new SearchTracksAdapter(this, recommendationTracks,  new SearchTracksAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(TrackSearchItem item) {
@@ -291,7 +301,6 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
     }
     private void addPlaylistItemsInQueue()
     {
-
         playlistsApiManager.addItemsToPlaybackQueue(recommendationTracks, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
             public void onAllItemsAdded() {
@@ -363,7 +372,6 @@ public class SeeSpotifyRecommendationsActivity extends AppCompatActivity {
             @Override
             public void onIdFound(String playlistId) {
                 setPlaylistId(playlistId);
-
                 addTracksToPlaylist(spotifyUserId);
             }
 

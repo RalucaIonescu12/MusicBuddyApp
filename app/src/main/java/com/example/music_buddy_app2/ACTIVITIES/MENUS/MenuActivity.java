@@ -15,18 +15,21 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ACTIVITIES.OTHERS.AnalysisActivity;
 import com.example.music_buddy_app2.ACTIVITIES.LOGIN.BrowseRecommendationTypesActivity;
 import com.example.music_buddy_app2.ACTIVITIES.OTHERS.LeaderboardActivity;
 import com.example.music_buddy_app2.ACTIVITIES.OTHERS.MultiplayerGamesActivity;
+import com.example.music_buddy_app2.ACTIVITIES.PROFILE.FindFriendsActivity;
 import com.example.music_buddy_app2.ACTIVITIES.PROFILE.ProfileActivity;
 import com.example.music_buddy_app2.ACTIVITIES.OTHERS.SingleplayerGamesActivity;
 import com.example.music_buddy_app2.ACTIVITIES.LOGIN.WelcomeActivity;
 import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.API.TokenManager;
 
 import java.util.ArrayList;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends BaseActivity {
 
     RecyclerView rv;
     ImageView vynilImage;
@@ -37,7 +40,11 @@ public class MenuActivity extends AppCompatActivity {
     CardView cardView;
     MyRVAdapter myRVAdapter;
     Animation rotationAnimation;
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TokenManager.initialize(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,23 +67,14 @@ public class MenuActivity extends AppCompatActivity {
         menuOptions=new ArrayList<>();
         menuOptions.add("Recommendations");
         menuOptions.add("Connect with friends");
-        menuOptions.add("Singleplayer Games");
-        menuOptions.add("Leaderboard");
-        menuOptions.add("Analysis");
 
         menuOptionsDescription=new ArrayList<>();
-        menuOptionsDescription.add("new songs using multiple filtering methods ");
-        menuOptionsDescription.add("find friends, compare your music to theirs");
-        menuOptionsDescription.add("test yourself on your music knowledge");
-        menuOptionsDescription.add("see if you're really a music genious");
-        menuOptionsDescription.add("let me diagnose you're music patterns");
+        menuOptionsDescription.add("experiment with our recommendation methods and find new songs");
+        menuOptionsDescription.add("find friends and compare your music");
 
         menuOptionsImage=new ArrayList<>();
         menuOptionsImage.add(String.valueOf(R.drawable.recommendation));
         menuOptionsImage.add(String.valueOf(R.drawable.multiplayer));
-        menuOptionsImage.add(String.valueOf(R.drawable.singleplayer));
-        menuOptionsImage.add(String.valueOf(R.drawable.leaderboard));
-        menuOptionsImage.add(String.valueOf(R.drawable.analysis));
         linearLayoutManager= new LinearLayoutManager(MenuActivity.this,LinearLayoutManager.HORIZONTAL,false);
         myRVAdapter = new MyRVAdapter(menuOptions, menuOptionsDescription,menuOptionsImage);
         rv.setLayoutManager(linearLayoutManager);
@@ -120,19 +118,9 @@ public class MenuActivity extends AppCompatActivity {
                     switch (selectedOption) {
                         case "Recommendations":
                             startActivity(new Intent(MenuActivity.this, BrowseRecommendationTypesActivity.class));
-
                             break;
-                        case "Multiplayer games":
-                            startActivity(new Intent(MenuActivity.this, MultiplayerGamesActivity.class));
-                            break;
-                        case "Singleplayer Games":
-                            startActivity(new Intent(MenuActivity.this, SingleplayerGamesActivity.class));
-                            break;
-                        case "Leaderboard":
-                            startActivity(new Intent(MenuActivity.this, LeaderboardActivity.class));
-                            break;
-                        case "Analysis":
-                            startActivity(new Intent(MenuActivity.this, AnalysisActivity.class));
+                        case "Connect with friends":
+                            startActivity(new Intent(MenuActivity.this, FindFriendsActivity.class));
                             break;
                         default:
                             break;

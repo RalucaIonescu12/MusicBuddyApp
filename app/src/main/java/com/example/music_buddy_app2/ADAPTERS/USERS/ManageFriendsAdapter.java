@@ -2,6 +2,7 @@ package com.example.music_buddy_app2.ADAPTERS.USERS;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.music_buddy_app2.FirebaseManagement.UserManager;
 import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.ACTIVITIES.PROFILE.UserProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,13 +59,31 @@ public class ManageFriendsAdapter extends RecyclerView.Adapter<ManageFriendsAdap
         private ImageView profilePic;
         private TextView username;
         private CardView button;
+        private CardView detailsButton;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             profilePic = itemView.findViewById(R.id.user_profile_image);
             username = itemView.findViewById(R.id.username);
             button=itemView.findViewById(R.id.addBtn);
+            detailsButton=itemView.findViewById(R.id.detailsBtn);
+            detailsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        User user = users.get(position);
+                        Intent intent = new Intent(context, UserProfileActivity.class);
+                        intent.putExtra("user_id", user.getSpotifyId());
+                        intent.putExtra("user_name", user.getUsername());
+                        intent.putExtra("user_profile_image", user.getProfileImageUrl());
+                        intent.putExtra("uri", user.getUri());
+                        intent.putExtra("nbr_playlists",user.getPlaylistsCreatedWithTheApp().toString());
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
          public void bind(User user) {
             username.setText(user.getUsername());

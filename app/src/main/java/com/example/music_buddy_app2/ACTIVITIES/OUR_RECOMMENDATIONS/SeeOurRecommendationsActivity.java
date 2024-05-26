@@ -3,17 +3,24 @@ package com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
+import com.example.music_buddy_app2.ACTIVITIES.LOGIN.BrowseRecommendationTypesActivity;
+import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.StartSpotifyRecommendationsActivity;
 import com.example.music_buddy_app2.ADAPTERS.OUR_RECOMMENDATIONS.OurRecommendationsAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistTracksRequest;
 import com.example.music_buddy_app2.MANAGERS.ChooseContextDetailsManager;
@@ -26,14 +33,19 @@ import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
 import com.example.music_buddy_app2.SERVICES.API.UserApiManager;
+import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Retrofit;
 
-public class SeeOurRecommendationsActivity extends AppCompatActivity {
+public class SeeOurRecommendationsActivity extends BaseActivity {
 
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     Retrofit retrofit;
@@ -55,7 +67,23 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
     private List<String> urisForAddToPlaylist=new ArrayList<>();
     SpotifyApiRecommendationsManager manager;
     private String spotifyUserId;
-
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+//        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
+//                && keyCode == KeyEvent.KEYCODE_BACK
+//                && event.getRepeatCount() == 0) {
+//            Log.d("MY_LOGS", "onKeyDown Called");
+//            backPressed();
+//        }
+//
+//        return super.onKeyDown(keyCode, event);
+//    }
+//
+//    public void backPressed() {
+//        Log.d("MY_LOGS", "onBackPressed Called");
+//        startActivity(new Intent(SeeOurRecommendationsActivity.this, ChooseContextDetailsActivity.class));
+//        return;
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,25 +93,41 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
         recommendationTracks=new ArrayList<>();
         playlistImage=findViewById(R.id.playlistImage);
         descriptionTV=findViewById(R.id.playlistDesc);
-        playlistNameET=findViewById(R.id.playlistTitle);
+        playlistNameET=findViewById(R.id.playlistTitleOurs);
         cvButtonAddQueue= findViewById(R.id.cvButtonAddQueue);
         cvAddPlaylist=findViewById(R.id.cvButtonAddPlaylist);
         plusIconImage=findViewById(R.id.plusIcon2);
         tv_addplaylist=findViewById(R.id.addplyalist_tv);
         plusIconImageQueue=findViewById(R.id.plusIcon);
         tv_addplaylistQueue=findViewById(R.id.addToQueueTV);
-
-
-
+        descriptionTV=findViewById(R.id.playlistDesc);
+        String date= new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        descriptionTV.setText(descriptionTV.getText());
+        OnBackPressedDispatcher dispatcher = getOnBackPressedDispatcher();
+        dispatcher.addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Log.d("MY_LOGS", "Back button pressed!");
+                Intent intent = new Intent(SeeOurRecommendationsActivity.this, ChooseContextDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         cvButtonAddQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tv_addplaylistQueue.setText("Loading...");
+                cvButtonAddQueue.setEnabled(false);
+                cvButtonAddQueue.setClickable(false);
                 addPlaylistItemsInQueue();
             }
         });
         cvAddPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tv_addplaylist.setText("Loading...");
+                cvAddPlaylist.setEnabled(false);
+                cvAddPlaylist.setClickable(false);
                 addPlaylistToLibrary();
             }
         });
@@ -98,13 +142,16 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
         else {
             Picasso.get().load(recommendationTracks.get(0).getImageResourceId()).into(playlistImage);
         }
-        playlistNameET.setText("Recommendations");
-
-
+        int nbr = SharedPreferencesManager.getNbrGeneratedPlaylists(this);
+        playlistNameET.setText("Playlist Title #"+nbr);
+        nbr += 1;
+        SharedPreferencesManager.updateNbrPlaylists(this, nbr);
     }
     private void updatePlaylistButtonToOpenInSpotify(String playlistId) {
         String url = "https://open.spotify.com/playlist/" + playlistId;
         tv_addplaylist.setText("Open in Spotify");
+        cvAddPlaylist.setEnabled(true);
+        cvAddPlaylist.setClickable(true);
         cvAddPlaylist.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
@@ -135,7 +182,10 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
             adapter = new OurRecommendationsAdapter(this, recommendationTracks, new OurRecommendationsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Track item) {
-
+                    String url = "https://open.spotify.com/track/" + item.getId();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
                 }
             }
             );
@@ -167,10 +217,12 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
    private void addPlaylistToLibrary()
    {
        //get the user id
+
        userApiManager.getProfile(new UserApiManager.UserApiListener() {
            @Override
            public void onProfileReceived(User user) {
                spotifyUserId = user.getSpotifyId();
+               Log.e("MY_LOGS", "GOT PROFILE"+ spotifyUserId);
                createPlaylist(spotifyUserId);
            }
 
@@ -198,6 +250,7 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
             @Override
             public void onAllItemsAdded() {
                 Toast.makeText(SeeOurRecommendationsActivity.this, "Playlist created." , Toast.LENGTH_SHORT).show();
+                Log.e("MY_LOGS", "CREATED PLAYLIST"+ playlistName + " " + description + " "+ spotifyUserId);
                 getPlaylistId(playlistName,description,spotifyUserId);
             }
 
@@ -212,16 +265,18 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
     {
         int offset=0;
         int limit=50;
-
+        Log.e("MY_LOGS", "In get playlist id: " + playlistId);
         playlistsApiManager.getPlaylistIdForUserByPlaylistNameAndDescription(spotifyUserId, offset, limit, playlistName, description, new PlaylistsApiManager.GetPlaylistIdForUserByNameAndDescriptionListener() {
             @Override
             public void onIdFound(String playlistId) {
                 setPlaylistId(playlistId);
                 addTracksToPlaylist(spotifyUserId);
+                Log.e("MY_LOGS", "GOT PLAYOLIST ID: " + playlistId);
             }
 
             @Override
             public void onFailure(String errorMessage) {
+                Log.e("MY_LOGS", "EROOAREEE get id for playlist"+ errorMessage);
                 Toast.makeText(SeeOurRecommendationsActivity.this,errorMessage,Toast.LENGTH_SHORT).show();
             }
         });
@@ -234,7 +289,7 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
     public void addTracksToPlaylist(String spotifyUserId)
     {
         String prefix="spotify:track:";
-
+        Log.e("MY_APP", "Nbr of songs: "+ urisForAddToPlaylist.size());
         for (int i = 0; i < recommendationTracks.size(); i++)
             urisForAddToPlaylist.add(prefix + recommendationTracks.get(i).getId());
 
@@ -246,7 +301,9 @@ public class SeeOurRecommendationsActivity extends AppCompatActivity {
             public void onAllItemsAdded() {
                 Toast.makeText(SeeOurRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
                 plusIconImage.setImageResource(R.drawable.baseline_check_24);
+                Log.e("MY_LOGS", "ADDED them "+ spotifyUserId);
                 updatePlaylistButtonToOpenInSpotify(playlistId);
+
             }
 
             @Override

@@ -27,12 +27,13 @@ public class TokenManager {
     Retrofit retrofit;
     private TokenManager() {
         if (applicationContext != null) {
-            retrofit = RetrofitClient.getMyApiRetrofit();
+            retrofit = RetrofitClient.getMyTokenApiRetrofit();
             customRecommendationsApiInterface = retrofit.create(CustomRecommendationsApiInterface.class);
         }
     }
     public static synchronized void initialize(Context context) {
         if (instance == null) {
+            Log.e("CODE_RECEIVED","initialized");
             applicationContext = context.getApplicationContext();
             instance = new TokenManager();
         }
@@ -40,26 +41,33 @@ public class TokenManager {
 
     public static TokenManager getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("TokenManager is not initialized, call initialize() first");
+            Log.e("MY_LOGS","Token manager not initialized");
+            Intent intent = new Intent(applicationContext,WelcomeActivity.class);
+            applicationContext.startActivity(intent);
         }
         return instance;
     }
     public synchronized String getAccessToken() {
-        long currentTime = System.currentTimeMillis();
-        long expiryTime = SharedPreferencesManager.getExpiryTime(applicationContext);
-        if (currentTime >= expiryTime) {
-            Log.e("CODE_RECEIVED","WILL REFrESH");
-            refreshTokenSync();
-        }
+//        long currentTime = System.currentTimeMillis();
+//        long expiryTime = SharedPreferencesManager.getExpiryTime(applicationContext);
+//        if (currentTime >= expiryTime) {
+//            refreshTokenSync();
+//        }
         return SharedPreferencesManager.getToken(applicationContext);
     }
-    private void refreshTokenSync() {
+
+    private void goToLogin()
+    {
+        Intent intent = new Intent(applicationContext,LoginActivity.class);
+        applicationContext.startActivity(intent);
+    }
+    public synchronized String refreshTokenSync() {
 
         String refreshToken = SharedPreferencesManager.getRefreshToken(applicationContext);
         if (refreshToken == null) {
-            Log.e("CODE_RECEIVED","Refresh token is null");
-            Intent intent = new Intent(applicationContext,LoginActivity.class);
-            applicationContext.startActivity(intent);
+            Log.e("MY_LOGS","Refresh token is null");
+            goToLogin();
+            return null;
         }
         else {
             RefreshTokenRequestBody requestBody = new RefreshTokenRequestBody(refreshToken);
@@ -73,20 +81,14 @@ public class TokenManager {
                     SharedPreferencesManager.saveExpiryTime(applicationContext, newExpiryTime);
                     if (!tokenResponse.getRefreshToken().equals(""))
                         SharedPreferencesManager.saveRefreshToken(applicationContext, tokenResponse.getRefreshToken());
-                    Log.e("CODE_RECEIVED","UPDATE Refresh Token: "+ SharedPreferencesManager.getRefreshToken(applicationContext));
-                    Log.e("CODE_RECEIVED","UPDATE Access token: "+ SharedPreferencesManager.getToken(applicationContext));
-                    Log.e("CODE_RECEIVED","UPDATE Expires at: "+ SharedPreferencesManager.getExpiryTime(applicationContext));
+                    return tokenResponse.getAccessToken();
                 } else {
-                    Log.e("CODE_RECEIVED", "failed to refresh token: " + response.code()+ " "+response.message());
-                    Log.e("CODE_RECEIVED", "Failed to refresh token" + response.message()+ response.body()+response.headers());
-                    Intent intent = new Intent(applicationContext,LoginActivity.class);
-                    applicationContext.startActivity(intent);
+                    goToLogin();
                 }
             } catch (IOException e) {
-                Log.e("CODE_RECEIVED", "failed to refresh token: " + e.getMessage());
-                Intent intent = new Intent(applicationContext,LoginActivity.class);
-                applicationContext.startActivity(intent);
+                goToLogin();
             }
+            return null;
         }
     }
 //    public interface TokenRefreshCallback {

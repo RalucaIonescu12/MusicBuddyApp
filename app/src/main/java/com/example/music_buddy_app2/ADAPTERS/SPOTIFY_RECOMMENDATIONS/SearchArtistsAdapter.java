@@ -49,7 +49,7 @@ public class SearchArtistsAdapter extends RecyclerView.Adapter<SearchArtistsAdap
         } catch (Exception e) {
             holder.artistImage.setImageResource(R.drawable.wood);
             e.printStackTrace();
-            Log.e("IMAGE_LOADING", "Error loading artist picture: " + e.getMessage(), e);
+            Log.e("MY_LOGS", "Error loading artist picture: " + e.getMessage(), e);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +59,10 @@ public class SearchArtistsAdapter extends RecyclerView.Adapter<SearchArtistsAdap
                         listener.onItemClick(result);
                     }
                     else{
-                        Log.e("LISTENER", "Listener is null");
+                        Log.e("MY_LOGS", "Listener is null");
                     }
                 } catch (Exception e) {
-                    Log.e("LISTENER", "Exception: " + e.getMessage(), e);
+                    Log.e("MY_LOGS", "Exception: " + e.getMessage(), e);
                     e.printStackTrace();
                 }
             }

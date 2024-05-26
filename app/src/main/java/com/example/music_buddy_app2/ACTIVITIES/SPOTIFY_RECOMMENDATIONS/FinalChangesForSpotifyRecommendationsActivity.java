@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.AccordionRecAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.GenresResponse;
 import com.example.music_buddy_app2.MODELS.AccordionItemSpotifyRec;
@@ -33,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FinalChangesForSpotifyRecommendationsActivity extends AppCompatActivity
+public class FinalChangesForSpotifyRecommendationsActivity extends BaseActivity
 {
     private RecyclerView recyclerView;
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
@@ -155,7 +156,7 @@ public class FinalChangesForSpotifyRecommendationsActivity extends AppCompatActi
 
         progressNbrSongsValue = findViewById(R.id.progressNbrSongsSignature);
         manager.setNbrTracks(Integer.parseInt(String.valueOf(progressNbrSongsValue.getText())));
-        Log.e("FEATURES",manager.getAudioFeatureFields().toString());
+//        Log.e("MY_LOGS",manager.getAudioFeatureFields().toString());
 
     }
     public void setSpinnerGenres() {
@@ -179,7 +180,7 @@ public class FinalChangesForSpotifyRecommendationsActivity extends AppCompatActi
                 }
                 else {
                     Toast.makeText(FinalChangesForSpotifyRecommendationsActivity.this, "Api response not successful!" , Toast.LENGTH_SHORT).show();
-                    Log.e("Response",response.toString());
+                    Log.e("MY_LOGS","API call failed for getGenres in final changes activity. "+ response);
                 }
             }
 
@@ -187,7 +188,7 @@ public class FinalChangesForSpotifyRecommendationsActivity extends AppCompatActi
             public void onFailure(Call<GenresResponse> call, Throwable t) {
 
                 Toast.makeText(FinalChangesForSpotifyRecommendationsActivity.this, "Failed search request!" , Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed for getGenres in final changes activity.", t);
                 t.printStackTrace();
             }
         });

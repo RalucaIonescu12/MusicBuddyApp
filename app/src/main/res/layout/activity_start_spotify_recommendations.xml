@@ -96,7 +96,7 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/be_vietnam_light"
                 android:padding="10dp"
-                android:text="3. Set the audio features of the songs."
+                android:text="3. Play around with the audio features."
                 android:textAlignment="viewStart"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

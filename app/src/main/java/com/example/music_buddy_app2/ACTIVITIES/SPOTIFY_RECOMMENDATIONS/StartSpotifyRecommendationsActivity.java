@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.R;
 
-public class StartSpotifyRecommendationsActivity extends AppCompatActivity {
+public class StartSpotifyRecommendationsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

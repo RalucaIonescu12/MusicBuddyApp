@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.SearchTracksAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SearchTrackResponse;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.TopArtistsResponse;
@@ -37,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompatActivity implements SearchTracksAdapter.OnItemClickListener  {
+public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends BaseActivity implements SearchTracksAdapter.OnItemClickListener  {
     private EditText inputSearchSongTitle;
     private CardView buttonSearchSong;
     private PlaylistsApiManager playlistsApiManager;
@@ -123,7 +124,7 @@ public class ChooseTracksWithAudioFeaturesForSpotifyRecActivity extends AppCompa
             }
             @Override
             public void onFailure(String errorMessage) {
-                Log.e("FIREBASE_LOGS",errorMessage);
+                Log.e("MY_LOGS",errorMessage);
                 Toast.makeText(ChooseTracksWithAudioFeaturesForSpotifyRecActivity.this, "Failed search" + errorMessage, Toast.LENGTH_SHORT).show();
 
             }

@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ACTIVITIES.PROFILE.ProfileActivity;
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.SearchArtistsAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.ArtistSearchObject;
@@ -37,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity implements SearchArtistsAdapter.OnItemClickListener {
+public class ChooseArtistForSpotifyRecActivity extends BaseActivity implements SearchArtistsAdapter.OnItemClickListener {
     private EditText inputSearchArtist;
     private CardView buttonSearchArtist;
     private CardView buttonNextStep;
@@ -99,8 +100,6 @@ public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity impleme
     private void performSearch(String artistName) {
         // API call and update the RecyclerView with search results
         String q;
-        String accessToken = SharedPreferencesManager.getToken(this);
-        String autorization = "Bearer "+ accessToken;
         q= "artist:"+ artistName;
 
         String type = "artist";
@@ -121,7 +120,7 @@ public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity impleme
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.e("FIREBASE_LOGS",errorMessage);
+                Log.e("MY_LOGS",errorMessage);
                 Toast.makeText(ChooseArtistForSpotifyRecActivity.this, "Failed search" + errorMessage, Toast.LENGTH_SHORT).show();
             }
 
@@ -136,7 +135,7 @@ public class ChooseArtistForSpotifyRecActivity extends AppCompatActivity impleme
                 adapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
-            Log.e("RecyclerViewError", "Error updating RecyclerView: " + e.getMessage(), e);
+            Log.e("MY_LOGS", "Error updating RecyclerView: " + e.getMessage(), e);
             Toast.makeText(this, "Error updating RecyclerView.", Toast.LENGTH_SHORT).show();
         }
     }

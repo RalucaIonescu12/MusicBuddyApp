@@ -12,19 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS.ChooseContextDetailsActivity;
 import com.example.music_buddy_app2.R;
+import com.example.music_buddy_app2.SERVICES.API.TokenManager;
 
 import java.util.ArrayList;
 
-public class ContextRecsMenuActivity extends AppCompatActivity {
+public class ContextRecsMenuActivity extends BaseActivity {
     
     RecyclerView rv;
     ArrayList<String> menuOptions;
     ArrayList<String> menuOptionsDescription;
     LinearLayoutManager linearLayoutManager;
     ContextRecsMenuActivity.MyRVAdapter myRVAdapter;
-  
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TokenManager.initialize(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

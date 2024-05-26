@@ -33,13 +33,18 @@
 <!--          </TextView>-->
           <TextView
               android:id="@+id/title"
-              android:layout_marginTop="20dp"
+              android:layout_marginTop="15dp"
+              android:fontFamily="@font/be_vietnam_light"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:text="Find friends"
+              android:layout_marginLeft="15dp"
+              android:layout_marginRight="15dp"
+              android:background="#64BDED"
               android:textColor="@color/white"
               android:textAlignment="center"
-              android:textSize="28sp">
+              android:padding="10dp"
+              android:textSize="22sp">
 
           </TextView>
           <androidx.recyclerview.widget.RecyclerView
@@ -58,7 +63,7 @@
         android:layout_height="70dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="20dp"
-        app:cardBackgroundColor="#000000"
+        app:cardBackgroundColor="#5B5858"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +75,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/allUsersBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
@@ -84,22 +89,23 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="20dp"
                     android:text="Find friends"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="12dp" />
             </androidx.cardview.widget.CardView>
 
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/followingBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_toEndOf="@+id/allUsersBtn"
@@ -111,24 +117,22 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="20dp"
                     android:text="Following"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/followersBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="3dp"
                 android:layout_marginBottom="4dp"
                 android:layout_toEndOf="@+id/followingBtn"
                 android:height="60dp"
@@ -139,12 +143,12 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="20dp"
                     android:text="Followers"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
 

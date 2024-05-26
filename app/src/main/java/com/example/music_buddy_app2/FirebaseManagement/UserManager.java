@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.UserResponse;
 import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
+import com.example.music_buddy_app2.SERVICES.API.UserApiManager;
 import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +40,6 @@ public class UserManager extends AppCompatActivity {
     private List<User> followingUsers;
     private List<User> followersUsers;
     String userId;
-    String token;
-    String refreshToken;
 
     private UserManager(Context context)
     {
@@ -52,16 +51,16 @@ public class UserManager extends AppCompatActivity {
         this.userId= SharedPreferencesManager.getUserId(context);
         this.currentUser=new User();
     }
-    public void setAccessToken(String token)
-    {
-        this.token=token;
-        Log.e("FIREBASE_LOGS", "1. S a setat access token in manager: " + this.token);
-    }
-    public void setRefreshToken(String token)
-    {
-        this.refreshToken=token;
-        Log.e("FIREBASE_LOGS", "1. S a setat refresh token in manager: " + this.token);
-    }
+//    public void setAccessToken(String token)
+//    {
+//        this.token=token;
+//        Log.e("FIREBASE_LOGS", "1. S a setat access token in manager: " + this.token);
+//    }
+//    public void setRefreshToken(String token)
+//    {
+//        this.refreshToken=token;
+//        Log.e("FIREBASE_LOGS", "1. S a setat refresh token in manager: " + this.token);
+//    }
     public static UserManager getInstance(Context context) {
         if (instance == null) {
             synchronized (UserManager.class) {
@@ -71,6 +70,10 @@ public class UserManager extends AppCompatActivity {
             }
         }
         return instance;
+    }
+    public User getUser()
+    {
+        return user;
     }
     public interface OnUserReceivedListener {
         void onUserReceived(User user);
@@ -109,9 +112,53 @@ public class UserManager extends AppCompatActivity {
     {
         return currentUser;
     }
+//    public void loginUser(final LoginListener loginListener)
+//    {
+//        userApiManager.getProfile(new UserApiManager.UserApiListener() {
+//            @Override
+//            public void onProfileReceived(User user) {
+//                Log.e("CODE_RECEIVED", "login user");
+//                SharedPreferencesManager.saveUserId(context, user.getSpotifyId());
+//                Log.e("FIREBASE_LOGS", "2. S a setat id ul in shared preferences " + SharedPreferencesManager.getUserId(context));
+//                addUser(user);
+//                setCurrentUser(new OnUserReceivedListener() {
+//                    @Override
+//                    public void onUserReceived(User user) {
+//                        Log.e("FIREBASE_LOGS", "set the current user from the database");
+//                        if (loginListener != null) {
+//                            loginListener.onLoginSuccess();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String errorMessage) {
+//                        Log.e("FIREBASE_LOGS", "failed to set the current user from the database");
+//                        if (loginListener != null) {
+//                            loginListener.onLoginFailure(errorMessage);
+//                        }
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onAuthorizationError() {
+//                Log.e("FIREBASE_LOGS", "Response for get user not successful.");
+//                if (loginListener != null) {
+//                    loginListener.onLoginFailure("Authorization error");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(String errorMessage) {
+//                Log.e("FIREBASE_LOGS", "API call failed: " + errorMessage);
+//                if (loginListener != null) {
+//                    loginListener.onLoginFailure(errorMessage);
+//                }
+//            }
+//        });
+//    }
     public void loginUser()
     {
-        String authorization = "Bearer "+ token;
         Call<UserResponse> call= spotifyApiServiceInterface.getMyProfile();
 
         call.enqueue(new Callback<UserResponse>() {
@@ -119,36 +166,36 @@ public class UserManager extends AppCompatActivity {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
                 if (response.isSuccessful()) {
-                    Log.e("CODE_RECEIVED","login user");
+                    Log.e("MY_LOGS","login user");
 
                     UserResponse userResponse = response.body();
                     user = new User(userResponse.getDisplayName(), userResponse.getEmail(),  userResponse.getImages().get(0).getUrl(),userResponse.getId(),userResponse.getUri());
                     SharedPreferencesManager.saveUserId(context,user.getSpotifyId());
 
-                    Log.e("FIREBASE_LOGS", "2. S a setat id ul in shared preferences " + SharedPreferencesManager.getUserId(context));
+                    Log.e("MY_LOGS", "2. S a setat id ul in shared preferences " + SharedPreferencesManager.getUserId(context));
                     addUser(user);
                     setCurrentUser(new OnUserReceivedListener() {
                         @Override
                         public void onUserReceived(User user) {
-                            Log.e("FIREBASE_LOGS","set the current user from the database");
+                            Log.e("MY_LOGS","set the current user from the database");
                         }
 
                         @Override
                         public void onFailure(String errorMessage) {
-                            Log.e("FIREBASE_LOGS","failed to set the current user from the database");
+                            Log.e("MY_LOGS","failed to set the current user from the database");
                         }
 
                     });
                 }
                 else
                 {
-                    Log.e("FIREBASE_LOGS", "Response for get user not successfull.");
+                    Log.e("MY_LOGS", "Response for get user not successfull.");
                 }
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.e("FIREBASE_LOGS", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -159,13 +206,11 @@ public class UserManager extends AppCompatActivity {
     }
     public void addUser(User user)
     {
-        Log.d("FIREBASE_LOGS", "Username: " + user.getUsername());
-        Log.d("FIREBASE_LOGS", "Email: " + user.getEmail());
-        Log.d("FIREBASE_LOGS", "Total Score: " + user.getTotalScore());
-        Log.d("FIREBASE_LOGS", "Total Wins: " + user.getTotalWins());
-        Log.d("FIREBASE_LOGS", "Total Games Played: " + user.getTotalGamesPlayed());
-        Log.d("FIREBASE_LOGS", "Friends IDs: " + user.getFollowingIds());
-        Log.d("FIREBASE_LOGS", "Spotify URI: " + user.getUri());
+        Log.d("MY_LOGS", "Username: " + user.getUsername());
+        Log.d("MY_LOGS", "Email: " + user.getEmail());
+        Log.d("MY_LOGS", "Friends IDs: " + user.getFollowingIds());
+        Log.d("MY_LOGS", "Spotify URI: " + user.getUri());
+        Log.d("MY_LOGS","Playlists created within the app: "+ user.getPlaylistsCreatedWithTheApp());
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
         usersRef.child(user.getSpotifyId()).addValueEventListener(new ValueEventListener() {
@@ -174,17 +219,16 @@ public class UserManager extends AppCompatActivity {
             {
                 if (dataSnapshot.exists()) {
                     //the user already exists
-                    Log.e("FIREBASE_LOGS", "Already exists");
+                    user.setPlaylistsCreatedWithTheApp(dataSnapshot.child("playlistsCreatedWithTheApp").getValue(Integer.class));
+                    Log.e("MY_LOGS", "Already exists");
                 }
                 else
                 {
                     Map<String, Object> userFields = new HashMap<>();
                     userFields.put("username", user.getUsername());
                     userFields.put("email", user.getEmail());
-                    userFields.put("totalScore", user.getTotalScore());
-                    userFields.put("totalWins", user.getTotalWins());
                     userFields.put("profileImageUrl",user.getProfileImageUrl());
-                    userFields.put("totalGamesPlayed", user.getTotalGamesPlayed());
+                    userFields.put("playlistsCreatedWithTheApp", user.getPlaylistsCreatedWithTheApp());
                     userFields.put("spotifyId",user.getSpotifyId());
                     List<String> following = new ArrayList<>();
                     List<String> followers = new ArrayList<>();
@@ -200,7 +244,7 @@ public class UserManager extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("FIREBASE_LOGS", "Database error");
+                Log.e("MY_LOGS", "Database error");
             }
         });
     }
@@ -299,13 +343,13 @@ public class UserManager extends AppCompatActivity {
                             followingUsers.add(user);
                             if (followingUsers.size() == userIds.size())
                                 listener.onUsersReceived(followingUsers);
-                            Log.e("FIREBASE_LOGS","users retrieved" + followingUsers);
+                            Log.e("MY_LOGS","users retrieved" + followingUsers);
                         }
                         else {
                             followersUsers.add(user);
                             if (followersUsers.size() == userIds.size())
                                 listener.onUsersReceived(followersUsers);
-                            Log.e("FIREBASE_LOGS","users retrieved" + followersUsers);
+                            Log.e("MY_LOGS","users retrieved" + followersUsers);
                         }
                     }
 
@@ -354,18 +398,18 @@ public class UserManager extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.e("FIREBASE_LOGS", "Error adding follower: " + databaseError.getMessage());
+                            Log.e("MY_LOGS", "Error adding follower: " + databaseError.getMessage());
                         }
                     });
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e("FIREBASE_LOGS", "Error follow user: " + databaseError.getMessage());
+                    Log.e("MY_LOGS", "Error follow user: " + databaseError.getMessage());
                 }
             });
         } else {
-            Log.e("FIREBASE_LOGS", "Current user ID null.");
+            Log.e("MY_LOGS", "Current user ID null.");
         }
     }
     public void getFriends(OnUsersReceivedListener listener) {

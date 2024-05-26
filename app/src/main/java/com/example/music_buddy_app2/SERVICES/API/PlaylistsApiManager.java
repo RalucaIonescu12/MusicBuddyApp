@@ -83,20 +83,20 @@ public class PlaylistsApiManager {
                 if (response.isSuccessful()) {
                     PlaylistsResponse playlistsResponse = response.body();
                     List<SimplifiedPlaylistObject> playlists = playlistsResponse.getItems();
-                    Log.e("FIREBASE_LOGS", " Playlists: " + playlists);
+                    Log.e("MY_LOGS", " Playlists: " + playlists);
                     usersPlaylists.addAll(playlists);
                     callback.onSuccess(playlists);
                 } else
                 {
                     int statusCode = response.code();
-                    Log.e("FIREBASE_LOGS", "Failed to fetch user playlists. Status code: " + statusCode);
+                    Log.e("MY_LOGS", "Failed to fetch user playlists. Status code: " + statusCode);
                     callback.onFailure("Failed to fetch user playlists");
                 }
             }
             @Override
             public void onFailure(Call<PlaylistsResponse> call, Throwable t) {
                 Toast.makeText(context, "Failed get playlist id!" , Toast.LENGTH_SHORT).show();
-                Log.e("AddPlaylist", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -112,20 +112,20 @@ public class PlaylistsApiManager {
                 if (response.isSuccessful()) {
                     PlaylistsResponse playlistsResponse = response.body();
                     List<SimplifiedPlaylistObject> playlists = playlistsResponse.getItems();
-                    Log.e("FIREBASE_LOGS", " My playlists: " + playlists);
+                    Log.e("MY_LOGS", " My playlists: " + playlists);
                     usersPlaylists.addAll(playlists);
                     callback.onSuccess(playlists);
                 } else
                 {
                     int statusCode = response.code();
-                    Log.e("FIREBASE_LOGS", "Failed to fetch user playlists. Status code: " + statusCode);
+                    Log.e("MY_LOGS", "Failed to fetch user playlists. Status code: " + statusCode);
                     callback.onFailure("Failed to fetch user playlists");
                 }
             }
             @Override
             public void onFailure(Call<PlaylistsResponse> call, Throwable t) {
                 Toast.makeText(context, "Failed get playlist id!" , Toast.LENGTH_SHORT).show();
-                Log.e("AddPlaylist", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -148,13 +148,13 @@ public class PlaylistsApiManager {
                 } else
                 {
                     int statusCode = response.code();
-                    Log.e("AddPlaylist", "Failed to fetch user playlists. Status code: " + statusCode);
+                    Log.e("MY_LOGS", "Failed to fetch user playlists. Status code: " + statusCode);
                 }
             }
             @Override
             public void onFailure(Call<PlaylistsResponse> call, Throwable t) {
                 Toast.makeText(context, "Failed get playlist id!" , Toast.LENGTH_SHORT).show();
-                Log.e("AddPlaylist", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -228,7 +228,7 @@ public class PlaylistsApiManager {
             public void onFailure(Call<SearchArtistsResponse> call, Throwable t) {
                 listener.onFailure(t.getMessage());
                 Toast.makeText(context, "Failed search artist request!", Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call for search artists failed", t);
+                Log.e("MY_LOGS", "API call for search artists failed", t);
                 t.printStackTrace();
             }
         });
@@ -271,7 +271,7 @@ public class PlaylistsApiManager {
 
                 } else {
                     Toast.makeText(context, "Api response for search song not successful!", Toast.LENGTH_SHORT).show();
-                    Log.e("Response", response.toString());
+                    Log.e("MY_LOGS", response.toString());
                     listener.onFailure("Response: " +response.code());
                 }
             }
@@ -279,7 +279,7 @@ public class PlaylistsApiManager {
             public void onFailure(Call<SearchTrackResponse> call, Throwable t) {
 
                 Toast.makeText(context, "Failed search song request!", Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call for song search failed", t);
+                Log.e("MY_LOGS", "API call for song search failed", t);
                 t.printStackTrace();
                 listener.onFailure(t.getMessage());
             }
@@ -306,22 +306,22 @@ public class PlaylistsApiManager {
 
                     if (!response.isSuccessful())
                     {
-                        Log.e("FIREBASE_LOGS",  "Nu a mers: " + response.code());
+                        Log.e("MY_LOGS",  "Nu a mers: " + response.code());
                         listener.onFailure(String.valueOf(successCounter.get()));
 
                     }
                     else {
                         successCounter.incrementAndGet();
-                        Log.e("FIREBASE_LOGS", "S-a adaugat : " + successCounter.get());
+                        Log.e("MY_LOGS", "S-a adaugat : " + successCounter.get());
                         if (successCounter.get() == totalTracks) {//all the tracks are added
                             listener.onAllItemsAdded();
-                            Log.e("FIREBASE_LOGS", "all handled" + successCounter.get());
+                            Log.e("MY_LOGS", "all handled" + successCounter.get());
                         }
                     }
                 }
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Log.e("FIREBASE_LOGS",   "failure " + t+ "la nr : " + String.valueOf(successCounter.get()));
+                    Log.e("MY_LOGS",   "failure " + t+ "la nr : " + String.valueOf(successCounter.get()));
                     listener.onFailure(String.valueOf(successCounter.get()));
                     t.printStackTrace();
                 }
@@ -347,23 +347,23 @@ public class PlaylistsApiManager {
 
                     if (!response.isSuccessful())
                     {
-                        Log.e("FIREBASE_LOGS",  "nu a mers " + response.code());
+                        Log.e("MY_LOGS",  "nu a mers " + response.code());
                         listener.onFailure(response.message());
                     }
                     else {
                         successCounter.incrementAndGet();
-                        Log.e("FIREBASE_LOGS", successCounter+  " " + response.code());
+                        Log.e("MY_LOGS", successCounter+  " " + response.code());
                         if (successCounter.get() == totalTracks) {//all the tracks are added
                             listener.onAllItemsAdded();
                         }
-                        Log.e("AddPlaylist",String.valueOf(response.code()) + response.message());
+                        Log.e("MY_LOGS",String.valueOf(response.code()) + response.message());
                     }
                 }
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Log.e("FIREBASE_LOGS",   "failure " + t);
+                    Log.e("MY_LOGS",   "failure " + t);
                     listener.onFailure(t.getMessage());
-                    Log.e("API_FAILURE", "API call failed", t);
+                    Log.e("MY_LOGS", "API call failed", t);
                     t.printStackTrace();
                 }
             });
@@ -394,7 +394,7 @@ public class PlaylistsApiManager {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(context, "Failed create playlist request!" , Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -413,14 +413,26 @@ public class PlaylistsApiManager {
             @Override
             public void onResponse(Call<PlaylistsResponse> call, Response<PlaylistsResponse> response) {
                 if (response.isSuccessful()) {
+                    if(response.body().getItems().size()==0)
+                        listener.onFailure("Playlist not found");
                     PlaylistsResponse playlistsResponse = response.body();
                     List<SimplifiedPlaylistObject> playlists = playlistsResponse.getItems();
+                    int ok=0;
+                    Log.e("MY_LOGS", "CAUTA " +playlistDescription + "  "+ playlistName);
                     for (SimplifiedPlaylistObject playlist : playlists)
                     {
+                        Log.e("MY_LOGS", playlist.getName() + "  "+ playlist.getDescription());
                         if(playlist.getName().equals(playlistName) && playlist.getDescription().equals(playlistDescription)) {
+                            ok=1;
                             listener.onIdFound(playlist.getId());
                             break;
                         }
+                    }
+                    if(ok==0)
+                    {
+                        Log.e("MY_LOGS", "recursion ");
+                        getPlaylistIdForUserByPlaylistNameAndDescription(spotifyUserId, offset + limit, limit, playlistName, playlistDescription, listener);
+                        //another call for the nextb 50 playlists
                     }
                 } else
                 {
@@ -432,7 +444,7 @@ public class PlaylistsApiManager {
             public void onFailure(Call<PlaylistsResponse> call, Throwable t) {
                 listener.onFailure(t.getMessage());
                 Toast.makeText(context, "Failed get playlist id!" , Toast.LENGTH_SHORT).show();
-                Log.e("AddPlaylist", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -447,9 +459,9 @@ public class PlaylistsApiManager {
             public void onResponse(Call<AddTracksToPlaylistResponse> call, Response<AddTracksToPlaylistResponse> response) {
                 if (response.isSuccessful()) {
                     listener.onAllItemsAdded();
-                    Log.e("AddPlaylist", "add tracks to playlist :  " + response.code() + " " + response.message());
+                    Log.e("MY_LOGS", "add tracks to playlist :  " + response.code() + " " + response.message());
                 } else {
-                    Log.e("AddPlaylist", "Didn't work" + String.valueOf(response.code()) + response.message());
+                    Log.e("MY_LOGS", "Didn't work" + String.valueOf(response.code()) + response.message());
                     listener.onFailure("Failed to add songs. Response: "+response.code());
                 }
             }
@@ -457,7 +469,7 @@ public class PlaylistsApiManager {
             @Override
             public void onFailure(Call<AddTracksToPlaylistResponse> call, Throwable t) {
                 listener.onFailure("Failed request to add songs in playlist.");
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });
@@ -491,7 +503,7 @@ public class PlaylistsApiManager {
             @Override
             public void onFailure(Call<PlaylistItemsResponse> call, Throwable t) {
                 listener.onFailure(t.getMessage());
-                Log.e("FIREBASE_LOG", "API call to get items from playlist failed", t);
+                Log.e("MY_LOGS", "API call to get items from playlist failed", t);
                 t.printStackTrace();
             }
         });
@@ -534,7 +546,7 @@ public class PlaylistsApiManager {
             }
             @Override
             public void onFailure(Call<SeveralTracksResponse> call, Throwable t) {
-                Log.e("SeveralTracks", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 listener.onFailure("Error fetching tracks");
                 t.printStackTrace();
             }

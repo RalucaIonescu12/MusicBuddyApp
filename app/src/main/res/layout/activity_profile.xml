@@ -20,13 +20,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="155dp"
-            android:layout_height="158dp"
-            android:layout_marginLeft="85dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="30dp"
             android:background="#000000"
             android:elevation="20dp"
-            app:cardCornerRadius="60dp">
+            app:cardCornerRadius="100dp">
 
             <ImageView
                 android:id="@+id/profile_picture"
@@ -38,17 +38,38 @@
                 tools:srcCompat="@drawable/wood" />
 
         </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="10dp"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="#64BDED"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Logout"
+                android:fontFamily="@font/be_vietnam_light"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content">
 
+            </TextView>
+        </androidx.cardview.widget.CardView>
         <TextView
             android:id="@+id/username"
             android:layout_width="330dp"
             android:layout_height="60dp"
+            android:textColor="@color/white"
             android:fontFamily="@font/be_vietnam_light"
             android:text="USERNAME"
             android:textAlignment="center"
             android:textSize="34sp"
             android:textStyle="bold"
-            android:layout_marginTop="240dp"
+            android:layout_marginTop="230dp"
             android:layout_marginLeft="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,22 +77,23 @@
             app:layout_constraintTop_toTopOf="parent"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/manageFriends"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
             android:layout_below="@+id/topArtistsTitle"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="20dp"
             app:cardBackgroundColor="#64BDED"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="410dp"
             android:elevation="20dp"
             app:cardCornerRadius="10dp">
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/manageFriendsImage"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="50dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
@@ -85,12 +107,12 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="5dp"
-                    android:padding="6dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_toEndOf="@+id/manageFriendsImage"
+                    android:padding="6dp"
+                    android:fontFamily="@font/be_vietnam_light"
                     android:text="Manage friends"
                     android:textColor="#FFFFFF"
-                    android:textSize="15dp">
+                    android:textSize="18dp">
 
                 </TextView>
             </RelativeLayout>
@@ -102,41 +124,25 @@
             android:layout_height="240dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="470dp"
-            android:background="#FFFFFF"
             app:cardBackgroundColor="#858382"
             app:cardCornerRadius="10dp">
 
             <ImageView
                 android:id="@+id/show_top_songs_image"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_marginLeft="160dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/total_score_count"
-                tools:srcCompat="@drawable/top_tracks" />
-
-            <ImageView
-                android:id="@+id/show_top_artists_image"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.585"
-                app:layout_constraintStart_toEndOf="@+id/show_top_songs_image"
-                app:layout_constraintTop_toBottomOf="@+id/total_games_played_count"
-                app:layout_constraintVertical_bias="0.414"
-                tools:srcCompat="@drawable/top_artists" />
+                tools:srcCompat="@drawable/vinylss" />
 
             <TextView
                 android:id="@+id/topArtistsTitle"
                 android:layout_width="289dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="180dp"
                 android:text="See Your Favorites"
                 android:textAlignment="center"
                 android:fontFamily="@font/be_vietnam_light"
@@ -144,50 +150,50 @@
 
 
         </androidx.cardview.widget.CardView>
-        <TextView
-            android:id="@+id/total_score"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="320dp"
-            android:fontFamily="@font/be_vietnam_light"
-            android:text="Total score"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.051"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+<!--        <TextView-->
+<!--            android:id="@+id/total_score"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginTop="320dp"-->
+<!--            android:fontFamily="@font/be_vietnam_light"-->
+<!--            android:text="Total score"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.051"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.4" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/total_games_played"-->
+<!--            android:layout_width="127dp"-->
+<!--            android:layout_height="34dp"-->
+<!--            android:layout_marginLeft="195dp"-->
+<!--            android:layout_marginTop="320dp"-->
+<!--            android:fontFamily="@font/be_vietnam_light"-->
+<!--            android:text="Games played"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.92"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.4" />-->
 
         <TextView
-            android:id="@+id/total_games_played"
-            android:layout_width="127dp"
-            android:layout_height="34dp"
-            android:layout_marginLeft="195dp"
-            android:layout_marginTop="320dp"
+            android:id="@+id/playlists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="310dp"
+            android:textColor="@color/white"
             android:fontFamily="@font/be_vietnam_light"
-            android:text="Games played"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.92"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
-
-        <TextView
-            android:id="@+id/total_games_won"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="320dp"
-            android:fontFamily="@font/be_vietnam_light"
-            android:text="Wins"
+            android:text="Playlists created with the app:"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -198,28 +204,30 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.4" />
 
-        <TextView
-            android:id="@+id/total_score_count"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="355dp"
-            android:fontFamily="@font/be_vietnam_light"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/total_score"
-            app:layout_constraintVertical_bias="0.0" />
+<!--        <TextView-->
+<!--            android:id="@+id/total_score_count"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginTop="355dp"-->
+<!--            android:fontFamily="@font/be_vietnam_light"-->
+<!--            android:text="0"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/total_score"-->
+<!--            app:layout_constraintVertical_bias="0.0" />-->
 
         <TextView
-            android:id="@+id/total_games_won_count"
-            android:layout_width="100dp"
+            android:id="@+id/playlists_count"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="215dp"
-            android:layout_marginTop="355dp"
+            android:layout_marginRight="120dp"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="340dp"
+            android:textColor="@color/white"
             android:fontFamily="@font/be_vietnam_light"
             android:text="0"
             android:textAlignment="center"
@@ -230,23 +238,7 @@
             app:layout_constraintTop_toBottomOf="@+id/total_games_won"
             app:layout_constraintVertical_bias="0.625" />
 
-        <TextView
-            android:id="@+id/total_games_played_count"
-            android:layout_width="100dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="355dp"
-            android:fontFamily="@font/be_vietnam_light"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.675"
-            app:layout_constraintStart_toEndOf="@+id/total_games_won_count"
-            app:layout_constraintTop_toBottomOf="@+id/total_games_played"
-            app:layout_constraintVertical_bias="0.065" />
+
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

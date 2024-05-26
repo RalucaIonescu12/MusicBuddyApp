@@ -126,7 +126,7 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
                     livenessValue.setText(String.valueOf(trackFeatures.getLiveness()));
                     danceabilityValue.setText(String.valueOf(trackFeatures.getDanceability()));
                     tempoValue.setText(String.valueOf(trackFeatures.getTempo()));
-                    instrumentalnessValue.setText(String.valueOf(trackFeatures.getInstrumentalness()));
+                    instrumentalnessValue.setText(String.valueOf((double)trackFeatures.getInstrumentalness()).substring(0,6));
                     energyValue.setText(String.valueOf(trackFeatures.getEnergy()));
 
                     timeSignature.setText(String.valueOf(trackFeatures.getTimeSignature()));
@@ -153,7 +153,7 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
             public void onFailure(Call<AudioFeaturesObjectResponse> call, Throwable t) {
                 // Handle failure
                 Toast.makeText(requireContext(), "Failed features request!" , Toast.LENGTH_SHORT).show();
-                Log.e("API_FAILURE", "API call failed", t);
+                Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
         });

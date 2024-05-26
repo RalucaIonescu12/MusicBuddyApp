@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.FirebaseManagement.UserManager;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
@@ -23,17 +24,18 @@ import com.example.music_buddy_app2.API_RESPONSES.USERS.UserResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ProfileActivity extends AppCompatActivity {
-//    private SpotifyService spotifyService;
+public class ProfileActivity extends BaseActivity {
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     public User user;
     private UserApiManager userApiManager;
+    private UserManager managerFirebase;
     Retrofit retrofit;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         userApiManager=UserApiManager.getInstance(this);
         initiateSpotifyApiService();
         fetchUserProfileData();
-
+        managerFirebase= UserManager.getInstance(this);
         CardView topArtists = findViewById(R.id.card_top_items);
         CardView manageFriends= findViewById(R.id.manageFriends);
         user=new User();
@@ -64,8 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
     public void setUser(User user)
     {
-        this.user=user;
-        Log.e("FIREBASE_LOGS",this.user.toString());
+        this.user=managerFirebase.getUser();
+        Log.e("MY_LOGS",this.user.toString());
     }
     public void initiateSpotifyApiService()
     {
@@ -81,20 +83,21 @@ public class ProfileActivity extends AppCompatActivity {
         userApiManager.getProfile( new UserApiManager.UserApiListener() {
             @Override
             public void onProfileReceived(User user) {
-                Log.e("FIREBASE_LOGS","Profile: "+ user);
+                Log.e("MY_LOGS","Profile: "+ user);
                 setUser(user);
+                //set the other info from firebase, playlists etc
                 updateUI();
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.e("CODE_RECEIVED",errorMessage);
+                Log.e("MY_LOGS",errorMessage);
                 Toast.makeText(ProfileActivity.this, "Failed to retrieve profile" + errorMessage, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onAuthorizationError()
             {
-                Log.e("CODE_RECEIVED","Need to reauthorize");
+                Log.e("MY_LOGS","Need to reauthorize");
                 Toast.makeText(ProfileActivity.this, "You need to reauthorize!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -103,19 +106,13 @@ public class ProfileActivity extends AppCompatActivity {
     private void updateUI()
     {
         TextView username = findViewById(R.id.username);
-        TextView totalWins = findViewById(R.id.total_games_won_count );
-        TextView totalGamesPlayed = findViewById(R.id.total_games_played_count);
-        TextView totalScore = findViewById(R.id.total_score_count);
+        TextView playlists = findViewById(R.id.playlists_count );
         ImageView profilePicture = findViewById(R.id.profile_picture);
-        ImageView topArtists = findViewById(R.id.show_top_artists_image);
         ImageView topTracks = findViewById(R.id.show_top_songs_image);
 
+        playlists.setText(user.getPlaylistsCreatedWithTheApp().toString());
         username.setText(user.getUsername());
-        totalWins.setText(user.getTotalWins().toString());
-        totalGamesPlayed.setText(user.getTotalGamesPlayed().toString());
-        totalScore.setText(user.getTotalScore().toString());
         Picasso.get().load(user.getProfileImageUrl()).into(profilePicture);
-        topArtists.setImageResource(R.drawable.top_artists);
-        topTracks.setImageResource(R.drawable.top_tracks);
+        topTracks.setImageResource(R.drawable.vinylss);
     }
 }

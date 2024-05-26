@@ -14,38 +14,38 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import okhttp3.logging.HttpLoggingInterceptor;
 public class RetrofitClient {
     //singleton class
-    private static final String BASE_URL = "https://api.spotify.com";
+    private static final String SPOTIFY_URL = "https://api.spotify.com";
     private static final int TIMEOUT_SECONDS = 20;
-    private static final String TOKEN_URL = "https://accounts.spotify.com";
-    private static final String MY_API_BASE_URL="https://recommendations-dakig7klxq-lm.a.run.app/";
-    private static Retrofit retrofit;
-    private static Retrofit retrofitToken;
+    private static final String TOKEN_API_URL="https://token-dakig7klxq-lm.a.run.app";
+    private static final String RECS_API_URL="https://recs-dakig7klxq-lm.a.run.app";
+    private static Retrofit spotifyRetrofit;
+    private static Retrofit myApiRecsRetrofit;
     private static Retrofit myApiRetrofit;
-    public static Retrofit getRetrofitInstance() {
-        if (retrofit == null) {
-            OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new Interceptor() { // adds token to each request
-                        @Override
-                        public Response intercept(Interceptor.Chain chain) throws IOException {
-                            Request originalRequest = chain.request();
-
-                            String accessToken = TokenManager.getInstance().getAccessToken();
-                            Request newRequest = originalRequest.newBuilder()
-                                    .header("Authorization", "Bearer " + accessToken)
-                                    .build();
-                            return chain.proceed(newRequest);
-                        }
-                    })
-                    .build();
-
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create()) // Uses Gson for serialization/deserialization
-                    .build();
-        }
-        return retrofit;
-    }
+//    public static Retrofit getRetrofitInstance() {
+//        if (retrofit == null) {
+//            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                    .addInterceptor(new Interceptor() { // adds token to each request
+//                        @Override
+//                        public Response intercept(Interceptor.Chain chain) throws IOException {
+//                            Request originalRequest = chain.request();
+//
+//                            String accessToken = TokenManager.getInstance().getAccessToken();
+//                            Request newRequest = originalRequest.newBuilder()
+//                                    .header("Authorization", "Bearer " + accessToken)
+//                                    .build();
+//                            return chain.proceed(newRequest);
+//                        }
+//                    })
+//                    .build();
+//
+//            retrofit = new Retrofit.Builder()
+//                    .baseUrl(BASE_URL)
+//                    .client(okHttpClient)
+//                    .addConverterFactory(GsonConverterFactory.create()) // Uses Gson for serialization/deserialization
+//                    .build();
+//        }
+//        return retrofit;
+//    }
 //    public static Retrofit getRetrofitInstance() {
 //        if (retrofit == null) {
 //            retrofit = new Retrofit.Builder()
@@ -64,26 +64,74 @@ public class RetrofitClient {
 //        }
 //        return retrofitToken ;
 //    }
-    public static Retrofit getMyApiRetrofit()
+
+
+    public static Retrofit getRetrofitInstance() {
+        if (spotifyRetrofit == null) {
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Interceptor.Chain chain) throws IOException {
+                            Request originalRequest = chain.request();
+                            String accessToken = TokenManager.getInstance().getAccessToken();
+                            Request newRequest = originalRequest.newBuilder()
+                                    .header("Authorization", "Bearer " + accessToken)
+                                    .build();
+                            return chain.proceed(newRequest);
+                        }
+                    })
+                    .authenticator(new TokenAuthenticator(TokenManager.getInstance()))
+                    .build();
+            spotifyRetrofit = new Retrofit.Builder()
+                    .baseUrl(SPOTIFY_URL)
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();}
+        return spotifyRetrofit;
+    }
+
+    public static Retrofit getMyTokenApiRetrofit()
     {
 
         if (myApiRetrofit  == null) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(logging)
+//                    .addInterceptor(logging)
                     .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .build();
 
             myApiRetrofit  = new Retrofit.Builder()
-                .baseUrl(MY_API_BASE_URL)
+                .baseUrl(TOKEN_API_URL)
                     .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         }
         return myApiRetrofit ;
+
+    }
+    public static Retrofit getMyRecsApiRetrofit()
+    {
+
+        if (myApiRecsRetrofit  == null) {
+//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+//                    .addInterceptor(logging)
+                    .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .build();
+
+            myApiRecsRetrofit  = new Retrofit.Builder()
+                    .baseUrl(RECS_API_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return myApiRecsRetrofit ;
 
     }
 }

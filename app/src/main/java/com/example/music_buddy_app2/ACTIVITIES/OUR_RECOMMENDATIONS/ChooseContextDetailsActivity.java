@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ACTIVITIES.PROFILE.FindFriendsActivity;
 import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.FriendsPlaylistsAdapter;
 import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.MyPlaylistsAdapter;
@@ -30,7 +31,7 @@ import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseContextDetailsActivity extends AppCompatActivity implements MyFriendsMultiChoiceFragment.OnFriendsSelectedListener,MyPlaylistsAdapter.OnPlaylistSelectedListener, FriendsPlaylistsAdapter.OnFriendsPlaylistSelectedListener  {
+public class ChooseContextDetailsActivity extends BaseActivity implements MyFriendsMultiChoiceFragment.OnFriendsSelectedListener,MyPlaylistsAdapter.OnPlaylistSelectedListener, FriendsPlaylistsAdapter.OnFriendsPlaylistSelectedListener  {
     Spinner genreSpinner;
     private List<String> genres;
     private String  selectedGenre;
@@ -39,7 +40,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
 //TODO: fetch the genres when you login the app now at every page.Minimize api calls
     private TextView tvFriendsPlaylists;
     private String selectedOption;
-    private String selectedMood;
     private ArrayAdapter<String> genreAdapter;
     private PlaylistsApiManager playlistsApiManager;
     private List<User> friends = new ArrayList<>();
@@ -49,7 +49,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
     CardView done;
     CardView myFriendsPlaylistsCV;
     CardView myPlaylistsCV;
-    RadioGroup moodsRG;
     RadioGroup optionsRG;
     CardView getRecsButton;
     TextView nbrOfSelectedSongs;
@@ -58,13 +57,14 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
     private FriendsPlaylistsAdapter friendsPlaylistsAdapter;
     private List<SimplifiedPlaylistObject> friendsPlaylists = new ArrayList<>();
     private List<SimplifiedPlaylistObject> currentUsersPlaylists=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_context_details);
 
         List<String> options = new ArrayList<>();
-        List<String> moods = new ArrayList<>();
+
         genres=new ArrayList<>();
         playlistsApiManager=PlaylistsApiManager.getInstance(this);
         userManager=UserManager.getInstance(this);
@@ -73,10 +73,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
         options.add("my playlists");
         options.add("mine and my friends' playlists");
 
-        moods.add("Energetic");
-        moods.add("Sad");
-        moods.add("Calm");
-        moods.add("Mad");
 
         for (String option : options) {
             RadioButton radioButton = new RadioButton(this);
@@ -84,10 +80,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             radioButton.setId(View.generateViewId());
             optionsRG.addView(radioButton);
         }
-// TODO: constrint to be able to add the playlist only once if nothing changed from the previous playlist
-//TODO: la fel si pt add to queue
-//TODO: refresh token cumva
-// TODO: deelte the "clicked song" la recommendations
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +87,17 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
                 if (selectedOption != null) {
                     switch (selectedOption) {
                         case "mine and my friends' playlists":
+                            nbrOfSelectedSongs.setVisibility(View.VISIBLE);
+                            genreSpinner.setVisibility(View.VISIBLE);
+                            getRecsButton.setVisibility(View.VISIBLE);
                             handleMineAndMyFriendsOption();
                             break;
                         case "my playlists":
                             myFriendsPlaylistsCV.setVisibility(View.GONE);
                             myPlaylistsCV.setVisibility(View.VISIBLE);
+                            nbrOfSelectedSongs.setVisibility(View.VISIBLE);
+                            genreSpinner.setVisibility(View.VISIBLE);
+                            getRecsButton.setVisibility(View.VISIBLE);
                         default:
                             break;
                     }
@@ -115,26 +113,12 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             }
         });
 
-        for (String mood : moods) {
-            RadioButton radioButton = new RadioButton(this);
-            radioButton.setText(mood);
-            radioButton.setId(View.generateViewId());
-            moodsRG.addView(radioButton);
-        }
-
-        moodsRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int id) {
-                RadioButton button = findViewById(id);
-                setSelectedMood(button.getText().toString());
-            }
-        });
 
         genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 setSelectedGenre(parentView.getItemAtPosition(position).toString());
-
+                ChooseContextDetailsManager.setGenre(parentView.getItemAtPosition(position).toString());
            }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -147,14 +131,16 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseContextDetailsActivity.this,LoadingActivity.class);
+
                 startActivity(intent);
-                LoadingActivity.genre=selectedGenre;
+
             }
         });
     }
     @Override
     protected void onResume() {
         super.onResume();
+
         manager.reset();
         nbrOfSelectedSongs.setText(ChooseContextDetailsManager.nbrOfSongsAdded.toString() + " songs selected");
         if (friendsPlaylistsAdapter != null) {
@@ -198,10 +184,7 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
     {
         this.selectedGenre = selectedGenre;
     }
-    public void setSelectedMood(String selectedMood)
-    {
-        this.selectedMood=selectedMood;
-    }
+
     private void handleMineAndMyFriendsOption()
     {
         userManager.getFriends(new UserManager.OnUsersReceivedListener() {
@@ -211,6 +194,7 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
                 friends.addAll(users);
                 MyFriendsMultiChoiceFragment dialogFragment = new MyFriendsMultiChoiceFragment(friends,ChooseContextDetailsActivity.this);
                 dialogFragment.show(getSupportFragmentManager(), "friends_multichoice_fragment");
+
             }
 
             @Override
@@ -243,7 +227,6 @@ public class ChooseContextDetailsActivity extends AppCompatActivity implements M
         myFriendsPlaylistsRV.setAdapter(friendsPlaylistsAdapter);
 
         done=findViewById(R.id.doneSelectignBtn);
-        moodsRG= findViewById(R.id.radioGroupMoodContextDetails);
         optionsRG = findViewById(R.id.radioGrouptContextDetails);
 
         getRecsButton=findViewById(R.id.getRecs);

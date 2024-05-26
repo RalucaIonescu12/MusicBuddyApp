@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
 import com.example.music_buddy_app2.ADAPTERS.USERS.ManageFriendsAdapter;
 import com.example.music_buddy_app2.FirebaseManagement.UserManager;
 import com.example.music_buddy_app2.MODELS.User;
@@ -19,7 +20,7 @@ import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesMana
 
 import java.util.List;
 
-public class FindFriendsActivity extends AppCompatActivity
+public class FindFriendsActivity extends BaseActivity
 {
     UserManager manager;
     ManageFriendsAdapter adapter;
@@ -45,11 +46,10 @@ public class FindFriendsActivity extends AppCompatActivity
         allUsersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("FIREBASE_LOGS","all users selected");
                 manager.getAllUsersCall(new UserManager.OnUsersReceivedListener() {
                     @Override
                     public void onUsersReceived(List<User> users) {
-                        Log.e("FIREBASE_LOGS","will display : "+ users);
+                        Log.e("MY_LOGS","Users received.");
                         title.setText("Find friends");
                         adapter.setUsers(users);
                     }
@@ -65,11 +65,10 @@ public class FindFriendsActivity extends AppCompatActivity
         followersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("FIREBASE_LOGS","followers users selected");
                 manager.getFollowerUsersForUserCall(SharedPreferencesManager.getUserId(FindFriendsActivity.this), new UserManager.OnUsersReceivedListener() {
                     @Override
                     public void onUsersReceived(List<User> users) {
-                        Log.e("FIREBASE_LOGS","will display" + users);
+                        Log.e("MY_LOGS","Users received.");
                         title.setText("People that follow you");
                         adapter.setUsers(users);
                     }
@@ -84,11 +83,10 @@ public class FindFriendsActivity extends AppCompatActivity
         followingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("FIREBASE_LOGS","folowing users selected");
                 manager.getFollowingUsersForUserCall(SharedPreferencesManager.getUserId(FindFriendsActivity.this), new UserManager.OnUsersReceivedListener() {
                     @Override
                     public void onUsersReceived(List<User> users) {
-                        Log.e("FIREBASE_LOGS","will display: "+ users);
+                        Log.e("MY_LOGS","Users received.");
                         title.setText("People you follow");
                         adapter.setUsers(users);
                     }
@@ -107,8 +105,8 @@ public class FindFriendsActivity extends AppCompatActivity
         manager.getFollowerUsersForUserCall(SharedPreferencesManager.getUserId(FindFriendsActivity.this), new UserManager.OnUsersReceivedListener() {
             @Override
             public void onUsersReceived(List<User> users) {
-                Log.e("FIREBASE_LOGS","will display" + users);
-                getFollowingUsers();
+                Log.e("MY_LOGS","Users received.");
+//                getFollowingUsers();
             }
 
             @Override
@@ -117,30 +115,31 @@ public class FindFriendsActivity extends AppCompatActivity
             }
         });
     }
-    private void getAllUsers() {
-        manager.getAllUsersCall(new UserManager.OnUsersReceivedListener() {
-        @Override
-        public void onUsersReceived(List<User> users) {
-            adapter.setUsers(users);
-        }
-
-        @Override
-        public void onFailure(String errorMessage) {
-            Toast.makeText(FindFriendsActivity.this, "Failed to retrieve users: " + errorMessage, Toast.LENGTH_SHORT).show();
-        }
-    });}
-    private void getFollowingUsers(){
-        manager.getFollowingUsersForUserCall(SharedPreferencesManager.getUserId(FindFriendsActivity.this), new UserManager.OnUsersReceivedListener() {
-            @Override
-            public void onUsersReceived(List<User> users) {
-                Log.e("FIREBASE_LOGS","will display: "+ users);
-                getAllUsers();
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Toast.makeText(FindFriendsActivity.this, "Failed to retrieve following users: " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void getAllUsers() {
+//        manager.getAllUsersCall(new UserManager.OnUsersReceivedListener()
+//        {
+//            @Override
+//            public void onUsersReceived(List<User> users) {
+//                adapter.setUsers(users);
+//            }
+//
+//            @Override
+//            public void onFailure(String errorMessage) {
+//                Toast.makeText(FindFriendsActivity.this, "Failed to retrieve users: " + errorMessage, Toast.LENGTH_SHORT).show();
+//            }
+//    });}
+//    private void getFollowingUsers(){
+//        manager.getFollowingUsersForUserCall(SharedPreferencesManager.getUserId(FindFriendsActivity.this), new UserManager.OnUsersReceivedListener() {
+//            @Override
+//            public void onUsersReceived(List<User> users) {
+//                Log.e("MY_LOGS","will display: "+ users);
+////                getAllUsers();
+//            }
+//
+//            @Override
+//            public void onFailure(String errorMessage) {
+//                Toast.makeText(FindFriendsActivity.this, "Failed to retrieve following users: " + errorMessage, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 }
