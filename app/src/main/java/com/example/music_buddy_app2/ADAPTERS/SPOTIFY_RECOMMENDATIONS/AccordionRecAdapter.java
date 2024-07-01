@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -81,13 +82,15 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LinearLayout detailsLayout;
         Spinner genreSpinner;
         ChipGroup chipGroup;
+        ImageView icon;
         Context context;
         InputViewHolder(@NonNull View itemView) {
             super(itemView);
             context = itemView.getContext();
             titleTextView = itemView.findViewById(R.id.titleTextView);
             detailsLayout = itemView.findViewById(R.id.detailsLayout);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            detailsLayout.setVisibility(View.GONE);
+            icon=itemView.findViewById(R.id.arrowInput);
             chipGroup = itemView.findViewById(R.id.chip_group_rec_spotify);
             genreSpinner = itemView.findViewById(R.id.genresSpinner);
             genreSpinner.setPrompt("Pick genres");
@@ -95,6 +98,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Map<String,Map<String,Map<String, Double>>> artists = recFilters.get("seed_artists");
             Map<String,Map<String,Map<String, Double>>> tracks = recFilters.get("seed_tracks");
             Map<String,Map<String,Map<String, Double>>> genres = recFilters.get("seed_genres");
+
             if(artists!=null)
                 for(String key: artists.keySet())
                     addChip(key);
@@ -109,8 +113,10 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (detailsLayout.getVisibility() == View.GONE) {
                     detailsLayout.setVisibility(View.VISIBLE);
                     ((FinalChangesForSpotifyRecommendationsActivity) context).setSpinnerGenres();
+                    icon.setImageResource(R.drawable.baseline_arrow_drop_up_24);
                 } else {
                     detailsLayout.setVisibility(View.GONE);
+                    icon.setImageResource(R.drawable.baseline_arrow_drop_down_24);
                 }
             });
 
@@ -135,6 +141,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             });
+
         }
 
         void bind(AccordionItemSpotifyRec item) {
@@ -197,27 +204,31 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         SeekBar seekBarMaxValence;
         TextView progressValueMaxValence;
         LinearLayout detailsLayout;
+        ImageView icon;
 
         SeekBarViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             detailsLayout = itemView.findViewById(R.id.detailsLayout);
+            icon=itemView.findViewById(R.id.arrowSwitches);
             itemView.setOnClickListener(v -> {
                 if (detailsLayout.getVisibility() == View.GONE) {
                     detailsLayout.setVisibility(View.VISIBLE);
+                    icon.setImageResource(R.drawable.baseline_arrow_drop_up_24);
                 } else {
-                    detailsLayout.setVisibility(View.GONE); 
+                    detailsLayout.setVisibility(View.GONE);
+                    icon.setImageResource(R.drawable.baseline_arrow_drop_down_24);
                 }
             });
 
 
             progressValueMinDanceability= itemView.findViewById(R.id.progressValueMinDanceability);
-            detailsLayout.setVisibility(View.GONE); 
+            detailsLayout.setVisibility(View.VISIBLE);
+            icon.setImageResource(R.drawable.baseline_arrow_drop_up_24);
             seekBarMinDanceability = itemView.findViewById(R.id.seekBarMinDanceability);
             progressValueCalculatedDanceability = itemView.findViewById(R.id.progressValueCalculatedDanceability);
             progressValueCalculatedDanceability.setText(manager.getAudioFeature("target_danceability").toString());
 
-            // listener to update the progress value when SeekBar's progress changes
             seekBarMinDanceability.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -244,7 +255,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             progressValueMaxDanceability = itemView.findViewById(R.id.progressValueMaxDanceability);
-            detailsLayout.setVisibility(View.GONE);
+
             seekBarMaxDanceability = itemView.findViewById(R.id.seekBarMaxDanceability);
             progressValueMaxDanceability.setText("1.0");
             seekBarMaxDanceability.setProgress(100000);
@@ -275,7 +286,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             progressValueMinLiveness= itemView.findViewById(R.id.progressValueMinLiveness);
-            detailsLayout.setVisibility(View.GONE); 
+
             seekBarMinLiveness = itemView.findViewById(R.id.seekBarMinLiveness);
             progressValueCalculatedLiveness= itemView.findViewById(R.id.progressValueCalculatedLiveness);
             progressValueCalculatedLiveness.setText(manager.getAudioFeature("target_liveness").toString());
@@ -308,7 +319,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             progressValueMaxLiveness= itemView.findViewById(R.id.progressValueMaxLiveness);
-            detailsLayout.setVisibility(View.GONE);
+
             seekBarMaxLiveness = itemView.findViewById(R.id.seekBarMaxLiveness);
             progressValueMaxLiveness.setText("1.0");
             seekBarMaxLiveness.setProgress(100000);
@@ -341,7 +352,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             progressValueMinValence= itemView.findViewById(R.id.progressValueMinValence);
-            detailsLayout.setVisibility(View.GONE);
+
             seekBarMinValence = itemView.findViewById(R.id.seekBarMinValence);
             progressValueCalculatedValence = itemView.findViewById(R.id.progressValueCalculatedValence);
             progressValueCalculatedValence.setText(manager.getAudioFeature("target_valence").toString());
@@ -374,7 +385,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             progressValueMaxValence= itemView.findViewById(R.id.progressValueMaxValence);
-            detailsLayout.setVisibility(View.GONE);
+
             seekBarMaxValence = itemView.findViewById(R.id.seekBarMaxValence);
             progressValueMaxValence.setText("1.0");
             seekBarMaxValence.setProgress(100000);
@@ -407,7 +418,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
             progressValueMinInstrumentalness= itemView.findViewById(R.id.progressValueMinInstrumentalness);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            // Initially hide the details
             seekBarMinInstrumentalness = itemView.findViewById(R.id.seekBarMinInstrumentalness);
             progressValueCalculatedInstrumentalness = itemView.findViewById(R.id.progressValueCalculatedInstrumentalness);
             progressValueCalculatedInstrumentalness.setText(manager.getAudioFeature("target_instrumentalness").toString());
@@ -469,7 +480,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             progressValueMinTempo= itemView.findViewById(R.id.progressValueMinTempo);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            // Initially hide the details
             seekBarMinTempo = itemView.findViewById(R.id.seekBarMinTempo);
             progressValueCalculatedTempo = itemView.findViewById(R.id.progressValuecalculatedTempo);
             progressValueCalculatedTempo.setText(manager.getAudioFeature("target_tempo").toString());
@@ -531,7 +542,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             progressValueMinEnergy= itemView.findViewById(R.id.progressValueMinEnergy);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            // Initially hide the details
             seekBarMinEnergy = itemView.findViewById(R.id.seekBarMinEnergy);
             progressValueCalculatedEnergy = itemView.findViewById(R.id.progressValueCalculatedEnergy);
             progressValueCalculatedEnergy.setText(manager.getAudioFeature("target_energy").toString());
@@ -564,7 +575,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             progressValueMaxEnergy= itemView.findViewById(R.id.progressValueMaxEnergy);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            // Initially hide the details
             seekBarMaxEnergy = itemView.findViewById(R.id.seekBarMaxEnergy);
             progressValueMaxEnergy.setText("1.0");
             seekBarMaxEnergy.setProgress(100000);
@@ -596,7 +607,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             progressValueMinTimeSignature= itemView.findViewById(R.id.progressValueMinTimeSignature);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            // Initially hide the details
             seekBarMinTimeSignature = itemView.findViewById(R.id.seekBarMinTimeSignature);
             progressValueCalculatedTimeSignature = itemView.findViewById(R.id.progressValueCalculatedTimeSignature);
             progressValueCalculatedTimeSignature.setText(manager.getAudioFeature("target_time_signature").toString());
@@ -629,7 +640,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             progressValueMaxTimeSignature= itemView.findViewById(R.id.progressValueMaxTimeSignature);
-            detailsLayout.setVisibility(View.GONE); // Initially hide the details
+            // Initially hide the details
             seekBarMaxTimeSignature = itemView.findViewById(R.id.seekBarMaxTimeSignature);
             progressValueMaxTimeSignature.setText("7");
             seekBarMaxTimeSignature.setProgress(7);
@@ -661,7 +672,7 @@ public class AccordionRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             progressNbrSongsValue= itemView.findViewById(R.id.progressNbrSongsSignature);
-            detailsLayout.setVisibility(View.GONE);
+
             seekBarNbrSongs = itemView.findViewById(R.id.seekNbrSongsSignature);
             progressNbrSongsValue.setText("100");
             seekBarNbrSongs.setProgress(100);

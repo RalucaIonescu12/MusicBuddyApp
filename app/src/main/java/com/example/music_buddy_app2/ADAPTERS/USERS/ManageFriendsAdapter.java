@@ -13,7 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.music_buddy_app2.FirebaseManagement.UserManager;
+import com.example.music_buddy_app2.ACTIVITIES.PROFILE.FindFriendsActivity;
+import com.example.music_buddy_app2.MANAGERS.UserManager;
 import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.ACTIVITIES.PROFILE.UserProfileActivity;
@@ -80,6 +81,7 @@ public class ManageFriendsAdapter extends RecyclerView.Adapter<ManageFriendsAdap
                         intent.putExtra("user_profile_image", user.getProfileImageUrl());
                         intent.putExtra("uri", user.getUri());
                         intent.putExtra("nbr_playlists",user.getPlaylistsCreatedWithTheApp().toString());
+                        intent.putExtra("friendStatus",FindFriendsActivity.listName);
                         context.startActivity(intent);
                     }
                 }

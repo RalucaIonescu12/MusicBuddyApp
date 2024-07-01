@@ -51,7 +51,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-database:20.3.1'
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-functions'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-appcheck'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
     implementation 'androidx.navigation:navigation-fragment:2.7.6'
@@ -87,9 +92,8 @@ dependencies {
     implementation 'org.pytorch:pytorch_android_torchvision:1.9.0'
     implementation 'com.google.android.material:material:1.13.0-alpha01'
 
-    implementation 'org.tensorflow:tensorflow-lite:+'
-
     implementation "androidx.work:work-runtime:2.7.1"
-
+    implementation 'org.tensorflow:tensorflow-lite:+'
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
 }
+apply plugin: 'com.google.gms.google-services'

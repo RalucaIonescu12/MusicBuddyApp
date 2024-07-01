@@ -71,16 +71,7 @@
             android:name=".ACTIVITIES.PROFILE.ProfileActivity"
             android:exported="false" />
 
-        <receiver
-            android:name=".SERVICES.API.MyBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.spotify.music.playbackstatechanged" />
-                <action android:name="com.spotify.music.metadatachanged" />
-                <action android:name="com.spotify.music.queuechanged" />
-            </intent-filter>
-        </receiver>
+
 
         <activity
             android:name=".ACTIVITIES.LOGIN.WelcomeActivity"
@@ -107,10 +98,8 @@
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="${redirectHostName}"
                     android:scheme="${redirectSchemeName}" />

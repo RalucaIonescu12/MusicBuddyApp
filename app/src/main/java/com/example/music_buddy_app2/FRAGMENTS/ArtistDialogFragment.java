@@ -49,7 +49,7 @@ public class ArtistDialogFragment extends DialogFragment {
         if(exists)
         {
             buttonText.setText("Added");
-            addIcon.setImageResource(R.drawable.baseline_favorite_border_24);
+            addIcon.setImageResource(R.drawable.baseline_favorite_border_24_blue);
         }
         else {
             addArtist.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +61,7 @@ public class ArtistDialogFragment extends DialogFragment {
                     {
                         Toast.makeText(getContext(), "Removed!", Toast.LENGTH_SHORT).show();
                         buttonText.setText("Add for recommendations");
-                        addIcon.setImageResource(R.drawable.baseline_add_24);
+                        addIcon.setImageResource(R.drawable.add_blue);
                         manager.removeFilter(selectedItem.getArtistName());
                     }
                     else
@@ -72,7 +72,7 @@ public class ArtistDialogFragment extends DialogFragment {
                         else if (add.equals("filter_added")) {
                             Toast.makeText(getContext(), "Added!", Toast.LENGTH_SHORT).show();
                             buttonText.setText("Added");
-                            addIcon.setImageResource(R.drawable.baseline_favorite_border_24);
+                            addIcon.setImageResource(R.drawable.baseline_favorite_border_24_blue);
                         } else if (add.equals("already_exists")) {
                             Toast.makeText(getContext(), "Already addded!", Toast.LENGTH_SHORT).show();
                         }

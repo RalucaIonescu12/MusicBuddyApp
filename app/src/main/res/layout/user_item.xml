@@ -33,7 +33,7 @@
     </androidx.cardview.widget.CardView>
     <TextView
         android:id="@+id/username"
-        android:layout_width="200dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
+        app:cardBackgroundColor="#64BDED"
         android:layout_marginTop="30dp"
         android:layout_toEndOf="@+id/username">
 
@@ -65,14 +66,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
-            app:cardBackgroundColor="@color/black"
+            app:cardBackgroundColor="#64BDED"
             android:layout_marginTop="30dp"
             android:layout_toEndOf="@+id/addBtn">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="25dp"
                 android:layout_height="30dp"
-                android:src="@drawable/baseline_find_in_page_24">
+                android:src="@drawable/baseline_search_24">
 
             </ImageView>
         </androidx.cardview.widget.CardView>

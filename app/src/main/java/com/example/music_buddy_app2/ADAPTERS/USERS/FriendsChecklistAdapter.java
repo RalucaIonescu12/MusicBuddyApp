@@ -11,11 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
-import com.example.music_buddy_app2.FirebaseManagement.UserManager;
 import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
 import com.squareup.picasso.Picasso;

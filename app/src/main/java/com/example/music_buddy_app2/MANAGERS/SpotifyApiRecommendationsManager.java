@@ -7,6 +7,7 @@ import com.example.music_buddy_app2.MODELS.TrackSearchItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class SpotifyApiRecommendationsManager {
 
@@ -15,6 +16,7 @@ public class SpotifyApiRecommendationsManager {
     private int nbrTracks=0;
     private Map<String,Double> audioFeatures;
     private boolean isButtonEnabled = false;
+    private Stack<Boolean> enableValues = new Stack<Boolean>();
     private Map<String,Double> audioFeatureTemplate ;
     private Map<String,Map<String,Map<String,Map<String, Double>>>> recommendationFilters;
 
@@ -89,19 +91,19 @@ public class SpotifyApiRecommendationsManager {
         {
             recommendationFilters.get("seed_tracks").remove(name);
             count--;
-            if(count==0) isButtonEnabled=false;
+            if(count==0) setEnableButton(false);
         }
         else if (recommendationFilters.get("seed_artists")!= null && recommendationFilters.get("seed_artists").containsKey(name))
         {
             recommendationFilters.get("seed_artists").remove(name);
             count--;
-            if(count==0) isButtonEnabled=false;
+            if(count==0) setEnableButton(false);
         }
         else if (recommendationFilters.get("seed_genres")!= null && recommendationFilters.get("seed_genres").containsKey(name))
         {
             recommendationFilters.get("seed_genres").remove(name);
             count--;
-            if(count==0) isButtonEnabled=false;
+            if(count==0) setEnableButton(false);
         }
     }
     public void setTargetAudioFeatures()
@@ -253,7 +255,7 @@ public class SpotifyApiRecommendationsManager {
                 }
                 Log.e("FILTERSS",filterType+ " :  " + filters.keySet().toString());
                 count++;
-                isButtonEnabled=true;
+                setEnableButton(true);
                 return "filter_added";
 
             }
@@ -288,7 +290,21 @@ public class SpotifyApiRecommendationsManager {
     }
     public void setEnableButton(boolean isEnabled)
     {
-        this.isButtonEnabled=isEnabled;
+
+        if(isEnabled == true) {
+            if(!enableValues.empty()) {
+                enableValues.pop();
+                if(enableValues.empty())
+                    this.isButtonEnabled = true;
+                else
+                    this.isButtonEnabled=false;
+            }
+            else this.isButtonEnabled = true;
+        }
+        else {
+            this.enableValues.push(false);
+            this.isButtonEnabled=false;
+        }
     }
     public boolean getEnableButton()
     {

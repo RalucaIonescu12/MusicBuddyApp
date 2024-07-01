@@ -4,13 +4,11 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.music_buddy_app2.ACTIVITIES.PROFILE.ProfileActivity;
-import com.example.music_buddy_app2.ACTIVITIES.PROFILE.UsersTopItemsActivity;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.TopArtistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TopTracksResponse;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.UserResponse;
+import com.example.music_buddy_app2.MANAGERS.SharedPreferencesManager;
 import com.example.music_buddy_app2.MODELS.User;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 
 import java.util.List;
 
@@ -70,7 +68,9 @@ public class UserApiManager {
                     UserResponse userResponse = response.body();
                     User user = new User(userResponse.getDisplayName(), userResponse.getEmail(), userResponse.getImages().get(0).getUrl(), userResponse.getId(), userResponse.getUri());
                     if (listener != null) {
+
                         listener.onProfileReceived(user);
+
                     }
                 } else {
                     if (listener != null) {

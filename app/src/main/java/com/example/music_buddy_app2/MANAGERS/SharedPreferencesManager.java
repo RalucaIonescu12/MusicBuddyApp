@@ -1,4 +1,4 @@
-package com.example.music_buddy_app2.SERVICES.AUTHORIZATION;
+package com.example.music_buddy_app2.MANAGERS;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -34,6 +34,16 @@ public class SharedPreferencesManager {
             SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("AccessToken", token);
+            editor.apply();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void saveFirebaseCustomToken(Context context, String token) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("CustomToken", token);
             editor.apply();
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
@@ -108,7 +118,15 @@ public class SharedPreferencesManager {
             return null;
         }
     }
-
+    public static String getCustomToken(Context context) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            return sharedPreferences.getString("CustomToken", null);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public static void saveExpiryTime(Context context, long expiryTime) {
         try {
             SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
@@ -129,49 +147,57 @@ public class SharedPreferencesManager {
             return 0;
         }
     }
-//    public static void saveToken(Context context, String token) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("AccessToken", token);
-//        editor.apply();
-//    }
-//    public static void saveRefreshToken(Context context, String token) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("RefreshToken", token);
-//        editor.apply();
-//    }
-//
-//
-//    public static String getToken(Context context) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        return sharedPreferences.getString("AccessToken", null);
-//    }
-//    public static String getRefreshToken(Context context) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        return sharedPreferences.getString("RefreshToken", null);
-//    }
-//
-//    public static void saveUserId(Context context, String userId) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("UserId", userId);
-//        editor.apply();
-//    }
-//    public static String getUserId(Context context) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        return sharedPreferences.getString("UserId", null);
-//    }
-//
-//    public static void saveExpiryTime(Context context, long expiryTime) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putLong("ExpiryTime", expiryTime);
-//        editor.apply();
-//    }
-//
-//    public static long getExpiryTime(Context context) {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SPOTIFY_PREFERENCES, Context.MODE_PRIVATE);
-//        return sharedPreferences.getLong("ExpiryTime", 0);
-//    }
+    public static void clearToken(Context context) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("AccessToken");
+            editor.apply();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void clearCustomToken(Context context) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("CustomToken");
+            editor.apply();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearRefreshToken(Context context) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("RefreshToken");
+            editor.apply();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void clearExpiryTime(Context context) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("ExpiryTime");
+            editor.apply();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void clearUserId(Context context) {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("UserId");
+            editor.apply();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -16,13 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
-import com.example.music_buddy_app2.ACTIVITIES.OTHERS.AnalysisActivity;
 import com.example.music_buddy_app2.ACTIVITIES.LOGIN.BrowseRecommendationTypesActivity;
-import com.example.music_buddy_app2.ACTIVITIES.OTHERS.LeaderboardActivity;
-import com.example.music_buddy_app2.ACTIVITIES.OTHERS.MultiplayerGamesActivity;
 import com.example.music_buddy_app2.ACTIVITIES.PROFILE.FindFriendsActivity;
 import com.example.music_buddy_app2.ACTIVITIES.PROFILE.ProfileActivity;
-import com.example.music_buddy_app2.ACTIVITIES.OTHERS.SingleplayerGamesActivity;
 import com.example.music_buddy_app2.ACTIVITIES.LOGIN.WelcomeActivity;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.TokenManager;

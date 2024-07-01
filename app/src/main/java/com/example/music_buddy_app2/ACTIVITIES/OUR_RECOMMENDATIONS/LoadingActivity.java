@@ -57,6 +57,7 @@ public class LoadingActivity extends BaseActivity {
 
             @Override
             public void onError(String message) {
+                Log.e("MY_LOGS", "ERROR MESSAGE LA GET RECS" +message);
 //                Toast.makeText(LoadingActivity.this, message, Toast.LENGTH_LONG).show();
                 Toast.makeText(LoadingActivity.this, "Sorry! Try again!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(LoadingActivity.this, ChooseContextDetailsActivity.class);

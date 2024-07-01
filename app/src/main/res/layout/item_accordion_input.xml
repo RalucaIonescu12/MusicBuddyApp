@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="360dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="#000000"
@@ -10,12 +10,20 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="28dp"
         android:textAlignment="center"
         android:height="60dp"
+        android:layout_marginLeft="4dp"
         android:fontFamily="@font/be_vietnam_light"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginTop="4dp"/>
+    <ImageView
+        android:id="@+id/arrowInput"
+        android:layout_marginLeft="320dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/baseline_arrow_drop_down_24"/>
 
     <LinearLayout
         android:id="@+id/detailsLayout"
@@ -51,7 +59,7 @@
             android:spinnerMode="dialog"
             android:drawSelectorOnTop="true"
             android:layout_marginTop="10dp"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_below="@id/chip_group_rec_spotify"
             android:padding="8dp"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="20dp"
     tools:context=".ACTIVITIES.SPOTIFY_RECOMMENDATIONS.SeeSpotifyRecommendationsActivity">
 
     <androidx.cardview.widget.CardView
@@ -39,8 +40,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/playlistImage"
-                android:hint="Playlist title"
-                android:text="Playlist Title"
+                android:hint="Playlist"
+                android:text="Playlist"
                 android:textSize="15sp" />
 
             <TextView
@@ -50,12 +51,12 @@
                 android:layout_below="@+id/playlistTitleOurs"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="10dp"
-                android:minHeight="50dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/white"
                 android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/playlistImage"
-                android:text="Recommendations from MusicBuddyApp" />
+                android:minHeight="50dp"
+                android:text="Recommendations from MusicBuddyApp"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/recTitle"
@@ -186,6 +187,19 @@
                 android:layout_marginBottom="0dp">
 
             </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="#00000000"
+                android:clickable="true"
+                app:backgroundTint="#000000"
+                app:srcCompat="@drawable/baseline_home_24" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

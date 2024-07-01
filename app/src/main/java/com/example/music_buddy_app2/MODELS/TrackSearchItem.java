@@ -184,5 +184,28 @@ public class TrackSearchItem {
     public void setImageResourceId(String imageResourceId) {
         this.imageResourceId = imageResourceId;
     }
+
+    @Override
+    public String toString() {
+        return "TrackSearchItem{" +
+                "songName='" + songName + '\'' +
+                ", id='" + id + '\'' +
+                ", artistName='" + artistName + '\'' +
+                ", imageResourceId='" + imageResourceId + '\'' +
+                ", acousticness=" + acousticness +
+                ", duration_ms=" + duration_ms +
+                ", key=" + key +
+                ", loudness=" + loudness +
+                ", mode=" + mode +
+                ", speechiness=" + speechiness +
+                ", valenceValue=" + valenceValue +
+                ", instrumentalnessValue=" + instrumentalnessValue +
+                ", danceabilityValue=" + danceabilityValue +
+                ", tempoValue=" + tempoValue +
+                ", livenessValue=" + livenessValue +
+                ", energyValue=" + energyValue +
+                ", timeSignature=" + timeSignature +
+                '}';
+    }
 }
 

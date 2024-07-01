@@ -215,4 +215,30 @@ public class TrackObject {
     public boolean isLocal() {
         return isLocal;
     }
+
+    @Override
+    public String toString() {
+        return "TrackObject{" +
+                "album=" + album +
+                ", artists=" + artists +
+                ", availableMarkets=" + availableMarkets +
+                ", discNumber=" + discNumber +
+                ", durationMs=" + durationMs +
+                ", explicit=" + explicit +
+                ", externalIds=" + externalIds +
+                ", externalUrls=" + externalUrls +
+                ", href='" + href + '\'' +
+                ", id='" + id + '\'' +
+                ", is_playable=" + is_playable +
+                ", linked_from=" + linked_from +
+                ", restrictions=" + restrictions +
+                ", name='" + name + '\'' +
+                ", popularity=" + popularity +
+                ", previewUrl='" + previewUrl + '\'' +
+                ", trackNumber=" + trackNumber +
+                ", type='" + type + '\'' +
+                ", uri='" + uri + '\'' +
+                ", isLocal=" + isLocal +
+                '}';
+    }
 }

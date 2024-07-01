@@ -2,21 +2,23 @@ package com.example.music_buddy_app2.ACTIVITIES.LOGIN;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.music_buddy_app2.ACTIVITIES.MENUS.MenuActivity;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.AccessTokenResponse;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.CodeRequestBody;
 import com.example.music_buddy_app2.BuildConfig;
-import com.example.music_buddy_app2.FirebaseManagement.UserManager;
+import com.example.music_buddy_app2.MANAGERS.UserManager;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.CustomRecommendationsApiInterface;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
+import com.example.music_buddy_app2.MANAGERS.SharedPreferencesManager;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -32,16 +34,26 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
     private static final String REDIRECT_URI = "http://www.music_buddy_app2/callback";
     Retrofit retrofit;
     private CustomRecommendationsApiInterface customRecommendationsApiInterface;
-
+    ImageView vinylImage;
+    Animation rotationAnimation;
     private UserManager manager;
    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+       super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spotify_authorization);
+
+       vinylImage = findViewById(R.id.vinyl_image_auth);
+       rotateAnimation();
+
         if(manager==null)
             manager=UserManager.getInstance(SpotifyAuthorizationActivity.this);
         initiateApiService();
         initiateSpotifyLogin();
+    }
+    private void rotateAnimation() {
+        rotationAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_vynil);
+        vinylImage.startAnimation(rotationAnimation);
     }
     public void initiateApiService()
     {
@@ -51,7 +63,6 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
         customRecommendationsApiInterface = retrofit.create(CustomRecommendationsApiInterface.class);
     }
     private void initiateSpotifyLogin() {
-
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.CODE, REDIRECT_URI);
         builder.setScopes(new String[]{"user-read-private", "user-read-email", "streaming","user-top-read",
@@ -59,63 +70,59 @@ public class SpotifyAuthorizationActivity extends AppCompatActivity {
                 "playlist-read-private","playlist-read-collaborative",
                 "playlist-modify-private"});
         AuthorizationRequest request = builder.build();
-
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-
         if (requestCode == REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent); //fetches the code if result is correct
-
             if (response.getType() == AuthorizationResponse.Type.CODE) {
-                Log.e("MY_LOGS","RESPONSE CODE: "+ response.getCode());
-                CodeRequestBody requestBody = new CodeRequestBody(response.getCode());
-
-                Call<AccessTokenResponse> call = customRecommendationsApiInterface.exchangeCode(requestBody);
-                Log.e("MY_LOGS", "Call exchange code in google cloud.");
-                call.enqueue(new Callback<AccessTokenResponse>() {
+                manager.authenticateAnonymously(new UserManager.OnTaskCompleteListener() {
                     @Override
-                    public void onResponse(Call<AccessTokenResponse> call, Response<AccessTokenResponse> response) {
-                        if (response.isSuccessful()) {
-                            AccessTokenResponse tokenResponse = response.body();
-                            long expiryTime = System.currentTimeMillis() + (tokenResponse.getExpiresIn() * 1000); // converted to miliseconds
+                    public void onSuccess() {
+                        CodeRequestBody requestBody = new CodeRequestBody(response.getCode());
+                        Call<AccessTokenResponse> call = customRecommendationsApiInterface.exchangeCode(requestBody);
+                        call.enqueue(new Callback<AccessTokenResponse>() {
+                            @Override
+                            public void onResponse(Call<AccessTokenResponse> call, Response<AccessTokenResponse> response) {
+                                if (response.isSuccessful()) {
+                                    AccessTokenResponse tokenResponse = response.body();
+                                    long expiryTime = System.currentTimeMillis() + (tokenResponse.getExpiresIn() * 1000);
+                                    SharedPreferencesManager.saveToken(SpotifyAuthorizationActivity.this, tokenResponse.getAccessToken());
+                                    SharedPreferencesManager.saveRefreshToken(SpotifyAuthorizationActivity.this, tokenResponse.getRefreshToken());
+                                    SharedPreferencesManager.saveExpiryTime(SpotifyAuthorizationActivity.this, expiryTime);
+                                    SharedPreferencesManager.updateNbrPlaylists(SpotifyAuthorizationActivity.this,1);
+                                    manager.addUserToDatabase(new UserManager.OnTaskCompleteListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            goToMenu();
+                                        }
+                                        @Override
+                                        public void onFailure(String errorMessage) {
+                                            goBackToLogin();
+                                        }
+                                    });
 
-                            SharedPreferencesManager.saveToken(SpotifyAuthorizationActivity.this, tokenResponse.getAccessToken());
-                            SharedPreferencesManager.saveRefreshToken(SpotifyAuthorizationActivity.this, tokenResponse.getRefreshToken());
-                            SharedPreferencesManager.saveExpiryTime(SpotifyAuthorizationActivity.this, expiryTime);
-                            SharedPreferencesManager.updateNbrPlaylists(SpotifyAuthorizationActivity.this,1);
-                            Log.e("MY_LOGS","Exchanged code successfully.");
-                            manager.loginUser(
-//                            new UserManager.LoginListener() {
-//                                @Override
-//                                public void onLoginSuccess() {
-//                                    goToMenu();
-//                                }
-//
-//                                @Override
-//                                public void onLoginFailure(String errorMessage) {
-//                                   goBackToLogin();
-//                                }
-//                            }
+                                } else {
+                                    Toast.makeText(SpotifyAuthorizationActivity.this, "Error exchanging code", Toast.LENGTH_SHORT).show();
+                                    Log.e("MY_LOGS","In spotify authorization: Error exchanging code in server");
+                                    goBackToLogin();
+                                }
+                            }
 
-                            );
-                            goToMenu();
-                        } else {
-                            Toast.makeText(SpotifyAuthorizationActivity.this, "Error exchanging code!", Toast.LENGTH_SHORT).show();
-                            Log.e("MY_LOGS","In spotify authorization: Error exchanging code in server");
-
-                        }
+                            @Override
+                            public void onFailure(Call<AccessTokenResponse> call, Throwable t) {
+                                Log.e("MY_LOGS","In spotify authorization: failure");
+                                goBackToLogin();
+                            }
+                        });
                     }
 
                     @Override
-                    public void onFailure(Call<AccessTokenResponse> call, Throwable t) {
-                        Toast.makeText(SpotifyAuthorizationActivity.this, "Network error!", Toast.LENGTH_SHORT).show();
-                        Log.e("MY_LOGS","In spotify authorization: failure");
-
-                    }
+                    public void onFailure(String errorMessage) {goBackToLogin();}
                 });
+
 
             }
         }

@@ -1,7 +1,5 @@
 package com.example.music_buddy_app2.ACTIVITIES.PROFILE;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,28 +15,21 @@ import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.TopArtistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.INTERFACES.TopItemInterface;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TopTracksResponse;
 
-import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.ADAPTERS.USERS.TopItemsAdapter;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
 import com.example.music_buddy_app2.SERVICES.API.UserApiManager;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.TokenRefreshServiceInterface;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class UsersTopItemsActivity extends BaseActivity {
     public SpotifyApiServiceInterface spotifyApiServiceInterface;
     Retrofit retrofit;
     private UserApiManager userApiManager;
-    TokenRefreshServiceInterface tokenRefreshServiceInterface;
     int limit;  //the limit number of songs
     int offset;  //The index of the first item to return
     Spinner spinner, spinnerLimit;

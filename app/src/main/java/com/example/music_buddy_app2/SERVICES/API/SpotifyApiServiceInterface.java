@@ -33,11 +33,9 @@ public interface SpotifyApiServiceInterface {
     @GET("v1/me")
     Call<UserResponse> getMyProfile();
     @GET("v1/me/top/artists")
-    Call<TopArtistsResponse> getUserTopArtists(
-                                               @Query("limit") int limit,
+    Call<TopArtistsResponse> getUserTopArtists(@Query("limit") int limit,
                                                @Query("offset") int offset,
                                                @Query("time_range") String timeRange);
-
     @GET("v1/me/top/tracks")
     Call<TopTracksResponse> getUserTopTracks(
            
@@ -45,9 +43,6 @@ public interface SpotifyApiServiceInterface {
             @Query("offset") int offset,
             @Query("time_range") String timeRange
     );
-
-
-
     @GET("v1/search")
     Call<SearchTrackResponse> searchTracks(
            

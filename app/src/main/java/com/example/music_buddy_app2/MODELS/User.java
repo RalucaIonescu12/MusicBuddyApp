@@ -2,6 +2,7 @@ package com.example.music_buddy_app2.MODELS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
 
@@ -14,6 +15,7 @@ public class User {
     private List<String> followingIds;
     private List<String> followersIds;
     private boolean isSelected=false;
+
     public boolean isSelected() {
         return isSelected;
     }
@@ -64,7 +66,7 @@ public class User {
     }
 
     public void setFollowersIds(List<String> followersIds) {
-        this.followersIds = followersIds;
+        this.followersIds = new ArrayList<>(followersIds);
     }
 
 
@@ -74,7 +76,7 @@ public class User {
     }
 
     public void setFollowingIds(List<String> followingIds) {
-        this.followingIds = followingIds;
+        this.followingIds = new ArrayList<>(followingIds);
     }
 
     public String getUri() {
@@ -121,6 +123,7 @@ public class User {
         return SpotifyId;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
@@ -130,6 +133,22 @@ public class User {
                 ", playlistsCreatedWithTheApp=" + playlistsCreatedWithTheApp +
                 ", SpotifyId='" + SpotifyId + '\'' +
                 ", uri='" + uri + '\'' +
+                ", followingIds=" + followingIds +
+                ", followersIds=" + followersIds +
+                ", isSelected=" + isSelected +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isSelected == user.isSelected && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(profileImageUrl, user.profileImageUrl) && Objects.equals(playlistsCreatedWithTheApp, user.playlistsCreatedWithTheApp) && Objects.equals(SpotifyId, user.SpotifyId) && Objects.equals(uri, user.uri) && Objects.equals(followingIds, user.followingIds) && Objects.equals(followersIds, user.followersIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email, profileImageUrl, playlistsCreatedWithTheApp, SpotifyId, uri, followingIds, followersIds, isSelected);
     }
 }

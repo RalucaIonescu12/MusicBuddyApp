@@ -39,9 +39,10 @@
 
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
+            android:id="@+id/logoutCV"
             app:cardCornerRadius="10dp"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="250dp"
+            android:layout_marginLeft="240dp"
             android:layout_marginTop="30dp"
             app:cardBackgroundColor="#64BDED"
             android:layout_height="wrap_content">

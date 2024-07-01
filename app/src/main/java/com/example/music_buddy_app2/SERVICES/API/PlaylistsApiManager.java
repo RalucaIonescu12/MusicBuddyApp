@@ -1,13 +1,9 @@
 package com.example.music_buddy_app2.SERVICES.API;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.ChooseArtistForSpotifyRecActivity;
-import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.ChooseTracksWithAudioFeaturesForSpotifyRecActivity;
-import com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS.SeeSpotifyRecommendationsActivity;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.ArtistSearchObject;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.SearchArtistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.TopArtistsResponse;
@@ -22,14 +18,16 @@ import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SearchTrackRe
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SeveralTracksResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TrackObject;
+import com.example.music_buddy_app2.MANAGERS.SharedPreferencesManager;
 import com.example.music_buddy_app2.MODELS.ArtistSearchItem;
 import com.example.music_buddy_app2.MODELS.Track;
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import retrofit2.Call;
@@ -83,8 +81,17 @@ public class PlaylistsApiManager {
                 if (response.isSuccessful()) {
                     PlaylistsResponse playlistsResponse = response.body();
                     List<SimplifiedPlaylistObject> playlists = playlistsResponse.getItems();
-                    Log.e("MY_LOGS", " Playlists: " + playlists);
-                    usersPlaylists.addAll(playlists);
+                    for (SimplifiedPlaylistObject playlistObject : playlists)
+                        if (playlistObject.isPublic()) {
+                            Log.e("MY_LOGS", " Playlists: " + playlists.size());
+                            try {
+                                usersPlaylists.add(playlistObject);
+                            } catch (Exception e)
+                            {
+                                Log.e("MY_LOGS","couldnt addplaylist for user");
+                            }
+
+                        }
                     callback.onSuccess(playlists);
                 } else
                 {
@@ -113,8 +120,12 @@ public class PlaylistsApiManager {
                     PlaylistsResponse playlistsResponse = response.body();
                     List<SimplifiedPlaylistObject> playlists = playlistsResponse.getItems();
                     Log.e("MY_LOGS", " My playlists: " + playlists);
-                    usersPlaylists.addAll(playlists);
-                    callback.onSuccess(playlists);
+                    for (SimplifiedPlaylistObject playlistObject : playlists)
+                        if (playlistObject.isPublic()) {
+                            Log.d("playlistsss",playlistObject.getName()+" "+ playlistObject.isPublic());
+                            usersPlaylists.add(playlistObject);
+                            callback.onSuccess(playlists);
+                        }
                 } else
                 {
                     int statusCode = response.code();
@@ -286,16 +297,17 @@ public class PlaylistsApiManager {
         });
     }
     public interface AddItemToQueueListener {
-        void onAllItemsAdded();
-        void onFailure(String errorMessage);
+        void onAllItemsAdded(Integer number);
+        void onFailure(Integer number);
     }
     public void addItemsToPlaybackQueue(List<TrackSearchItem> recommendationTracks, AddItemToQueueListener listener) {
 
         String uri;
 
         AtomicInteger successCounter = new AtomicInteger(0);
+        AtomicInteger failureCounter = new AtomicInteger(0);
         int totalTracks = recommendationTracks.size();
-
+        Log.e("MY_LOGS",  "Total tracks: " + totalTracks);
         for(TrackSearchItem track: recommendationTracks)
         {
             uri= "spotify:track:" + track.getId();
@@ -306,23 +318,29 @@ public class PlaylistsApiManager {
 
                     if (!response.isSuccessful())
                     {
-                        Log.e("MY_LOGS",  "Nu a mers: " + response.code());
-                        listener.onFailure(String.valueOf(successCounter.get()));
+                        Log.e("MY_LOGS",  "Nu a mers: " + response.code() + " " +track.getId() + response.message());
+//                        listener.onFailure(successCounter.incrementAndGet());
+                        successCounter.incrementAndGet();
+                        if (failureCounter.incrementAndGet() == totalTracks) {
+                            Log.e("MY_LOGS", "none added " + failureCounter.get());
+                            listener.onFailure(0);
 
+                        }
                     }
                     else {
                         successCounter.incrementAndGet();
                         Log.e("MY_LOGS", "S-a adaugat : " + successCounter.get());
                         if (successCounter.get() == totalTracks) {//all the tracks are added
-                            listener.onAllItemsAdded();
                             Log.e("MY_LOGS", "all handled" + successCounter.get());
+                            listener.onAllItemsAdded( successCounter.get());
+
                         }
                     }
                 }
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.e("MY_LOGS",   "failure " + t+ "la nr : " + String.valueOf(successCounter.get()));
-                    listener.onFailure(String.valueOf(successCounter.get()));
+                    listener.onFailure(successCounter.get());
                     t.printStackTrace();
                 }
             });
@@ -330,7 +348,6 @@ public class PlaylistsApiManager {
         }
     }
     public void addTracksToPlaybackQueue(List<Track> recommendationTracks, AddItemToQueueListener listener) {
-
 
         String uri="spotify:track:";
 
@@ -340,6 +357,7 @@ public class PlaylistsApiManager {
         for(Track track: recommendationTracks)
         {
             uri+=track.getId();
+            Log.e("MY_LOGS",  "uri " + uri);
             Call<Void> callForUserId= spotifyApiServiceInterface.addItemToPlaybackQueue( uri);
             callForUserId.enqueue(new Callback<Void>() {
                 @Override
@@ -348,13 +366,13 @@ public class PlaylistsApiManager {
                     if (!response.isSuccessful())
                     {
                         Log.e("MY_LOGS",  "nu a mers " + response.code());
-                        listener.onFailure(response.message());
+                        listener.onFailure(successCounter.get());
                     }
                     else {
                         successCounter.incrementAndGet();
                         Log.e("MY_LOGS", successCounter+  " " + response.code());
                         if (successCounter.get() == totalTracks) {//all the tracks are added
-                            listener.onAllItemsAdded();
+                            listener.onAllItemsAdded(successCounter.get());
                         }
                         Log.e("MY_LOGS",String.valueOf(response.code()) + response.message());
                     }
@@ -362,7 +380,7 @@ public class PlaylistsApiManager {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.e("MY_LOGS",   "failure " + t);
-                    listener.onFailure(t.getMessage());
+                    listener.onFailure(successCounter.get());
                     Log.e("MY_LOGS", "API call failed", t);
                     t.printStackTrace();
                 }
@@ -384,10 +402,10 @@ public class PlaylistsApiManager {
 
                 if (!response.isSuccessful())
                 {
-                   listener.onFailure(String.valueOf(response.code()));
+                   listener.onFailure(100);
                 }
                 else {
-                    listener.onAllItemsAdded();
+                    listener.onAllItemsAdded(100);
 
                 }
             }
@@ -455,20 +473,22 @@ public class PlaylistsApiManager {
 
         Call<AddTracksToPlaylistResponse> callForAddToPlaylist = spotifyApiServiceInterface.addTracksToPlaylist( playlistId, request);
         callForAddToPlaylist.enqueue(new Callback<AddTracksToPlaylistResponse>() {
+
             @Override
             public void onResponse(Call<AddTracksToPlaylistResponse> call, Response<AddTracksToPlaylistResponse> response) {
                 if (response.isSuccessful()) {
-                    listener.onAllItemsAdded();
+                    Log.d("playlistId", playlistId);
+                    listener.onAllItemsAdded(100);
                     Log.e("MY_LOGS", "add tracks to playlist :  " + response.code() + " " + response.message());
                 } else {
                     Log.e("MY_LOGS", "Didn't work" + String.valueOf(response.code()) + response.message());
-                    listener.onFailure("Failed to add songs. Response: "+response.code());
+                    listener.onFailure(100);
                 }
             }
 
             @Override
             public void onFailure(Call<AddTracksToPlaylistResponse> call, Throwable t) {
-                listener.onFailure("Failed request to add songs in playlist.");
+                listener.onFailure(100);
                 Log.e("MY_LOGS", "API call failed", t);
                 t.printStackTrace();
             }
@@ -488,13 +508,55 @@ public class PlaylistsApiManager {
             @Override
             public void onResponse(Call<PlaylistItemsResponse> call, Response<PlaylistItemsResponse> response) {
                 if (response.isSuccessful()) {
+                    Log.e("RECS","E SUCCESSFULL DA NU STIU CE ARE");
+                    List<PlaylistTrackObject> tracks = response.body().getItems();
+                    for (PlaylistTrackObject playlistTrack: tracks)
+                    {
+                        try {
+                            receivedTracks.put(playlistTrack.getTrack(), playlistTrack.getAdded_at());
+                            Log.e("RECS","adaugat");
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("RECS","eroare get playlists item playlist manager ");
+
+                        }
+
+                    }
+                    listener.onItemsReceived(receivedTracks);
+                } else {
+                    Log.e("RECS","eroare get playlists item playlist manager  ");
+                    listener.onFailure("Failed to fetch tracks for playlist." + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaylistItemsResponse> call, Throwable t) {
+                listener.onFailure(t.getMessage());
+                Log.e("RECS", "API call to get items from playlist failed", t);
+                t.printStackTrace();
+            }
+        });
+    }
+    public interface GetPlaylistItemsSimpleListener {
+        void onSimpleItemsReceived(Set<TrackObject> receivedTracks);
+        void onFailure(String errorMessage);
+    }
+    public void getSimplePlaylistItems(int offset, int limit, String playlistId, GetPlaylistItemsSimpleListener listener) {
+
+        Set<TrackObject> receivedTracks = new HashSet<>();
+        Call<PlaylistItemsResponse> callForGetPlaylists = spotifyApiServiceInterface.getPlaylistItems( playlistId, limit, offset);
+        callForGetPlaylists.enqueue(new Callback<PlaylistItemsResponse>() {
+            @Override
+            public void onResponse(Call<PlaylistItemsResponse> call, Response<PlaylistItemsResponse> response) {
+                if (response.isSuccessful()) {
                     List<PlaylistTrackObject> tracks = response.body().getItems();
                     for (PlaylistTrackObject playlistTrack: tracks)
                     {
                         if(!playlistTrack.getIs_local())
-                            receivedTracks.put(playlistTrack.getTrack(), playlistTrack.getAdded_at());
+                            receivedTracks.add(playlistTrack.getTrack());
                     }
-                    listener.onItemsReceived(receivedTracks);
+                    listener.onSimpleItemsReceived(receivedTracks);
                 } else {
                     listener.onFailure("Failed to fetch tracks for playlist." + response.code());
                 }
@@ -508,7 +570,6 @@ public class PlaylistsApiManager {
             }
         });
     }
-
     public interface OnAllTracksFetchedListener {
         void onSeveralTracksReceived(List<Track> tracks);
 
@@ -533,9 +594,14 @@ public class PlaylistsApiManager {
                         {
                             artists.add(artist.getName());
                         }
-
-                        fetchedTracks.add(new Track(trackObject.getName(),trackObject.getId(), artists, trackObject.getAlbum().getImages().get(0).getUrl(),trackObject.getAlbum().getName(),trackObject.getUri()));
-
+                        Log.d("MY_LOGS",trackObject.toString());
+                        try {
+                            fetchedTracks.add(new Track(trackObject.getName(), trackObject.getId(), artists, trackObject.getAlbum().getImages().get(0).getUrl(), trackObject.getAlbum().getName(), trackObject.getUri()));
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("MY_LOGS","Cant add this song");
+                        }
                     }
                     listener.onSeveralTracksReceived(fetchedTracks);
                 }

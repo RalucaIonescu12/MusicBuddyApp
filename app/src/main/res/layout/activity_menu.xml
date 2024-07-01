@@ -16,8 +16,8 @@
         android:id="@+id/menuRV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="200dp"
         android:scrollbars="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,19 +28,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/vynil_profile"
-        android:layout_width="330dp"
+        android:layout_width="355dp"
         android:layout_height="180dp"
-        android:layout_marginLeft="38dp"
-        android:layout_marginTop="20dp"
+        android:layout_margin="15dp"
         android:background="#FFFFFF"
         android:elevation="20dp"
         app:cardCornerRadius="20dp">
 
-
-
         <ImageView
             android:id="@+id/wood_image"
-            android:layout_width="330dp"
+            android:layout_width="355dp"
             android:layout_height="180dp"
             android:alpha="0.5"
             android:scaleType="centerCrop"
@@ -49,7 +46,7 @@
             android:id="@+id/profile_icon"
             android:layout_width="131dp"
             android:layout_height="85dp"
-            android:layout_marginLeft="190dp"
+            android:layout_marginLeft="210dp"
             android:layout_marginTop="40dp"
             android:textStyle="bold"
             android:src="@drawable/baseline_person_3_24"
@@ -60,7 +57,7 @@
             android:layout_height="180dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/recordplayerfromabove2" />
 
         <ImageView
@@ -68,6 +65,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="13dp"
+            android:layout_marginLeft="16dp"
             android:src="@drawable/transp_vynil" />
 
 
@@ -75,7 +73,7 @@
             android:id="@+id/click_image"
             android:layout_width="79dp"
             android:layout_height="74dp"
-            android:layout_marginLeft="220dp"
+            android:layout_marginLeft="240dp"
             android:layout_marginTop="100dp"
             app:layout_constraintHorizontal_bias="0.267"
             app:layout_constraintVertical_bias="0.094"

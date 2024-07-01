@@ -1,7 +1,5 @@
 package com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +19,6 @@ import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.GenresRespons
 import com.example.music_buddy_app2.MODELS.AccordionItemSpotifyRec;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.example.music_buddy_app2.MANAGERS.SpotifyApiRecommendationsManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
 

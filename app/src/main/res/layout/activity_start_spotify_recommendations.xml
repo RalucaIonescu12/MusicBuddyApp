@@ -12,7 +12,7 @@
         android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        app:cardBackgroundColor="#638CEB"
+        app:cardBackgroundColor="#64BDED"
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"

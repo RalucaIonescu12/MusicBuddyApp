@@ -18,24 +18,23 @@ public class TokenAuthenticator implements Authenticator {
     @Nullable
     @Override
     public Request authenticate(@Nullable Route route, @NonNull Response response) throws IOException {
-         //avoids refreshing simultaneously
+
         synchronized (this) {
-            String currentToken = tokenManager.refreshTokenSync();
-            //verifies if the token has already been refreshed by another thread
-            if (!response.request().header("Authorization").equals("Bearer " + currentToken)) {
-                return newRequestWithAccessToken(response.request(), currentToken);
-            }
-            //refresh the token
-            String newAccessToken = tokenManager.refreshTokenSync();
-            if (newAccessToken != null) {
-                return newRequestWithAccessToken(response.request(), newAccessToken);
+            String tokenRefreshed = tokenManager.refreshTokenSync();
+            if (tokenRefreshed != null) {
+                return newRequestWithAccessToken(response.request(), tokenRefreshed);
             }
         }
         return null;
+
     }
     private Request newRequestWithAccessToken(Request request, String accessToken) {
         return request.newBuilder()
                 .header("Authorization", "Bearer " + accessToken)
                 .build();
+    }
+    ///
+    private boolean isTokenStillValid(String token) {
+      return tokenManager.isTokenValid();
     }
 }

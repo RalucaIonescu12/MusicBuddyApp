@@ -15,6 +15,7 @@
       android:text="Let's begin"
       android:textColor="#FFFFFF"
       android:textSize="80px"
+      android:visibility="invisible"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

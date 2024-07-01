@@ -20,7 +20,6 @@ import com.example.music_buddy_app2.API_RESPONSES.AUDIO_FEATURES.AudioFeaturesOb
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.example.music_buddy_app2.MANAGERS.SpotifyApiRecommendationsManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
 import com.squareup.picasso.Picasso;
@@ -79,7 +78,7 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
         if(exists)
         {
             buttonText.setText("Added");
-            addIcon.setImageResource(R.drawable.baseline_favorite_border_24);
+            addIcon.setImageResource(R.drawable.baseline_favorite_border_24_blue);
         }
         addTrack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +88,7 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
                 {
                     Toast.makeText(getContext(), "Removed!", Toast.LENGTH_SHORT).show();
                     buttonText.setText("Add for recommendations");
-                    addIcon.setImageResource(R.drawable.baseline_add_24);
+                    addIcon.setImageResource(R.drawable.add_blue);
                     manager.removeFilter(selectedItem.getSongName());
                 }
                 else
@@ -102,7 +101,7 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
                     else if (add.equals("filter_added")) {
                         Toast.makeText(getContext(), "Added!", Toast.LENGTH_SHORT).show();
                         buttonText.setText("Added");
-                        addIcon.setImageResource(R.drawable.baseline_favorite_border_24);
+                        addIcon.setImageResource(R.drawable.baseline_favorite_border_24_blue);
                     } else if (add.equals("already_exists"))
                         Toast.makeText(getContext(), "Already added!", Toast.LENGTH_SHORT).show();
                 }
@@ -115,7 +114,6 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
 
         id = selectedItem.getId();
         Call<AudioFeaturesObjectResponse> call= spotifyApiServiceInterface.getTracksFeatures(id);
-
         call.enqueue(new Callback<AudioFeaturesObjectResponse>() {
             @Override
             public void onResponse(Call<AudioFeaturesObjectResponse> call, Response<AudioFeaturesObjectResponse> response) {
@@ -126,9 +124,15 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
                     livenessValue.setText(String.valueOf(trackFeatures.getLiveness()));
                     danceabilityValue.setText(String.valueOf(trackFeatures.getDanceability()));
                     tempoValue.setText(String.valueOf(trackFeatures.getTempo()));
-                    instrumentalnessValue.setText(String.valueOf((double)trackFeatures.getInstrumentalness()).substring(0,6));
-                    energyValue.setText(String.valueOf(trackFeatures.getEnergy()));
 
+                    Log.e("instryumentalness","inst" + trackFeatures.getInstrumentalness()+ " "+ String.valueOf(trackFeatures.getInstrumentalness()).length());
+                    if(String.valueOf(trackFeatures.getInstrumentalness()).length()>6)
+                        instrumentalnessValue.setText(String.valueOf((double)trackFeatures.getInstrumentalness()).substring(0,6));
+                    else if(String.valueOf(trackFeatures.getInstrumentalness()).contains("E"))
+                        instrumentalnessValue.setText(String.valueOf((double)trackFeatures.getInstrumentalness()).substring(0,3));
+                    else  instrumentalnessValue.setText(String.valueOf((double)trackFeatures.getInstrumentalness()));
+
+                    energyValue.setText(String.valueOf(trackFeatures.getEnergy()));
                     timeSignature.setText(String.valueOf(trackFeatures.getTimeSignature()));
                     selectedItem.setAcousticness(Double.valueOf(trackFeatures.getAcousticness()));
                     selectedItem.setDuration_ms((int)trackFeatures.getDurationMs());
@@ -143,17 +147,16 @@ public class AudioFeaturesDialogFragment extends DialogFragment {
                     selectedItem.setLivenessValue(Double.valueOf(trackFeatures.getLiveness()));
                     selectedItem.setEnergyValue(Double.valueOf(trackFeatures.getEnergy()));
                     selectedItem.setTimeSignature((int)trackFeatures.getTimeSignature());
+                    Log.e("MY_LOGS", selectedItem.toString());
                 }
                 else {
-                    Toast.makeText(requireContext(), "Api response not successful!" , Toast.LENGTH_SHORT).show();
+                    Log.e("MY_LOGS", "Api response for audio features not successful!");
                 }
             }
 
             @Override
             public void onFailure(Call<AudioFeaturesObjectResponse> call, Throwable t) {
-                // Handle failure
-                Toast.makeText(requireContext(), "Failed features request!" , Toast.LENGTH_SHORT).show();
-                Log.e("MY_LOGS", "API call failed", t);
+                Log.e("MY_LOGS", "API call for audio features failed", t);
                 t.printStackTrace();
             }
         });

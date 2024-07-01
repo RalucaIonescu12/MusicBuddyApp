@@ -1,6 +1,5 @@
 package com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
-import com.example.music_buddy_app2.ACTIVITIES.PROFILE.FindFriendsActivity;
 import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.FriendsPlaylistsAdapter;
 import com.example.music_buddy_app2.ADAPTERS.CONTEXT_RECS.MyPlaylistsAdapter;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 import com.example.music_buddy_app2.FRAGMENTS.MyFriendsMultiChoiceFragment;
-import com.example.music_buddy_app2.FirebaseManagement.UserManager;
+import com.example.music_buddy_app2.MANAGERS.SharedPreferencesManager;
+import com.example.music_buddy_app2.MANAGERS.UserManager;
 import com.example.music_buddy_app2.MANAGERS.ChooseContextDetailsManager;
 import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
@@ -127,13 +126,10 @@ public class ChooseContextDetailsActivity extends BaseActivity implements MyFrie
         });
 
         getRecsButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseContextDetailsActivity.this,LoadingActivity.class);
-
                 startActivity(intent);
-
             }
         });
     }
@@ -267,23 +263,37 @@ public class ChooseContextDetailsActivity extends BaseActivity implements MyFrie
         }
     }
     private void getUsersPlaylists() {
-        int offsets[]={0,50,100};
+        int offsets[]={0,50};
         currentUsersPlaylists.clear();
         for(int offset:offsets)
         {
-            playlistsApiManager.getPlaylistsForCurrentUser(offset,
-            new PlaylistsApiManager.PlaylistsCallback() {
+//            playlistsApiManager.getPlaylistsForCurrentUser(offset,
+//            new PlaylistsApiManager.PlaylistsCallback() {
+//                @Override
+//                public void onSuccess(List<SimplifiedPlaylistObject> playlists) {
+//
+//                    currentUsersPlaylists.addAll(playlists);
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            myPlaylistsAdapter.notifyDataSetChanged();
+//                        }
+//                    });
+//
+//                }
+//
+//                @Override
+//                public void onFailure(String errorMessage) {
+//                    Toast.makeText(ChooseContextDetailsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                }
+//            });
+            playlistsApiManager.getPlaylistsForUser(SharedPreferencesManager.getUserId(this), offset, new PlaylistsApiManager.PlaylistsCallback() {
                 @Override
                 public void onSuccess(List<SimplifiedPlaylistObject> playlists) {
-
                     currentUsersPlaylists.addAll(playlists);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            myPlaylistsAdapter.notifyDataSetChanged();
-                        }
+                    runOnUiThread(() -> {
+                        myPlaylistsAdapter.notifyDataSetChanged();
                     });
-
                 }
 
                 @Override
@@ -291,6 +301,7 @@ public class ChooseContextDetailsActivity extends BaseActivity implements MyFrie
                     Toast.makeText(ChooseContextDetailsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             });
+
         }
     }
 

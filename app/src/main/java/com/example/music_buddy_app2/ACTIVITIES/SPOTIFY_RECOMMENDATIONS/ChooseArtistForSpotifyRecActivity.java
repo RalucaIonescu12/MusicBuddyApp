@@ -4,38 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
-import com.example.music_buddy_app2.ACTIVITIES.PROFILE.ProfileActivity;
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.SearchArtistsAdapter;
-import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.ArtistSearchObject;
-import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.SearchArtistsResponse;
 import com.example.music_buddy_app2.FRAGMENTS.ArtistDialogFragment;
 import com.example.music_buddy_app2.MODELS.ArtistSearchItem;
-import com.example.music_buddy_app2.MODELS.User;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
-import com.example.music_buddy_app2.SERVICES.API.UserApiManager;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ChooseArtistForSpotifyRecActivity extends BaseActivity implements SearchArtistsAdapter.OnItemClickListener {
@@ -136,7 +124,6 @@ public class ChooseArtistForSpotifyRecActivity extends BaseActivity implements S
             }
         } catch (Exception e) {
             Log.e("MY_LOGS", "Error updating RecyclerView: " + e.getMessage(), e);
-            Toast.makeText(this, "Error updating RecyclerView.", Toast.LENGTH_SHORT).show();
         }
     }
     public void setSearchResults(List<ArtistSearchItem> searchResults)

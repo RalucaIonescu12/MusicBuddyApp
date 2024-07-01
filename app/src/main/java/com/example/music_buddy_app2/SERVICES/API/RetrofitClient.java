@@ -15,7 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class RetrofitClient {
     //singleton class
     private static final String SPOTIFY_URL = "https://api.spotify.com";
-    private static final int TIMEOUT_SECONDS = 20;
+    private static final int TIMEOUT_SECONDS = 40;
     private static final String TOKEN_API_URL="https://token-dakig7klxq-lm.a.run.app";
     private static final String RECS_API_URL="https://recs-dakig7klxq-lm.a.run.app";
     private static Retrofit spotifyRetrofit;
@@ -99,6 +99,17 @@ public class RetrofitClient {
 
             OkHttpClient client = new OkHttpClient.Builder()
 //                    .addInterceptor(logging)
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Interceptor.Chain chain) throws IOException {
+                            Request originalRequest = chain.request();
+                            String accessToken = TokenManager.getInstance().getFirebaseToken();
+                            Request newRequest = originalRequest.newBuilder()
+                                    .header("Authorization", "Bearer " + accessToken)
+                                    .build();
+                            return chain.proceed(newRequest);
+                        }
+                    })
                     .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .build();
@@ -116,11 +127,23 @@ public class RetrofitClient {
     {
 
         if (myApiRecsRetrofit  == null) {
-//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
-//                    .addInterceptor(logging)
+                    .addInterceptor(logging)
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Interceptor.Chain chain) throws IOException {
+                            Request originalRequest = chain.request();
+                            String accessToken = TokenManager.getInstance().getFirebaseToken();
+                            Request newRequest = originalRequest.newBuilder()
+                                    .header("Authorization", "Bearer " + accessToken)
+                                    .build();
+                            return chain.proceed(newRequest);
+                        }
+                    })
                     .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .build();

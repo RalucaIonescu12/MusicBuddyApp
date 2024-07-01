@@ -1,6 +1,5 @@
 package com.example.music_buddy_app2.ACTIVITIES.SPOTIFY_RECOMMENDATIONS;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,15 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.music_buddy_app2.ACTIVITIES.BaseActivity;
+import com.example.music_buddy_app2.ACTIVITIES.MENUS.MenuActivity;
+import com.example.music_buddy_app2.ACTIVITIES.OUR_RECOMMENDATIONS.SeeOurRecommendationsActivity;
 import com.example.music_buddy_app2.ADAPTERS.SPOTIFY_RECOMMENDATIONS.SearchTracksAdapter;
-import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.AddTracksToPlaylistResponse;
-import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.PlaylistsResponse;
-import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SimplifiedPlaylistObject;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.SpotifyRecommendationsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.ARTISTS.TopArtistsResponse;
 import com.example.music_buddy_app2.API_RESPONSES.TRACKS_PLAYLISTS.TrackObject;
-import com.example.music_buddy_app2.API_RESPONSES.USERS.UserResponse;
-import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistRequestBody;
 import com.example.music_buddy_app2.API_RESPONSES.REQUESTBODIES.PlaylistTracksRequest;
 import com.example.music_buddy_app2.MODELS.TrackSearchItem;
 import com.example.music_buddy_app2.MODELS.User;
@@ -32,9 +28,15 @@ import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.PlaylistsApiManager;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
 import com.example.music_buddy_app2.SERVICES.API.UserApiManager;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
+import com.example.music_buddy_app2.MANAGERS.SharedPreferencesManager;
 import com.example.music_buddy_app2.MANAGERS.SpotifyApiRecommendationsManager;
 import com.example.music_buddy_app2.SERVICES.API.SpotifyApiServiceInterface;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -69,7 +71,7 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
     private List<String> urisForAddToPlaylist=new ArrayList<>();
     SpotifyApiRecommendationsManager manager;
     private String spotifyUserId;
-
+    private FloatingActionButton butonHome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,13 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
         plusIconImageQueue=findViewById(R.id.plusIcon);
         tv_addplaylistQueue=findViewById(R.id.addToQueueTV);
 
-
+        butonHome=findViewById(R.id.floatingActionButton);
+        butonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SeeSpotifyRecommendationsActivity.this, MenuActivity.class));
+            }
+        });
 
         cvButtonAddQueue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,10 +145,10 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
     {
        // api call for recommendations
 //        Log.e("MY_APP", String.valueOf(SharedPreferencesManager.getNbrGeneratedPlaylists(this)));
-        int nbr = SharedPreferencesManager.getNbrGeneratedPlaylists(this);
-        playlistNameET.setText("Playlist Title #"+nbr);
+        int nbr = SharedPreferencesManager.getNbrGeneratedPlaylists(this)+1;
+        playlistNameET.setText("Recommendations #"+nbr);
         nbr += 1;
-        SharedPreferencesManager.updateNbrPlaylists(this, nbr);
+
 
         Map<String,Double> audioFeaturesFields=manager.getAudioFeatureFields();
         String seed_artists="";
@@ -264,7 +272,7 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
                     }
                     if(recommendationTracks.isEmpty()) Toast.makeText(SeeSpotifyRecommendationsActivity.this, "No such recommendations found!" , Toast.LENGTH_SHORT).show();
                     else{Picasso.get().load(trackItems.get(0).getAlbum().getImages().get(0).getUrl()).into(playlistImage);
-                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Got recs!" , Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Got recs!" , Toast.LENGTH_SHORT).show();
                     updateRecyclerView();}
                 }
                 else {
@@ -301,10 +309,11 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
     }
     private void addPlaylistItemsInQueue()
     {
+
         playlistsApiManager.addItemsToPlaybackQueue(recommendationTracks, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
-            public void onAllItemsAdded() {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Done!" , Toast.LENGTH_SHORT).show();
+            public void onAllItemsAdded(Integer number) {
+//                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Done!" , Toast.LENGTH_SHORT).show();
                 cvButtonAddQueue.setClickable(false);
                 cvButtonAddQueue.setEnabled(false);
                 tv_addplaylistQueue.setText("Added");
@@ -312,8 +321,19 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(String errorMessage) {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add to queue!"+ errorMessage , Toast.LENGTH_SHORT).show();
+            public void onFailure(Integer number) {
+                if(number==0){
+                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add to queue! Try later" , Toast.LENGTH_SHORT).show();
+                    cvButtonAddQueue.setClickable(false);
+                    cvButtonAddQueue.setEnabled(false);
+                    tv_addplaylistQueue.setText("Retry later");}
+                else{
+                    Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Done!" , Toast.LENGTH_SHORT).show();
+                    cvButtonAddQueue.setClickable(false);
+                    cvButtonAddQueue.setEnabled(false);
+                    tv_addplaylistQueue.setText("Added");
+                    plusIconImageQueue.setImageResource(R.drawable.baseline_check_24);
+                }
             }
         });
 
@@ -351,13 +371,13 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
         String description = descriptionTV.getText().toString();
         playlistsApiManager.createPlaylistForUser(spotifyUserId, playlistName, _public, collaborative, description, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
-            public void onAllItemsAdded() {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Playlist created." , Toast.LENGTH_SHORT).show();
+            public void onAllItemsAdded(Integer number) {
+//                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Playlist created." , Toast.LENGTH_SHORT).show();
                 getPlaylistId(playlistName,description,spotifyUserId);
             }
 
             @Override
-            public void onFailure(String errorMessage) {
+            public void onFailure(Integer number) {
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to create playlist." , Toast.LENGTH_SHORT).show();
             }
         });
@@ -393,22 +413,23 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
         for (int i = 0; i < recommendationTracks.size(); i++)
             urisForAddToPlaylist.add(prefix + recommendationTracks.get(i).getId());
 
+
         PlaylistTracksRequest request = new PlaylistTracksRequest();
         request.setUris(urisForAddToPlaylist);
         request.setPosition(0);
         playlistsApiManager.addTracksToPlaylist( playlistId, request, new PlaylistsApiManager.AddItemToQueueListener() {
             @Override
-            public void onAllItemsAdded() {
-                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
+            public void onAllItemsAdded(Integer number) {
+//                Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Added tracks to playlist.", Toast.LENGTH_SHORT).show();
 //                cvAddPlaylist.setClickable(false);
 //                cvAddPlaylist.setEnabled(false);
 //                tv_addplaylist.setText("Added");
-                plusIconImage.setImageResource(R.drawable.baseline_check_24);
-                updatePlaylistButtonToOpenInSpotify(playlistId);
+                updateNbrPlaylistsInFirebase();
+
             }
 
             @Override
-            public void onFailure(String errorMessage) {
+            public void onFailure(Integer number) {
                 Toast.makeText(SeeSpotifyRecommendationsActivity.this, "Failed to add tracks to playlist.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -442,5 +463,33 @@ public class SeeSpotifyRecommendationsActivity extends BaseActivity {
 //                t.printStackTrace();
 //            }
 //        });
+    }
+    public void updateNbrPlaylistsInFirebase(){
+        String userId = SharedPreferencesManager.getUserId(this);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = database.getReference("users").child(userId).child("playlistsCreatedWithTheApp");
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    long currentCount = dataSnapshot.getValue(Long.class);
+                    userRef.setValue(currentCount + 1);
+                    SharedPreferencesManager.updateNbrPlaylists(SeeSpotifyRecommendationsActivity.this,(int)currentCount+1);
+                    plusIconImage.setImageResource(R.drawable.baseline_check_24);
+                    updatePlaylistButtonToOpenInSpotify(playlistId);
+                } else {
+                    userRef.setValue(1);
+                    plusIconImage.setImageResource(R.drawable.baseline_check_24);
+                    updatePlaylistButtonToOpenInSpotify(playlistId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("FirebaseError", "Failed to increase the value", databaseError.toException());
+            }
+        });
     }
 }

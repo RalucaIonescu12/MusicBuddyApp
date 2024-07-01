@@ -3,20 +3,16 @@ package com.example.music_buddy_app2.SERVICES.API;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.music_buddy_app2.ACTIVITIES.LOGIN.LoginActivity;
-import com.example.music_buddy_app2.ACTIVITIES.LOGIN.SpotifyAuthorizationActivity;
 import com.example.music_buddy_app2.ACTIVITIES.LOGIN.WelcomeActivity;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.AccessTokenResponse;
-import com.example.music_buddy_app2.API_RESPONSES.USERS.CodeRequestBody;
 import com.example.music_buddy_app2.API_RESPONSES.USERS.RefreshTokenRequestBody;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.SharedPreferencesManager;
+import com.example.music_buddy_app2.MANAGERS.SharedPreferencesManager;
 
 import java.io.IOException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -53,12 +49,27 @@ public class TokenManager {
 //        if (currentTime >= expiryTime) {
 //            refreshTokenSync();
 //        }
+
         return SharedPreferencesManager.getToken(applicationContext);
+    }
+    public  boolean isTokenValid()
+    {
+        long currentTime = System.currentTimeMillis();
+        long expiryTime = SharedPreferencesManager.getExpiryTime(applicationContext);
+        if (currentTime >= expiryTime)
+            return false;
+        else
+            return true;
+    }
+    public synchronized String getFirebaseToken() {
+
+        return SharedPreferencesManager.getCustomToken(applicationContext);
     }
 
     private void goToLogin()
     {
         Intent intent = new Intent(applicationContext,LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         applicationContext.startActivity(intent);
     }
     public synchronized String refreshTokenSync() {
@@ -79,6 +90,7 @@ public class TokenManager {
                     long newExpiryTime = System.currentTimeMillis() + (tokenResponse.getExpiresIn() * 1000);
                     SharedPreferencesManager.saveToken(applicationContext, tokenResponse.getAccessToken());
                     SharedPreferencesManager.saveExpiryTime(applicationContext, newExpiryTime);
+
                     if (!tokenResponse.getRefreshToken().equals(""))
                         SharedPreferencesManager.saveRefreshToken(applicationContext, tokenResponse.getRefreshToken());
                     return tokenResponse.getAccessToken();

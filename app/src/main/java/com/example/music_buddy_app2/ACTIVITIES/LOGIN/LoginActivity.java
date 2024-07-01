@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.example.music_buddy_app2.BuildConfig;
 import com.example.music_buddy_app2.R;
 import com.example.music_buddy_app2.SERVICES.API.RetrofitClient;
-import com.example.music_buddy_app2.SERVICES.AUTHORIZATION.TokenRefreshServiceInterface;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -27,9 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
     private static final String REDIRECT_URI = "http://www.music_buddy_app2/callback";
     private SpotifyAppRemote mSpotifyAppRemote;
-    Retrofit retrofit;
-    TokenRefreshServiceInterface tokenRefreshServiceInterface;
-    private static final int REQUEST_CODE = 1337;//this request code is used for verifying if result
     // comes from the login activity and can be set to any interger
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
